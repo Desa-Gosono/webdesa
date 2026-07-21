@@ -1,0 +1,15 @@
+{
+  "populationGrowth": [
+    { "year": "2022", "population": 3200 },
+    { "year": "2023", "population": 3250 },
+    { "year": "2024", "population": 3320 },
+    { "year": "2025", "population": 3410 },
+    { "year": "2026", "population": 3500 }
+  ],
+  "agricultureYield": [
+    { "month": "Jan", "yield": 40 },
+    { "month": "Feb", "yield": 45 },
+    { "month": "Mar", "yield": 30 },
+    { "month": "Apr", "yield": 50 }
+  ]
+}

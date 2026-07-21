@@ -1,0 +1,10 @@
+{
+  "struktur": [
+    { "nama": "Bapak Muslim", "jabatan": "Kepala Desa" },
+    { "nama": "Bpk. Ahmad", "jabatan": "Sekretaris Desa" },
+    { "nama": "Ibu Rini", "jabatan": "Kaur Keuangan" },
+    { "nama": "Bpk. Joko", "jabatan": "Kasi Pemerintahan" },
+    { "nama": "[Nama Dapat Diperbarui]", "jabatan": "Kasi Kesejahteraan" },
+    { "nama": "[Nama Dapat Diperbarui]", "jabatan": "Kaur Perencanaan" }
+  ]
+}

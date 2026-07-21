@@ -1,0 +1,30 @@
+{
+  "name": "Desa Gosono",
+  "vision": "Mewujudkan Desa Gosono yang Mandiri, Sejahtera, dan Berbudaya Berbasis Teknologi",
+  "mission": [
+    "Meningkatkan kualitas pelayanan publik melalui digitalisasi.",
+    "Mendorong perekonomian desa melalui pemberdayaan UMKM dan pertanian modern.",
+    "Menjaga dan melestarikan budaya serta kearifan lokal."
+  ],
+  "history": "Desa Gosono telah berdiri sejak masa lampau dan terus berkembang menjadi desa yang berfokus pada kesejahteraan masyarakat dan inovasi.",
+  "demographics": {
+    "population": 3500,
+    "families": 950,
+    "area_ha": 450,
+    "gender": {
+      "male": 1800,
+      "female": 1700
+    },
+    "occupations": {
+      "farmers": 60,
+      "traders": 15,
+      "employees": 15,
+      "others": 10
+    }
+  },
+  "contact": {
+    "address": "Jl. Utama Desa Gosono No. 1",
+    "email": "info@gosono.desa.id",
+    "phone": "+62 812 3456 7890"
+  }
+}

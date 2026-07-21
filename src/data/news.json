@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "Peluncuran Program Smart Farming di Desa Gosono",
+    "date": "2026-06-15",
+    "author": "Pemerintah Desa",
+    "thumbnail": "https://placehold.co/600x400/2ecc71/ffffff?text=Smart+Farming",
+    "summary": "Desa Gosono resmi meluncurkan program Smart Farming untuk meningkatkan hasil panen warga dengan pemanfaatan sensor cuaca.",
+    "content": "Desa Gosono resmi meluncurkan program Smart Farming. Ini adalah program unggulan untuk memajukan perekonomian desa."
+  },
+  {
+    "id": "2",
+    "title": "Kerja Bakti Rutin Membersihkan Irigasi",
+    "date": "2026-06-20",
+    "author": "Karang Taruna",
+    "thumbnail": "https://placehold.co/600x400/3498db/ffffff?text=Kerja+Bakti",
+    "summary": "Warga desa bergotong-royong membersihkan saluran irigasi utama untuk persiapan musim tanam.",
+    "content": "Warga desa bergotong-royong membersihkan saluran irigasi utama. Kegiatan ini diikuti oleh seluruh elemen masyarakat."
+  }
+]

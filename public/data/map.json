@@ -1,0 +1,19 @@
+{
+  "center": { "lat": -7.3323, "lng": 110.7424 },
+  "categories": [
+    { "name": "Balai Desa", "color": "#ef4444", "icon": "🏛️" },
+    { "name": "Sekolah", "color": "#3b82f6", "icon": "🏫" },
+    { "name": "Masjid", "color": "#10b981", "icon": "🕌" },
+    { "name": "Posyandu", "color": "#ec4899", "icon": "🏥" },
+    { "name": "Puskesmas", "color": "#f43f5e", "icon": "🚑" },
+    { "name": "Sawah", "color": "#84cc16", "icon": "🌾" },
+    { "name": "UMKM", "color": "#f59e0b", "icon": "🏪" },
+    { "name": "Wisata", "color": "#8b5cf6", "icon": "🏕️" }
+  ],
+  "points": [
+    { "id": "1", "name": "Balai Desa Gosono", "category": "Balai Desa", "lat": -7.3323, "lng": 110.7424, "description": "Pusat pemerintahan Desa Gosono." },
+    { "id": "2", "name": "SDN 1 Gosono", "category": "Sekolah", "lat": -7.3310, "lng": 110.7430, "description": "Sekolah Dasar Negeri." },
+    { "id": "3", "name": "Masjid Al-Ikhlas", "category": "Masjid", "lat": -7.3330, "lng": 110.7415, "description": "Masjid Jami Desa Gosono." },
+    { "id": "4", "name": "Puskesmas Wonosegoro", "category": "Puskesmas", "lat": -7.3350, "lng": 110.7400, "description": "Fasilitas kesehatan terdekat." }
+  ]
+}

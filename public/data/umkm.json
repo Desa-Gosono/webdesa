@@ -1,0 +1,37 @@
+{
+  "umkm": [
+    {
+      "nama": "Keripik Tempe Bu Siti",
+      "produk": "Olahan Pangan",
+      "deskripsi": "Produksi rumahan keripik tempe khas Boyolali yang renyah dan gurih.",
+      "kontak": "0812xxxxxx",
+      "foto": "https://placehold.co/600x400/22c55e/ffffff?text=Keripik+Tempe"
+    },
+    {
+      "nama": "Kerajinan Anyaman Bambu",
+      "produk": "Kriya",
+      "deskripsi": "Berbagai macam produk kerajinan dari bambu seperti tampah, tenggok, dan lainnya.",
+      "kontak": "0813xxxxxx",
+      "foto": "https://placehold.co/600x400/16a34a/ffffff?text=Anyaman+Bambu"
+    },
+    {
+      "nama": "Susu Sapi Murni",
+      "produk": "Peternakan",
+      "deskripsi": "Susu sapi segar hasil perahan peternak lokal Desa Gosono.",
+      "kontak": "0856xxxxxx",
+      "foto": "https://placehold.co/600x400/15803d/ffffff?text=Susu+Sapi"
+    }
+  ],
+  "pertanian": [
+    {
+      "nama": "Padi Organik",
+      "deskripsi": "Sistem penanaman padi bebas bahan kimia yang ramah lingkungan.",
+      "foto": "https://placehold.co/600x400/22c55e/ffffff?text=Padi+Organik"
+    },
+    {
+      "nama": "Jagung Hibrida",
+      "deskripsi": "Komoditas utama warga saat musim kemarau.",
+      "foto": "https://placehold.co/600x400/16a34a/ffffff?text=Jagung"
+    }
+  ]
+}
