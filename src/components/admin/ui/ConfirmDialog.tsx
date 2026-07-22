@@ -9,6 +9,8 @@ interface ConfirmDialogProps {
   title: string;
   message: string;
   isLoading?: boolean;
+  confirmText?: string;
+  cancelText?: string;
 }
 
 export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -17,7 +19,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
   title,
   message,
-  isLoading
+  isLoading,
+  confirmText = 'Hapus',
+  cancelText = 'Batal'
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Konfirmasi" maxWidth="sm">
@@ -35,7 +39,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             disabled={isLoading}
             className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
           >
-            Batal
+            {cancelText}
           </button>
           <button
             type="button"
@@ -46,7 +50,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             {isLoading ? (
               <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
             ) : (
-              'Hapus'
+              confirmText
             )}
           </button>
         </div>

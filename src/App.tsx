@@ -3,6 +3,8 @@ import { router } from '@/routes';
 import { useEffect } from 'react';
 import { useAuthStore } from '@/stores/useAuthStore';
 
+import { SettingsProvider } from '@/contexts/SettingsContext';
+
 function App() {
   const initializeAuth = useAuthStore(state => state.initialize);
 
@@ -10,7 +12,11 @@ function App() {
     initializeAuth();
   }, [initializeAuth]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <SettingsProvider>
+      <RouterProvider router={router} />
+    </SettingsProvider>
+  );
 }
 
 export default App;

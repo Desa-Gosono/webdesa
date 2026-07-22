@@ -1,14 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-
-const stats = [
-  { value: '3,500+', label: 'Penduduk' },
-  { value: '950', label: 'Kepala Keluarga' },
-  { value: '450', label: 'Hektar Luas Wilayah' },
-  { value: '6', label: 'Dusun' },
-];
+import { useProfile } from '@/hooks/useProfile';
 
 export function VillageStats() {
+  const { useFetchProfile } = useProfile();
+  const { data: profile } = useFetchProfile();
+
+  const stats = [
+    { value: profile?.population ? `${profile.population.toLocaleString('id-ID')}+` : '3,500+', label: 'Penduduk' },
+    { value: profile?.families ? profile.families.toLocaleString('id-ID') : '950', label: 'Kepala Keluarga' },
+    { value: profile?.area ? profile.area.toLocaleString('id-ID') : '450', label: 'Hektar Luas Wilayah' },
+    { value: profile?.hamlets ? profile.hamlets.toString() : '6', label: 'Dusun' },
+  ];
+
   return (
     <section className="py-24 bg-primary-950 dark:bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://placehold.co/1920x1080/16a34a/ffffff?text=Pattern')] opacity-5 mix-blend-overlay bg-cover bg-center" />

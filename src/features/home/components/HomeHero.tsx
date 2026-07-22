@@ -2,25 +2,36 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight } from 'lucide-react';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 
 export function HomeHero() {
+  const { settings } = useSettingsContext();
+  
   return (
     <div className="relative h-[90vh] min-h-[600px] w-full overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="h-full w-full object-cover"
-        >
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-beautiful-green-landscape-4251-large.mp4" type="video/mp4" />
-        </video>
+      <div className="absolute inset-0 z-0 bg-slate-900">
+        {settings.hero_image ? (
+          <img
+            src={settings.hero_image}
+            alt="Hero Background"
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          >
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-beautiful-green-landscape-4251-large.mp4" type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/60 to-gray-900/40 mix-blend-multiply" />
       </div>
-      
+
       <div className="container relative z-10 mx-auto px-4 h-full flex items-center">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -30,17 +41,17 @@ export function HomeHero() {
             Selamat Datang di Portal Resmi
           </span>
           <h1 className="text-5xl sm:text-7xl font-display font-bold text-white mb-6 leading-tight drop-shadow-xl">
-            Desa Gosono, <br/>
+            {settings.hero_title || 'Desa Gosono'}, <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-accent-400">
-              Mandiri & Berbudaya.
+              {settings.hero_subtitle || 'Mandiri & Berbudaya.'}
             </span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-200 mb-10 max-w-2xl font-light">
-            Menelusuri keindahan alam, kekayaan budaya, dan potensi ekonomi lokal yang terus berkembang di jantung Kabupaten Boyolali.
+            {settings.hero_description || 'Menelusuri keindahan alam, kekayaan budaya, dan potensi ekonomi lokal yang terus berkembang di jantung Kabupaten Boyolali.'}
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="rounded-full shadow-xl shadow-primary-600/20" onClick={() => window.location.href = '/potensi'}>
-              Jelajahi Potensi <ArrowRight className="ml-2 h-5 w-5" />
+            <Button size="lg" className="rounded-full shadow-xl shadow-primary-600/20" onClick={() => window.location.href = settings.cta_url || '/potensi'}>
+              {settings.cta_text || 'Jelajahi Potensi'} <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button size="lg" variant="glass" className="rounded-full text-white" onClick={() => window.location.href = '/galeri'}>
               Galeri Desa

@@ -8,7 +8,7 @@ export const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex font-sans">
+    <div className="h-screen overflow-hidden bg-slate-50 dark:bg-slate-950 flex font-sans">
       {/* Overlay for mobile sidebar */}
       {sidebarOpen && (
         <div 

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Leaf, Search, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 import { GlobalSearch } from '@/components/features/GlobalSearch';
 import { LiveClockWeather } from '@/components/features/LiveClockWeather';
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
+  const { settings } = useSettingsContext();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
@@ -24,8 +26,14 @@ export function Navbar() {
       <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-gray-950/70 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <Leaf className="h-6 w-6 text-primary-600 dark:text-primary-500" />
-            <span className="font-display font-bold text-xl text-gray-900 dark:text-white">Desa Gosono</span>
+            {settings.website_logo ? (
+              <img src={settings.website_logo} alt="Logo" className="h-8 w-auto" />
+            ) : (
+              <Leaf className="h-6 w-6 text-primary-600 dark:text-primary-500" />
+            )}
+            <span className="font-display font-bold text-xl text-gray-900 dark:text-white">
+              {settings.website_name || 'Desa Gosono'}
+            </span>
           </Link>
           <nav className="hidden lg:flex gap-6">
             <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Beranda</Link>

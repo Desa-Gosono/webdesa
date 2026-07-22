@@ -30,7 +30,7 @@ export default function DashboardAdminPage() {
   const { data: potensiData = [] } = useGetAllPotensi();
   const { data: perangkatData = [] } = useGetAllPerangkat();
 
-  const umkmCount = potensiData.filter(p => p.kategori === 'UMKM').length;
+  const umkmCount = potensiData.filter(p => p.category === 'UMKM').length;
 
   const stats = [
     {

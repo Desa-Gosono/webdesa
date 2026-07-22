@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useJsonData } from '@/hooks/useJsonData';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 
 interface SEOProps {
   title?: string;
@@ -10,39 +10,22 @@ interface SEOProps {
 }
 
 export function SEO({ title, description, image, type = 'website' }: SEOProps) {
-  const { data: desaData } = useJsonData<any>('profile.json');
+  const { settings } = useSettingsContext();
 
-  const siteName = desaData ? `Desa ${desaData.nama}` : 'Desa Gosono';
-  const defaultDesc = desaData ? `Website resmi Pemerintah Desa ${desaData.nama}, ${desaData.kecamatan}, ${desaData.kabupaten}.` : 'Company Profile Desa Gosono.';
+  const siteName = settings.website_name || 'Desa Gosono';
+  const defaultDesc = settings.seo_description || 'Website resmi Pemerintah Desa Gosono.';
 
-  const pageTitle = title ? `${title} | ${siteName}` : siteName;
+  const pageTitle = title ? `${title} | ${siteName}` : (settings.seo_title || siteName);
   const pageDesc = description || defaultDesc;
-  const pageImage = image || '/logo.png';
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "GovernmentOrganization",
-    "name": siteName,
-    "description": pageDesc,
-    "image": pageImage,
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": desaData?.telepon,
-      "contactType": "customer service"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": desaData?.kecamatan,
-      "addressRegion": desaData?.provinsi,
-      "streetAddress": desaData?.alamat
-    }
-  };
+  const pageImage = image || settings.website_logo || '/logo.png';
+  const keywords = settings.seo_keywords || 'desa, gosono, website desa';
 
   return (
     <Helmet>
       {/* Standard metadata tags */}
       <title>{pageTitle}</title>
       <meta name="description" content={pageDesc} />
+      <meta name="keywords" content={keywords} />
 
       {/* OpenGraph tags for social media sharing */}
       <meta property="og:title" content={pageTitle} />

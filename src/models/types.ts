@@ -1,97 +1,149 @@
 export interface BaseModel {
   id: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface ProfilDesa extends BaseModel {
-  nama: string;
-  deskripsi: string;
-  alamat: string;
-  telepon: string;
-  email: string;
-  logoUrl?: string;
+export interface Profile extends BaseModel {
+  id: string;
+  village_name: string;
+  district: string;
+  regency: string;
+  province: string;
+  description: string | null;
+  history: string | null;
+  vision: string | null;
+  mission: string | null;
+  address: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  logo_url: string | null;
+  hero_image_url: string | null;
+  mayor_name?: string | null;
+  mayor_photo?: string | null;
+  mayor_greeting?: string | null;
+  population?: number;
+  families?: number;
+  area?: number;
+  hamlets?: number;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface SejarahDesa extends BaseModel {
-  konten: string;
+export interface Official {
+  id: string;
+  name: string;
+  position: string;
+  photo_url: string | null;
+  description: string | null;
+  order_number: number;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface VisiMisi extends BaseModel {
-  visi: string;
-  misi: string[];
+export interface Potential {
+  id: string;
+  title: string;
+  category: string;
+  description: string | null;
+  image_url: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface PemerintahanDesa extends BaseModel {
-  namaInstansi: string;
-  deskripsi: string;
+export interface Umkm {
+  id: string;
+  name: string;
+  owner: string | null;
+  category: string | null;
+  description: string | null;
+  product: string | null;
+  phone: string | null;
+  address: string | null;
+  image_url: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface PerangkatDesa extends BaseModel {
-  nama: string;
-  jabatan: string;
-  fotoUrl?: string;
-  tugas?: string;
+export interface News {
+  id: string;
+  title: string;
+  slug: string | null;
+  content: string;
+  thumbnail_url: string | null;
+  author: string | null;
+  status: 'draft' | 'published' | 'archive';
+  published_at: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export type KategoriPotensi = 'UMKM' | 'Pertanian' | 'Peternakan' | 'Budaya';
-
-export interface PotensiDesa extends BaseModel {
-  kategori: KategoriPotensi;
-  judul: string;
-  deskripsi: string;
-  gambarUrl?: string;
+export interface Agenda {
+  id: string;
+  title: string;
+  description: string | null;
+  location: string | null;
+  event_date: string | null;
+  image_url: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface Berita extends BaseModel {
-  judul: string;
-  konten: string;
-  penulis: string;
-  gambarUrl?: string;
-  kategori: string;
-  status: 'Draft' | 'Published';
+export interface Gallery {
+  id: string;
+  title: string | null;
+  category: string | null;
+  description: string | null;
+  media_type: 'image' | 'video';
+  media_url: string;
+  created_at?: string;
 }
 
-export interface Agenda extends BaseModel {
-  judul: string;
-  deskripsi: string;
-  tanggalMulai: string;
-  tanggalSelesai: string;
-  lokasi: string;
-  penyelenggara: string;
+export interface Facility {
+  id: string;
+  name: string | null;
+  category: string | null;
+  description: string | null;
+  address: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  image_url: string | null;
+  created_at?: string;
 }
 
-export interface GaleriFoto extends BaseModel {
-  judul: string;
-  deskripsi?: string;
-  gambarUrl: string;
+export interface Contact {
+  id: string;
+  address: string | null;
+  phone: string | null;
+  email: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  youtube: string | null;
+  whatsapp: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface GaleriVideo extends BaseModel {
-  judul: string;
-  deskripsi?: string;
-  videoUrl: string; // YouTube or external link
+export interface Setting {
+  id: string;
+  key: string;
+  value: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface FasilitasUmum extends BaseModel {
-  nama: string;
-  kategori: string;
-  deskripsi?: string;
-  gambarUrl?: string;
-  lokasi: string;
-}
-
-export interface Kontak extends BaseModel {
-  nama: string;
-  email: string;
-  subjek: string;
-  pesan: string;
-  status: 'Unread' | 'Read' | 'Replied';
-}
-
-export interface PengaturanWebsite extends BaseModel {
-  namaWebsite: string;
-  deskripsiWebsite: string;
-  warnaUtama: string;
-  warnaSekunder: string;
-}
+export type Berita = News;
+export type ProfilDesa = Profile;
+export type SejarahDesa = Profile; // Fallback
+export type VisiMisi = Profile; // Fallback
+export type PemerintahanDesa = Profile; // Fallback
+export type PerangkatDesa = Official;
+export type PotensiDesa = Potential;
+export type GaleriFoto = Gallery;
+export type GaleriVideo = Gallery;
+export type FasilitasUmum = Facility;
+export type Kontak = Contact;
+export type PengaturanWebsite = Setting;

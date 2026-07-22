@@ -36,23 +36,18 @@ export const adminMenu = [
   },
   {
     title: 'Pemerintahan',
-    path: '/admin/pemerintahan',
-    icon: Building,
-    children: [
-      { title: 'Pemerintahan Desa', path: '/admin/pemerintahan/desa', icon: Building },
-      { title: 'Perangkat Desa', path: '/admin/pemerintahan/perangkat', icon: Users },
-    ],
+    path: '/admin/pemerintahan/perangkat',
+    icon: Users,
   },
   {
     title: 'Potensi Desa',
     path: '/admin/potensi',
     icon: MapPin,
-    children: [
-      { title: 'UMKM', path: '/admin/potensi/umkm', icon: Store },
-      { title: 'Pertanian', path: '/admin/potensi/pertanian', icon: Tractor },
-      { title: 'Peternakan', path: '/admin/potensi/peternakan', icon: Bird },
-      { title: 'Budaya', path: '/admin/potensi/budaya', icon: Music },
-    ],
+  },
+  {
+    title: 'UMKM',
+    path: '/admin/potensi/umkm',
+    icon: Store,
   },
   {
     title: 'Informasi',

@@ -26,7 +26,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
       )}
     >
       <div className="flex h-16 items-center justify-between px-4 bg-slate-950">
-        <span className="text-xl font-bold text-white tracking-wide">Desa Admin</span>
+        <span className="text-xl font-bold text-white tracking-wide">Admin Desa</span>
         <button className="lg:hidden text-slate-300 hover:text-white" onClick={() => setIsOpen(false)}>
           <Menu className="w-6 h-6" />
         </button>
