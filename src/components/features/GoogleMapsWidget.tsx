@@ -20,7 +20,7 @@ export function GoogleMapsWidget({
   
   // If no mapUrl but we have lat/lng, construct a simple Google Maps embed URL
   if (!finalUrl && latitude !== undefined && longitude !== undefined) {
-    finalUrl = `https://maps.google.com/maps?q=${latitude},${longitude}&hl=es;z=14&amp;output=embed`;
+    finalUrl = `https://maps.google.com/maps?q=${latitude},${longitude}&hl=id&z=14&output=embed`;
   }
   
   // Fallback to Gosono

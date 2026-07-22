@@ -12,10 +12,8 @@ const PotensiDetail = lazy(() => import('@/pages/potency/PotensiDetail'));
 const UMKMDetail = lazy(() => import('@/pages/potency/UMKMDetail'));
 const BeritaPage = lazy(() => import('@/pages/information/BeritaPage'));
 const BeritaDetail = lazy(() => import('@/pages/information/BeritaDetail'));
-const AgendaPage = lazy(() => import('@/pages/information/AgendaPage'));
 const AgendaDetail = lazy(() => import('@/pages/information/AgendaDetail'));
 const GaleriPage = lazy(() => import('@/pages/information/GaleriPage'));
-const FasilitasPage = lazy(() => import('@/pages/information/FasilitasPage'));
 const FasilitasDetail = lazy(() => import('@/pages/information/FasilitasDetail'));
 const PetaPage = lazy(() => import('@/pages/data/PetaPage'));
 const KontakPage = lazy(() => import('@/pages/contact/KontakPage'));
@@ -55,9 +53,7 @@ export const router = createBrowserRouter([
       { path: 'umkm/:id', element: <UMKMDetail /> },
       { path: 'berita', element: <BeritaPage /> },
       { path: 'berita/:slug', element: <BeritaDetail /> },
-      { path: 'agenda', element: <AgendaPage /> },
       { path: 'agenda/:id', element: <AgendaDetail /> },
-      { path: 'fasilitas', element: <FasilitasPage /> },
       { path: 'fasilitas/:id', element: <FasilitasDetail /> },
       { path: 'galeri', element: <GaleriPage /> },
       { path: 'peta', element: <PetaPage /> },

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { PageHeader } from '@/components/admin/ui/PageHeader';
-import { Settings, Globe, Phone, Share2, MapPin, Search, LayoutTemplate, Monitor, Save, Upload, Image as ImageIcon } from 'lucide-react';
+import { Settings, Globe, Phone, Share2, MapPin, Search, LayoutTemplate, Monitor, Save, Upload, Image as ImageIcon, Trash2 } from 'lucide-react';
 import { useSettings, InsertSetting } from '@/hooks/useSettings';
 import { uploadImage } from '@/utils/storage';
 import { Button } from '@/components/ui/Button';
 import toast from 'react-hot-toast';
 import { ConfirmDialog } from '@/components/admin/ui/ConfirmDialog';
 
-type Tab = 'general' | 'contact' | 'social' | 'location' | 'seo' | 'footer' | 'homepage' | 'system';
+type Tab = 'general' | 'contact' | 'social' | 'location' | 'seo' | 'footer' | 'pages' | 'system';
 
 export default function PengaturanAdmin() {
   const { useFetchSettings, useUpdateSettings } = useSettings();
@@ -19,11 +19,13 @@ export default function PengaturanAdmin() {
   const [isSaving, setIsSaving] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [currentUploadKey, setCurrentUploadKey] = useState<string | null>(null);
 
   // File input refs
   const logoInputRef = useRef<HTMLInputElement>(null);
   const faviconInputRef = useRef<HTMLInputElement>(null);
   const heroImageInputRef = useRef<HTMLInputElement>(null);
+  const pageMediaInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (settings.length > 0) {
@@ -63,6 +65,7 @@ export default function PengaturanAdmin() {
       toast.error('Gagal mengunggah file: ' + error.message);
     } finally {
       setIsUploading(false);
+      if (e.target) e.target.value = ''; // Reset input
     }
   };
 
@@ -95,7 +98,7 @@ export default function PengaturanAdmin() {
     { id: 'location', label: 'Lokasi', icon: MapPin },
     { id: 'seo', label: 'SEO', icon: Search },
     { id: 'footer', label: 'Footer', icon: LayoutTemplate },
-    { id: 'homepage', label: 'Beranda', icon: Monitor },
+    { id: 'pages', label: 'Halaman', icon: ImageIcon },
     { id: 'system', label: 'Sistem', icon: Settings },
   ];
 
@@ -503,97 +506,139 @@ export default function PengaturanAdmin() {
               </div>
             )}
 
-            {/* Homepage Tab */}
-            {activeTab === 'homepage' && (
+
+
+          {/* Pages Tab */}
+            {activeTab === 'pages' && (
               <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2">
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4 border-b pb-2 dark:border-slate-700">Tampilan Beranda</h3>
-                <div className="grid grid-cols-1 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Hero Image / Background</label>
-                    <div className="flex flex-col gap-4">
-                      {formData.hero_image && (
-                        <div className="h-48 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-                          <img src={formData.hero_image} alt="Hero" className="w-full h-full object-cover" />
+                <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4 border-b pb-2 dark:border-slate-700">Media Halaman</h3>
+                <p className="text-sm text-slate-500 mb-6">Atur gambar latar (background) dan ilustrasi untuk tiap halaman publik.</p>
+                
+                {/* Hidden shared input */}
+                <input 
+                  type="file" 
+                  ref={pageMediaInputRef}
+                  className="hidden" 
+                  accept="image/*,video/mp4"
+                  onChange={(e) => {
+                    if (currentUploadKey) {
+                      handleFileUpload(e, currentUploadKey);
+                    }
+                  }}
+                />
+
+                <div className="grid grid-cols-1 gap-8">
+                  {[
+                    { id: 'beranda', title: 'Beranda' },
+                    { id: 'profil', title: 'Profil Desa' },
+                    { id: 'pemerintahan', title: 'Pemerintahan' },
+                    { id: 'potensi', title: 'Potensi Desa' },
+                    { id: 'berita', title: 'Berita & Agenda' },
+                    { id: 'galeri', title: 'Galeri' },
+                    { id: 'peta', title: 'Peta WebGIS' },
+                    { id: 'kontak', title: 'Kontak & FAQ' }
+                  ].map((page) => (
+                    <div key={page.id} className="border border-slate-200 dark:border-slate-700 rounded-xl p-6 bg-slate-50 dark:bg-slate-800/30">
+                      <h4 className="font-bold text-lg text-slate-800 dark:text-white mb-4 border-b pb-2 dark:border-slate-700">{page.title}</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        {/* Background Image / Video */}
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Background Image/Video</label>
+                          <div className="flex flex-col gap-3">
+                            {formData[`bg_${page.id}`] && (
+                              <div className="h-32 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-200">
+                                {formData[`bg_${page.id}`].endsWith('.mp4') ? (
+                                  <video src={formData[`bg_${page.id}`]} className="w-full h-full object-cover" muted />
+                                ) : (
+                                  <img src={formData[`bg_${page.id}`]} alt="BG" className="w-full h-full object-cover" />
+                                )}
+                              </div>
+                            )}
+                            <div className="flex gap-2">
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                className="flex-1"
+                                onClick={() => {
+                                  setCurrentUploadKey(`bg_${page.id}`);
+                                  setTimeout(() => pageMediaInputRef.current?.click(), 10);
+                                }}
+                                disabled={isUploading}
+                              >
+                                <Upload className="w-4 h-4 mr-2" /> Upload Background
+                              </Button>
+                              {formData[`bg_${page.id}`] && (
+                                <Button 
+                                  type="button" 
+                                  variant="outline" 
+                                  className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600 dark:border-red-900 dark:hover:bg-red-900/20"
+                                  onClick={() => setFormData(prev => ({ ...prev, [`bg_${page.id}`]: '' }))}
+                                  title="Hapus Background"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              )}
+                            </div>
+                            <input 
+                              type="text" 
+                              name={`bg_${page.id}`} 
+                              value={formData[`bg_${page.id}`] || ''} 
+                              onChange={handleChange}
+                              placeholder="Atau paste URL gambar/video"
+                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white"
+                            />
+                          </div>
                         </div>
-                      )}
-                      <div>
-                        <input 
-                          type="file" 
-                          ref={heroImageInputRef}
-                          className="hidden" 
-                          accept="image/*"
-                          onChange={(e) => handleFileUpload(e, 'hero_image')}
-                        />
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          onClick={() => heroImageInputRef.current?.click()}
-                          disabled={isUploading}
-                        >
-                          <Upload className="w-4 h-4 mr-2" /> Ganti Gambar Hero
-                        </Button>
+
+                        {/* Illustration Image */}
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Illustration Image</label>
+                          <div className="flex flex-col gap-3">
+                            {formData[`ill_${page.id}`] && (
+                              <div className="h-32 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-200">
+                                <img src={formData[`ill_${page.id}`]} alt="Ill" className="w-full h-full object-contain bg-white dark:bg-slate-900" />
+                              </div>
+                            )}
+                            <div className="flex gap-2">
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                className="flex-1"
+                                onClick={() => {
+                                  setCurrentUploadKey(`ill_${page.id}`);
+                                  setTimeout(() => pageMediaInputRef.current?.click(), 10);
+                                }}
+                                disabled={isUploading}
+                              >
+                                <Upload className="w-4 h-4 mr-2" /> Upload Illustration
+                              </Button>
+                              {formData[`ill_${page.id}`] && (
+                                <Button 
+                                  type="button" 
+                                  variant="outline" 
+                                  className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600 dark:border-red-900 dark:hover:bg-red-900/20"
+                                  onClick={() => setFormData(prev => ({ ...prev, [`ill_${page.id}`]: '' }))}
+                                  title="Hapus Illustration"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              )}
+                            </div>
+                            <input 
+                              type="text" 
+                              name={`ill_${page.id}`} 
+                              value={formData[`ill_${page.id}`] || ''} 
+                              onChange={handleChange}
+                              placeholder="Atau paste URL ilustrasi"
+                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white"
+                            />
+                          </div>
+                        </div>
+
                       </div>
                     </div>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Hero Title</label>
-                    <input 
-                      type="text" 
-                      name="hero_title" 
-                      value={formData.hero_title || ''} 
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-800 dark:text-white focus:ring-2 focus:ring-sky-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Hero Subtitle</label>
-                    <input 
-                      type="text" 
-                      name="hero_subtitle" 
-                      value={formData.hero_subtitle || ''} 
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-800 dark:text-white focus:ring-2 focus:ring-sky-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Hero Description</label>
-                    <textarea 
-                      name="hero_description" 
-                      value={formData.hero_description || ''} 
-                      onChange={handleChange}
-                      rows={3}
-                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-800 dark:text-white focus:ring-2 focus:ring-sky-500"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Call to Action (CTA) Text</label>
-                      <input 
-                        type="text" 
-                        name="cta_text" 
-                        value={formData.cta_text || ''} 
-                        onChange={handleChange}
-                        placeholder="Contoh: Lihat Profil"
-                        className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-800 dark:text-white focus:ring-2 focus:ring-sky-500"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">CTA URL</label>
-                      <input 
-                        type="text" 
-                        name="cta_url" 
-                        value={formData.cta_url || ''} 
-                        onChange={handleChange}
-                        placeholder="/profil"
-                        className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-800 dark:text-white focus:ring-2 focus:ring-sky-500"
-                      />
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             )}

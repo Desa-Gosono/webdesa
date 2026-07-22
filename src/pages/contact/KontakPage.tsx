@@ -14,6 +14,9 @@ export default function KontakPage() {
         title="Hubungi Kami" 
         description="Layanan informasi, pengaduan, dan komunikasi dengan Pemerintah Desa."
         icon={Phone}
+        backgroundImage={settings.bg_kontak && !settings.bg_kontak.endsWith('.mp4') ? settings.bg_kontak : undefined}
+        backgroundVideoUrl={settings.bg_kontak?.endsWith('.mp4') ? settings.bg_kontak : undefined}
+        illustrationUrl={settings.ill_kontak}
       />
       
       <div className="container mx-auto px-4 py-16 relative z-10 flex-grow max-w-7xl">

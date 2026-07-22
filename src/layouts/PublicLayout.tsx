@@ -12,7 +12,17 @@ export function PublicLayout() {
   const { settings } = useSettingsContext();
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="flex flex-col min-h-screen relative transition-colors duration-300">
+      {/* Global Anti-Gravity Background */}
+      <div className="fixed inset-0 z-[-1]">
+        <img 
+          src="https://images.unsplash.com/photo-1592651036329-87a3233827ec?auto=format&fit=crop&w=2000&q=80" 
+          alt="Village Background" 
+          className="w-full h-full object-cover opacity-40 dark:opacity-20"
+        />
+        <div className="absolute inset-0 bg-white/70 dark:bg-gray-950/80 backdrop-blur-md" />
+      </div>
+
       <NewsTicker />
       <Navbar />
       <main className="flex-grow">

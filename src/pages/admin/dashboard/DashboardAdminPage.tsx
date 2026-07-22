@@ -8,29 +8,30 @@ import {
   MapPin, 
   Users 
 } from 'lucide-react';
-import {
-  useBerita,
-  useGaleriFoto,
-  useAgenda,
-  usePotensi,
-  usePerangkatDesa,
-} from '@/hooks/useAdmin';
+import { useNews } from '@/hooks/useNews';
+import { useGallery } from '@/hooks/useGallery';
+import { useAgenda } from '@/hooks/useAgenda';
+import { usePotentials } from '@/hooks/usePotentials';
+import { useOfficials } from '@/hooks/useOfficials';
+import { useUmkm } from '@/hooks/useUmkm';
 import { motion } from 'framer-motion';
 
 export default function DashboardAdminPage() {
-  const { useGetAll: useGetAllBerita } = useBerita();
-  const { useGetAll: useGetAllGaleri } = useGaleriFoto();
-  const { useGetAll: useGetAllAgenda } = useAgenda();
-  const { useGetAll: useGetAllPotensi } = usePotensi();
-  const { useGetAll: useGetAllPerangkat } = usePerangkatDesa();
+  const { useFetchNews } = useNews();
+  const { useFetchGallery } = useGallery();
+  const { useFetchAgenda } = useAgenda();
+  const { useFetchPotentials } = usePotentials();
+  const { useFetchOfficials } = useOfficials();
+  const { useFetchUmkm } = useUmkm();
 
-  const { data: beritaData = [] } = useGetAllBerita();
-  const { data: galeriData = [] } = useGetAllGaleri();
-  const { data: agendaData = [] } = useGetAllAgenda();
-  const { data: potensiData = [] } = useGetAllPotensi();
-  const { data: perangkatData = [] } = useGetAllPerangkat();
+  const { data: beritaData = [] } = useFetchNews();
+  const { data: galeriData = [] } = useFetchGallery();
+  const { data: agendaData = [] } = useFetchAgenda();
+  const { data: potensiData = [] } = useFetchPotentials();
+  const { data: perangkatData = [] } = useFetchOfficials();
+  const { data: umkmData = [] } = useFetchUmkm();
 
-  const umkmCount = potensiData.filter(p => p.category === 'UMKM').length;
+  const umkmCount = umkmData.length;
 
   const stats = [
     {

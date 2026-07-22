@@ -48,7 +48,7 @@ export default function AgendaDetail() {
       <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 pt-20">
         <div className="container mx-auto px-4 py-16 text-center">
           <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">Agenda tidak ditemukan</h2>
-          <Link to="/agenda" className="text-sky-600 hover:underline inline-flex items-center gap-2">
+          <Link to="/berita" className="text-sky-600 hover:underline inline-flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" /> Kembali ke Agenda
           </Link>
         </div>
@@ -67,7 +67,7 @@ export default function AgendaDetail() {
       />
       
       <div className="container mx-auto px-4 py-12 relative z-10 max-w-4xl">
-        <Link to="/agenda" className="inline-flex items-center gap-2 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium mb-8 transition-colors">
+        <Link to="/berita" className="inline-flex items-center gap-2 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4" />
           <span>Kembali ke Daftar Agenda</span>
         </Link>

@@ -49,8 +49,8 @@ export default function FasilitasDetail() {
       <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 pt-20">
         <div className="container mx-auto px-4 py-16 text-center">
           <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">Fasilitas tidak ditemukan</h2>
-          <Link to="/fasilitas" className="text-sky-600 hover:underline inline-flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" /> Kembali ke Fasilitas Umum
+          <Link to="/profil" className="text-sky-600 hover:underline inline-flex items-center gap-2">
+            <ArrowLeft className="w-4 h-4" /> Kembali ke Profil
           </Link>
         </div>
       </div>
@@ -65,8 +65,8 @@ export default function FasilitasDetail() {
         icon={Building2}
       />
       
-      <div className="container mx-auto px-4 py-12 relative z-10 max-w-4xl">
-        <Link to="/fasilitas" className="inline-flex items-center gap-2 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium mb-8 transition-colors">
+      <div className="container mx-auto px-4 py-12 relative z-10 max-w-5xl">
+        <Link to="/profil" className="inline-flex items-center gap-2 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4" />
           <span>Kembali ke Daftar Fasilitas</span>
         </Link>

@@ -5,8 +5,10 @@ import { useGallery } from '@/hooks/useGallery';
 import { Gallery } from '@/models/types';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 
 export default function GaleriPage() {
+  const { settings } = useSettingsContext();
   const { useFetchGallery } = useGallery();
   const { data: items = [], isLoading } = useFetchGallery();
   
@@ -24,6 +26,9 @@ export default function GaleriPage() {
         title="Galeri Desa" 
         description="Dokumentasi foto dan video kegiatan serta pemandangan di Desa Gosono."
         icon={ImageIcon}
+        backgroundImage={settings.bg_galeri && !settings.bg_galeri.endsWith('.mp4') ? settings.bg_galeri : undefined}
+        backgroundVideoUrl={settings.bg_galeri?.endsWith('.mp4') ? settings.bg_galeri : undefined}
+        illustrationUrl={settings.ill_galeri}
       />
       
       <div className="container mx-auto px-4 py-16 relative z-10 flex-grow max-w-7xl">

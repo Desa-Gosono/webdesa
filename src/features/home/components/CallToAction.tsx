@@ -16,7 +16,7 @@ export function CallToAction() {
           <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">Jelajahi Lebih Dekat</h2>
           <p className="text-primary-100 text-lg mb-10">Kenali potensi wisata, seni, dan ekonomi kreatif yang ada di Desa Gosono.</p>
           <div className="flex justify-center gap-4 flex-wrap">
-            <Button size="lg" className="bg-white text-primary-700 hover:bg-gray-100 rounded-full" onClick={() => window.location.href = '/potensi'}>Jelajahi Potensi</Button>
+            <Button size="lg" className="bg-white/60 text-white hover:bg-white/30 backdrop-blur-md border border-white/30 rounded-full shadow-lg" onClick={() => window.location.href = '/potensi'}>Jelajahi Potensi</Button>
             <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 rounded-full" onClick={() => window.location.href = '/kontak'}>Hubungi Kami</Button>
           </div>
         </motion.div>

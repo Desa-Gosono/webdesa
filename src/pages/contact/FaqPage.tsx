@@ -1,14 +1,19 @@
 import React from 'react';
 import { PageHero } from '@/components/ui/PageHero';
 import { Leaf } from 'lucide-react';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 
 export default function FaqPage() {
+  const { settings } = useSettingsContext();
   return (
     <div className="flex flex-col min-h-screen">
       <PageHero 
         title="FAQ" 
         description="Jelajahi informasi lengkap mengenai faq di Desa Gosono."
         icon={Leaf}
+        backgroundImage={settings.bg_kontak && !settings.bg_kontak.endsWith('.mp4') ? settings.bg_kontak : undefined}
+        backgroundVideoUrl={settings.bg_kontak?.endsWith('.mp4') ? settings.bg_kontak : undefined}
+        illustrationUrl={settings.ill_kontak}
       />
       <div className="container mx-auto px-4 py-12 relative z-10 flex-grow">
         {/* TODO: Implement FAQ content here */}

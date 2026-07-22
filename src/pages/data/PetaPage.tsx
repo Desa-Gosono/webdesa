@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import { useFacilities } from '@/hooks/useFacilities';
 import { useProfile } from '@/hooks/useProfile';
 import { Button } from '@/components/ui/Button';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 
 // Fix Leaflet default icon path issues in React
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -40,6 +41,7 @@ function LocateControl() {
 }
 
 export default function PetaPage() {
+  const { settings } = useSettingsContext();
   const { useFetchFacilities } = useFacilities();
   const { data: facilities = [], isLoading: facilitiesLoading } = useFetchFacilities();
   
@@ -100,6 +102,9 @@ export default function PetaPage() {
         title="Peta Desa" 
         description={`Sistem Informasi Geografis terpadu ${profile?.village_name || 'Desa Gosono'}.`}
         icon={MapIcon}
+        backgroundImage={settings.bg_peta && !settings.bg_peta.endsWith('.mp4') ? settings.bg_peta : undefined}
+        backgroundVideoUrl={settings.bg_peta?.endsWith('.mp4') ? settings.bg_peta : undefined}
+        illustrationUrl={settings.ill_peta}
       />
       
       <div className="container mx-auto px-4 py-12 relative z-10 flex-grow flex flex-col md:flex-row gap-6 max-w-7xl">

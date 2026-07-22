@@ -5,8 +5,10 @@ import { usePotentials } from '@/hooks/usePotentials';
 import { useUmkm } from '@/hooks/useUmkm';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 
 export default function PotensiPage() {
+  const { settings } = useSettingsContext();
   const { useFetchPotentials } = usePotentials();
   const { data: potentials = [], isLoading: isLoadingPotentials } = useFetchPotentials();
   
@@ -19,6 +21,9 @@ export default function PotensiPage() {
         title="Potensi & UMKM"
         description="Mengenal ragam komoditas unggulan dan usaha kreatif warga Desa Gosono."
         icon={Sprout}
+        backgroundImage={settings.bg_potensi && !settings.bg_potensi.endsWith('.mp4') ? settings.bg_potensi : undefined}
+        backgroundVideoUrl={settings.bg_potensi?.endsWith('.mp4') ? settings.bg_potensi : undefined}
+        illustrationUrl={settings.ill_potensi}
       />
 
       <div className="container mx-auto px-4 py-16 relative z-10 flex-grow max-w-6xl">

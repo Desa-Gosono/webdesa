@@ -4,19 +4,37 @@ import { Button } from '@/components/ui/Button';
 import { ArrowRight } from 'lucide-react';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 
-export function HomeHero() {
+interface HomeHeroProps {
+  backgroundVideoUrl?: string;
+  backgroundImage?: string;
+}
+
+export function HomeHero({ backgroundVideoUrl, backgroundImage }: HomeHeroProps) {
   const { settings } = useSettingsContext();
   
+  const displayImage = backgroundImage || settings.hero_image;
+
   return (
     <div className="relative h-[90vh] min-h-[600px] w-full overflow-hidden">
       <div className="absolute inset-0 z-0 bg-slate-900">
-        {settings.hero_image ? (
+        {backgroundVideoUrl ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          >
+            <source src={backgroundVideoUrl} type="video/mp4" />
+          </video>
+        ) : displayImage ? (
           <img
-            src={settings.hero_image}
+            src={displayImage}
             alt="Hero Background"
             className="h-full w-full object-cover"
           />
         ) : (
+          // Default video fallback
           <video
             autoPlay
             loop
@@ -42,7 +60,7 @@ export function HomeHero() {
           </span>
           <h1 className="text-5xl sm:text-7xl font-display font-bold text-white mb-6 leading-tight drop-shadow-xl">
             {settings.hero_title || 'Desa Gosono'}, <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-accent-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-accent-500">
               {settings.hero_subtitle || 'Mandiri & Berbudaya.'}
             </span>
           </h1>
