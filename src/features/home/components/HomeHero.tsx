@@ -12,12 +12,15 @@ interface HomeHeroProps {
 export function HomeHero({ backgroundVideoUrl, backgroundImage }: HomeHeroProps) {
   const { settings } = useSettingsContext();
   
-  const displayImage = backgroundImage || settings.hero_image;
+  // Find bg_beranda as primary source, fallback to legacy hero_image, or default mixkit video
+  const defaultBg = "https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-beautiful-green-landscape-4251-large.mp4";
+  const bgSource = backgroundVideoUrl || backgroundImage || settings.bg_beranda || settings.hero_image || defaultBg;
+  const isVideo = bgSource.includes('.mp4') || bgSource.includes('.webm') || bgSource.includes('.ogg');
 
   return (
     <div className="relative h-[90vh] min-h-[600px] w-full overflow-hidden">
       <div className="absolute inset-0 z-0 bg-slate-900">
-        {backgroundVideoUrl ? (
+        {isVideo ? (
           <video
             autoPlay
             loop
@@ -25,25 +28,14 @@ export function HomeHero({ backgroundVideoUrl, backgroundImage }: HomeHeroProps)
             playsInline
             className="h-full w-full object-cover"
           >
-            <source src={backgroundVideoUrl} type="video/mp4" />
+            <source src={bgSource} type="video/mp4" />
           </video>
-        ) : displayImage ? (
+        ) : (
           <img
-            src={displayImage}
+            src={bgSource}
             alt="Hero Background"
             className="h-full w-full object-cover"
           />
-        ) : (
-          // Default video fallback
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
-          >
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-beautiful-green-landscape-4251-large.mp4" type="video/mp4" />
-          </video>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/60 to-gray-900/40 mix-blend-multiply" />
       </div>

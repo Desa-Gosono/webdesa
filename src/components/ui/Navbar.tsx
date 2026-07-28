@@ -23,14 +23,14 @@ export function Navbar() {
           </div>
         </div>
       </div>
-      
+
       <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-gray-950/70 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img 
-              src={settings.website_logo || logoDesa} 
-              alt="Logo Desa" 
-              className="h-10 md:h-12 w-auto drop-shadow-sm" 
+            <img
+              src={settings.website_logo || logoDesa}
+              alt="Logo Desa"
+              className="h-10 md:h-12 w-auto drop-shadow-sm"
             />
             <span className="font-display font-bold text-xl text-gray-900 dark:text-white hidden sm:block">
               {settings.website_name || 'Desa Gosono'}
@@ -40,19 +40,19 @@ export function Navbar() {
             <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Beranda</Link>
             <Link to="/profil" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Profil</Link>
             <Link to="/pemerintahan" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Pemerintahan</Link>
-            <Link to="/potensi" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Potensi</Link>
-            <Link to="/galeri" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Galeri</Link>
-            <Link to="/berita" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Berita</Link>
+            <Link to="/kategori/potensi" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Potensi</Link>
+            <Link to="/kategori/galeri" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Galeri</Link>
+            <Link to="/kategori/berita" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Berita</Link>
           </nav>
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={() => setIsSearchOpen(true)}
               className="p-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
               aria-label="Cari"
             >
               <Search className="w-5 h-5" />
             </button>
-            <button 
+            <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className="p-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
               aria-label="Toggle Dark Mode"

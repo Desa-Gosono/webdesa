@@ -85,7 +85,7 @@ export function PageHero({
               className="hidden lg:block relative"
             >
               {illustrationUrl ? (
-                <img src={illustrationUrl} alt={title} className="w-full max-w-lg mx-auto rounded-3xl shadow-2xl drop-shadow-2xl" />
+                <img src={illustrationUrl} alt={title} className="w-full max-w-md mx-auto aspect-square object-cover rounded-full shadow-2xl drop-shadow-2xl opacity-80" />
               ) : (
                 <div className="w-full max-w-md mx-auto aspect-square bg-gradient-to-tr from-white/10 to-white/30 rounded-full backdrop-blur-3xl border border-white/20 shadow-2xl flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-[url('https://placehold.co/800x800/16a34a/ffffff?text=Illustration')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>

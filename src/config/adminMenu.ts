@@ -36,40 +36,36 @@ export const adminMenu = [
   },
   {
     title: 'Pemerintahan',
-    path: '/admin/pemerintahan/perangkat',
+    path: '/admin/content/perangkat',
     icon: Users,
   },
   {
     title: 'Potensi Desa',
-    path: '/admin/potensi',
+    path: '/admin/content/potensi',
     icon: MapPin,
   },
   {
     title: 'UMKM',
-    path: '/admin/potensi/umkm',
+    path: '/admin/content/umkm',
     icon: Store,
   },
   {
     title: 'Informasi',
-    path: '/admin/informasi',
+    path: '/admin/content/berita',
     icon: Newspaper,
     children: [
-      { title: 'Berita', path: '/admin/informasi/berita', icon: Newspaper },
-      { title: 'Agenda', path: '/admin/informasi/agenda', icon: Calendar },
+      { title: 'Berita', path: '/admin/content/berita', icon: Newspaper },
+      { title: 'Agenda', path: '/admin/content/agenda', icon: Calendar },
     ],
   },
   {
     title: 'Galeri',
-    path: '/admin/galeri',
+    path: '/admin/content/galeri',
     icon: ImageIcon,
-    children: [
-      { title: 'Foto', path: '/admin/galeri/foto', icon: ImageIcon },
-      { title: 'Video', path: '/admin/galeri/video', icon: Video },
-    ],
   },
   {
     title: 'Fasilitas Umum',
-    path: '/admin/fasilitas',
+    path: '/admin/content/fasilitas',
     icon: Building2,
   },
   {

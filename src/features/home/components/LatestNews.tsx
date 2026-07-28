@@ -28,7 +28,7 @@ export function LatestNews() {
             viewport={{ once: true }}
             className="hidden md:block"
           >
-            <Link to="/berita">
+            <Link to="/kategori/berita">
               <Button variant="outline" className="rounded-full cursor-pointer z-20 relative">Lihat Semua <ArrowRight className="ml-2 w-4 h-4" /></Button>
             </Link>
           </motion.div>

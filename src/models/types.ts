@@ -147,3 +147,9 @@ export type GaleriVideo = Gallery;
 export type FasilitasUmum = Facility;
 export type Kontak = Contact;
 export type PengaturanWebsite = Setting;
+export interface GenericCategoryItem extends Record<string, any> {
+  id: string;
+  title: string;
+  created_at?: string;
+  updated_at?: string;
+}

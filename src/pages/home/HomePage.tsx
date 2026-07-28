@@ -27,8 +27,8 @@ export default function HomePage() {
         description="Selamat datang di Website Resmi Desa Gosono, Kecamatan Wonosegoro, Kabupaten Boyolali. Temukan berbagai informasi menarik mengenai potensi alam, UMKM, dan kegiatan masyarakat kami."
       />
       
-      {/* HomeHero stays full width */}
-      <HomeHero backgroundVideoUrl="https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4" />
+      {/* HomeHero uses dynamic settings now */}
+      <HomeHero />
       
       <div className="flex flex-col gap-8 pb-16 pt-8">
         <AntiGravityWrapper>
