@@ -23,7 +23,7 @@ export function PageHero({
   return (
     <>
       <SEO title={title} description={description} />
-      <div className="relative overflow-hidden bg-primary-950 py-24 sm:py-32 rounded-b-[3rem] shadow-2xl">
+      <div className="relative overflow-hidden bg-primary-950 h-[65vh] min-h-[400px] flex items-center rounded-b-[3rem] shadow-2xl">
         
         {/* Dynamic Background Media */}
         <div className="absolute inset-0 z-0">
@@ -85,9 +85,9 @@ export function PageHero({
               className="hidden lg:block relative"
             >
               {illustrationUrl ? (
-                <img src={illustrationUrl} alt={title} className="w-full max-w-md mx-auto aspect-square object-cover rounded-full shadow-2xl drop-shadow-2xl opacity-80" />
+                <img src={illustrationUrl} alt={title} className="w-full max-w-xs mx-auto aspect-square object-cover rounded-full shadow-2xl drop-shadow-2xl opacity-80" />
               ) : (
-                <div className="w-full max-w-md mx-auto aspect-square bg-gradient-to-tr from-white/10 to-white/30 rounded-full backdrop-blur-3xl border border-white/20 shadow-2xl flex items-center justify-center relative overflow-hidden">
+                <div className="w-full max-w-xs mx-auto aspect-square bg-gradient-to-tr from-white/10 to-white/30 rounded-full backdrop-blur-3xl border border-white/20 shadow-2xl flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-[url('https://placehold.co/800x800/16a34a/ffffff?text=Illustration')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>
                 </div>
               )}

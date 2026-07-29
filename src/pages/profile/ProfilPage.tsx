@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PageHero } from '@/components/ui/PageHero';
-import { Building2, Map, BookOpen, Target, MapPin } from 'lucide-react';
+import { Building2, Map, BookOpen, Target, MapPin, Users } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { useFacilities } from '@/hooks/useFacilities';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useSettingsContext } from '@/contexts/SettingsContext';
+import { VillageGISMap } from '@/features/home/components/VillageGISMap';
+import { VillageStats } from '@/features/home/components/VillageStats';
 
 export default function ProfilPage() {
   const { settings } = useSettingsContext();
@@ -15,6 +17,8 @@ export default function ProfilPage() {
   const { useFetchFacilities } = useFacilities();
   const { data: facilities = [], isLoading: isLoadingFacilities } = useFetchFacilities();
 
+  const [activeTab, setActiveTab] = useState('sejarah');
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -22,6 +26,13 @@ export default function ProfilPage() {
       </div>
     );
   }
+
+  const tabs = [
+    { id: 'sejarah', label: 'Sejarah', icon: BookOpen },
+    { id: 'visi-misi', label: 'Visi & Misi', icon: Target },
+    { id: 'batas-wilayah', label: 'Batas Wilayah', icon: Map },
+    { id: 'demografi', label: 'Demografi', icon: Users },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -34,71 +45,110 @@ export default function ProfilPage() {
         illustrationUrl={settings.ill_profil}
       />
       <div className="container mx-auto px-4 py-12 relative z-10 flex-grow">
-        <div className="space-y-8">
-
-          <div className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-            <h2 className="font-display text-2xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
-              <BookOpen className="text-emerald-500" /> Sejarah Desa
+        
+        {/* Profil Umum description outside of tabs, at the top */}
+        {profile?.description && (
+          <div className="mb-12 text-center max-w-4xl mx-auto bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6 flex items-center justify-center gap-3">
+              <Building2 className="text-emerald-500" /> Profil Umum
             </h2>
-            <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 prose-p:leading-relaxed">
-              {profile?.history ? (
-                <div dangerouslySetInnerHTML={{ __html: profile.history.replace(/\n/g, '<br/>') }} />
-              ) : (
-                <p className="italic text-slate-500">Informasi sejarah belum ditambahkan.</p>
-              )}
+            <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 text-lg leading-relaxed text-justify">
+              <div dangerouslySetInnerHTML={{ __html: profile.description.replace(/\n/g, '<br/>') }} />
             </div>
           </div>
+        )}
 
-          <div className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-            <h2 className="font-display text-2xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
-              <Target className="text-sky-500" /> Visi & Misi
-            </h2>
-            <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
-              <h3 className="font-bold text-xl text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 flex items-center justify-center text-sm">V</span>
-                Visi
-              </h3>
-              {profile?.vision ? (
-                <div className="p-6 bg-slate-50 dark:bg-slate-900/50 rounded-2xl italic font-medium text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-500 text-lg">
-                  "{profile.vision}"
+        {/* Submenu / Tabs */}
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all shadow-sm border ${
+                  isActive 
+                    ? 'bg-emerald-600 text-white border-emerald-600 ring-2 ring-emerald-600 ring-offset-2' 
+                    : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 border-slate-200'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="space-y-8 min-h-[400px]">
+          <AnimatePresence mode="wait">
+            {activeTab === 'sejarah' && (
+              <motion.div key="sejarah" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <h2 className="font-display text-2xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
+                  <BookOpen className="text-emerald-500" /> Sejarah Desa
+                </h2>
+                <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 prose-p:leading-relaxed text-justify">
+                  {profile?.history ? (
+                    <div dangerouslySetInnerHTML={{ __html: profile.history.replace(/\n/g, '<br/>') }} />
+                  ) : (
+                    <p className="italic text-slate-500">Informasi sejarah belum ditambahkan.</p>
+                  )}
                 </div>
-              ) : (
-                <p className="italic text-slate-500">Visi belum ditambahkan.</p>
-              )}
+              </motion.div>
+            )}
 
-              <h3 className="font-bold text-xl mt-8 mb-4 text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <span className="w-8 h-8 rounded-full bg-sky-100 text-sky-600 dark:bg-sky-900/50 flex items-center justify-center text-sm">M</span>
-                Misi
-              </h3>
-              {profile?.mission ? (
-                <div className="space-y-3">
-                  {profile.mission.split('\n').filter(Boolean).map((m, i) => (
-                    <div key={i} className="flex gap-4 items-start bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-sky-500 text-white flex items-center justify-center text-xs font-bold">{i + 1}</span>
-                      <p className="m-0 leading-relaxed text-slate-700 dark:text-slate-300">{m.replace(/^\d+\.\s*/, '')}</p>
+            {activeTab === 'visi-misi' && (
+              <motion.div key="visi-misi" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <h2 className="font-display text-2xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
+                  <Target className="text-sky-500" /> Visi & Misi
+                </h2>
+                <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
+                  <h3 className="font-bold text-xl text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 flex items-center justify-center text-sm">V</span>
+                    Visi
+                  </h3>
+                  {profile?.vision ? (
+                    <div className="p-6 bg-slate-50 dark:bg-slate-900/50 rounded-2xl italic font-medium text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-500 text-lg">
+                      "{profile.vision}"
                     </div>
-                  ))}
+                  ) : (
+                    <p className="italic text-slate-500">Visi belum ditambahkan.</p>
+                  )}
+
+                  <h3 className="font-bold text-xl mt-8 mb-4 text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full bg-sky-100 text-sky-600 dark:bg-sky-900/50 flex items-center justify-center text-sm">M</span>
+                    Misi
+                  </h3>
+                  {profile?.mission ? (
+                    <div className="space-y-3">
+                      {profile.mission.split('\n').filter(Boolean).map((m, i) => (
+                        <div key={i} className="flex gap-4 items-start bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-sky-500 text-white flex items-center justify-center text-xs font-bold">{i + 1}</span>
+                          <p className="m-0 leading-relaxed text-slate-700 dark:text-slate-300">{m.replace(/^\d+\.\s*/, '')}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="italic text-slate-500">Misi belum ditambahkan.</p>
+                  )}
                 </div>
-              ) : (
-                <p className="italic text-slate-500">Misi belum ditambahkan.</p>
-              )}
-            </div>
-          </div>
+              </motion.div>
+            )}
 
-          <div className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-            <h2 className="font-display text-2xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
-              <Map className="text-amber-500" /> Profil Umum
-            </h2>
-            <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
-              {profile?.description ? (
-                <div dangerouslySetInnerHTML={{ __html: profile.description.replace(/\n/g, '<br/>') }} />
-              ) : (
-                <p className="italic text-slate-500">Deskripsi desa belum ditambahkan.</p>
-              )}
-            </div>
-          </div>
+            {activeTab === 'batas-wilayah' && (
+              <motion.div key="batas-wilayah" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="w-full -mt-12">
+                <VillageGISMap />
+              </motion.div>
+            )}
 
-          <div className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            {activeTab === 'demografi' && (
+              <motion.div key="demografi" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="w-full">
+                <VillageStats variant="card" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="mt-16 rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm dark:border-slate-700 dark:bg-slate-800">
             <h2 className="font-display text-2xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
               <Building2 className="text-purple-500" /> Fasilitas Umum
             </h2>

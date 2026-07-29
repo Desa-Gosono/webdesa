@@ -35,9 +35,11 @@ export default function HomePage() {
           <MayorWelcome />
         </AntiGravityWrapper>
         
-        <AntiGravityWrapper>
-          <VillageStats />
-        </AntiGravityWrapper>
+        <section className="relative z-10 w-full">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <VillageStats variant="card" />
+          </div>
+        </section>
         
         {/* VillageGISMap has its own wrapper built-in for custom layout */}
         <VillageGISMap />

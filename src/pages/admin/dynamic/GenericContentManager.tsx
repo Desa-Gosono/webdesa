@@ -108,8 +108,8 @@ export default function GenericContentManager() {
     }
   };
 
-  const themeClass = `text-${config.themeColor}-600 dark:text-${config.themeColor}-400`;
-  const bgThemeClass = `bg-${config.themeColor}-500 hover:bg-${config.themeColor}-600`;
+  const themeClass = `text-emerald-600 dark:text-emerald-400`;
+  const bgThemeClass = `bg-emerald-600 hover:bg-emerald-700`;
 
   return (
     <div className="bg-slate-50 dark:bg-slate-900 min-h-screen p-6">
@@ -117,7 +117,7 @@ export default function GenericContentManager() {
         
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
           <div className="flex items-center gap-4">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-${config.themeColor}-100 dark:bg-${config.themeColor}-900/30`}>
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-emerald-100 dark:bg-emerald-900/30`}>
               <Icon className={`w-6 h-6 ${themeClass}`} />
             </div>
             <div>
@@ -136,7 +136,7 @@ export default function GenericContentManager() {
         <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 overflow-x-auto">
           {isLoading ? (
             <div className="py-12 text-center">
-              <div className={`inline-block w-8 h-8 border-4 border-${config.themeColor}-200 border-t-${config.themeColor}-500 rounded-full animate-spin`}></div>
+              <div className={`inline-block w-8 h-8 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin`}></div>
             </div>
           ) : items.length > 0 ? (
             <table className="w-full min-w-[800px]">
@@ -162,7 +162,7 @@ export default function GenericContentManager() {
                             )}
                           </div>
                         ) : col.type === 'badge' ? (
-                          <span className={`px-3 py-1 bg-${config.themeColor}-100 text-${config.themeColor}-700 dark:bg-${config.themeColor}-900/30 dark:text-${config.themeColor}-400 rounded-full text-xs font-bold`}>
+                          <span className={`px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full text-xs font-bold`}>
                             {item[col.key]}
                           </span>
                         ) : col.type === 'date' ? (
@@ -239,6 +239,27 @@ export default function GenericContentManager() {
                             {...register(field.name, { required: field.required })} 
                             className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-emerald-500 text-slate-700 dark:text-slate-200 resize-none" 
                           />
+                        ) : field.type === 'location' ? (
+                          <div className="flex flex-col gap-3">
+                            <input 
+                              type="text" 
+                              placeholder={field.placeholder || "Masukkan alamat atau nama lokasi (misal: Desa Gosono)"}
+                              {...register(field.name, { required: field.required })} 
+                              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-emerald-500 text-slate-700 dark:text-slate-200" 
+                            />
+                            {formValues[field.name] && (
+                              <div className="w-full h-48 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 flex items-center justify-center">
+                                <iframe 
+                                  src={`https://maps.google.com/maps?q=${encodeURIComponent(formValues[field.name])}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                  width="100%" 
+                                  height="100%" 
+                                  frameBorder="0" 
+                                  style={{ border: 0 }} 
+                                  allowFullScreen
+                                />
+                              </div>
+                            )}
+                          </div>
                         ) : field.type === 'select' ? (
                           <select 
                             {...register(field.name, { required: field.required })} 

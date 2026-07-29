@@ -77,6 +77,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
           { label: 'Lainnya', value: 'Lainnya' }
         ]
       },
+      { name: 'address', label: 'Lokasi (Alamat atau Link GMaps)', type: 'location', gridSpan: 2 },
       { name: 'image_url', label: 'Foto Potensi', type: 'image', gridSpan: 2 },
       { name: 'description', label: 'Deskripsi', type: 'textarea', gridSpan: 2 }
     ]
@@ -110,7 +111,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
       },
       { name: 'product', label: 'Produk Utama', type: 'text' },
       { name: 'phone', label: 'Nomor Telepon/WA', type: 'text' },
-      { name: 'address', label: 'Alamat Lengkap', type: 'textarea', gridSpan: 2 },
+      { name: 'address', label: 'Lokasi (Alamat atau Link GMaps)', type: 'location', gridSpan: 2 },
       { name: 'image_url', label: 'Foto Produk/Usaha', type: 'image', gridSpan: 2 },
       { name: 'description', label: 'Deskripsi Usaha', type: 'textarea', gridSpan: 2 }
     ]

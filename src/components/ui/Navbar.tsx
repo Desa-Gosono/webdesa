@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { Search, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useSettingsContext } from '@/contexts/SettingsContext';
@@ -26,23 +26,40 @@ export function Navbar() {
 
       <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-gray-950/70 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 md:gap-3">
             <img
               src={settings.website_logo || logoDesa}
               alt="Logo Desa"
               className="h-10 md:h-12 w-auto drop-shadow-sm"
             />
-            <span className="font-display font-bold text-xl text-gray-900 dark:text-white hidden sm:block">
-              {settings.website_name || 'Desa Gosono'}
-            </span>
+            <div className="hidden sm:flex flex-col">
+              <span className="font-display font-bold text-base text-gray-900 dark:text-white leading-tight">
+                {settings.website_name || 'Desa Gosono'}
+              </span>
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">
+                Kab. Boyolali, Jawa Tengah
+              </span>
+            </div>
           </Link>
           <nav className="hidden lg:flex gap-6">
-            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Beranda</Link>
-            <Link to="/profil" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Profil</Link>
-            <Link to="/pemerintahan" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Pemerintahan</Link>
-            <Link to="/kategori/potensi" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Potensi</Link>
-            <Link to="/kategori/galeri" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Galeri</Link>
-            <Link to="/kategori/berita" className="text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">Berita</Link>
+            {[
+              { to: "/", label: "Beranda" },
+              { to: "/profil", label: "Profil" },
+              { to: "/pemerintahan", label: "Pemerintahan" },
+              { to: "/kategori/potensi", label: "Potensi" },
+              { to: "/kategori/galeri", label: "Galeri" },
+              { to: "/kategori/berita", label: "Berita" }
+            ].map((link) => (
+              <NavLink 
+                key={link.to} 
+                to={link.to} 
+                className={({ isActive }) => 
+                  `text-sm font-medium transition-colors ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400'}`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
           </nav>
           <div className="flex items-center gap-2">
             <button

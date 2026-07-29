@@ -3,7 +3,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { categoriesConfig } from '@/config/categoriesConfig';
 import { useDynamicCrud } from '@/hooks/useDynamicCrud';
 import { PageHero } from '@/components/ui/PageHero';
-import { Calendar, User, MapPin } from 'lucide-react';
+import { Calendar, User, MapPin, Phone, Search, Filter } from 'lucide-react';
 import { useSettings } from '@/hooks/useSettings';
 import { motion } from 'framer-motion';
 
@@ -28,13 +28,62 @@ export default function DynamicCategoryTemplate() {
   const { useFetchAll } = useDynamicCrud(config.collectionName);
   const { data: items = [], isLoading } = useFetchAll();
 
-  // Settings background key convention: bg_berita, bg_potensi, etc.
-  const bgKey = `bg_${categoryId}`;
-  const illKey = `ill_${categoryId}`;
+  const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  React.useEffect(() => {
+    // Parse URL params for filter
+    const params = new URLSearchParams(window.location.search);
+    const filterParam = params.get('filter');
+    if (filterParam) {
+      setActiveFilter(filterParam);
+    } else {
+      setActiveFilter(null);
+    }
+  }, [window.location.search]);
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    const url = new URL(window.location.href);
+    if (val) {
+      url.searchParams.set('filter', val);
+    } else {
+      url.searchParams.delete('filter');
+    }
+    window.history.pushState({}, '', url.toString());
+    setActiveFilter(val || null);
+  };
+
+  const availableCategories = React.useMemo(() => {
+    const cats = items.map((item: any) => item.category).filter(Boolean);
+    return Array.from(new Set(cats)) as string[];
+  }, [items]);
+
+  // Use the same background for related categories
+  const bgCategory = (categoryId === 'umkm' || categoryId === 'potensi') ? 'potensi' : 
+                     (categoryId === 'agenda' || categoryId === 'berita') ? 'berita' : categoryId;
+  const bgKey = `bg_${bgCategory}`;
+  const illKey = `ill_${bgCategory}`;
   const backgroundImage = settingsMap[bgKey] || "https://images.unsplash.com/photo-1596423735880-5c62d08a5464?auto=format&fit=crop&w=2000&q=80";
   const illustrationUrl = settingsMap[illKey];
 
-  const themeClass = `text-${config.themeColor}-600 dark:text-${config.themeColor}-400`;
+  const themeClass = `text-emerald-600 dark:text-emerald-400`;
+
+  const displayItems = React.useMemo(() => {
+    let result = items;
+    if (activeFilter) {
+      result = result.filter((item: any) => item.category === activeFilter);
+    }
+    if (searchQuery.trim() !== '') {
+      const q = searchQuery.toLowerCase();
+      result = result.filter((item: any) => {
+        const titleCol = config.columns.find(c => c.key === 'title' || c.key === 'name')?.key;
+        const title = titleCol ? item[titleCol] : '';
+        return (title?.toLowerCase().includes(q)) || (item.description?.toLowerCase().includes(q));
+      });
+    }
+    return result;
+  }, [items, activeFilter, searchQuery, config]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -46,14 +95,77 @@ export default function DynamicCategoryTemplate() {
         illustrationUrl={illustrationUrl}
       />
 
-      <div className="container mx-auto px-4 py-12 relative z-10 max-w-7xl">
+      <div className="container mx-auto px-4 py-8 relative z-10 max-w-7xl">
+        {(categoryId === 'potensi' || categoryId === 'umkm') && (
+          <div className="flex flex-wrap justify-center gap-4 mb-10">
+            <Link 
+              to="/kategori/potensi?filter=Pertanian" 
+              className={`px-6 py-2.5 rounded-full font-semibold transition-all shadow-sm ${categoryId === 'potensi' && activeFilter === 'Pertanian' ? 'bg-emerald-600 text-white ring-2 ring-emerald-600 ring-offset-2' : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 border border-slate-200'}`}
+            >
+              Pertanian
+            </Link>
+            <Link 
+              to="/kategori/umkm" 
+              className={`px-6 py-2.5 rounded-full font-semibold transition-all shadow-sm ${categoryId === 'umkm' ? 'bg-orange-600 text-white ring-2 ring-orange-600 ring-offset-2' : 'bg-white text-slate-700 hover:bg-orange-50 hover:text-orange-600 border border-slate-200'}`}
+            >
+              UMKM
+            </Link>
+          </div>
+        )}
+
+        {(categoryId === 'berita' || categoryId === 'agenda') && (
+          <div className="flex flex-wrap justify-center gap-4 mb-10">
+            <Link 
+              to="/kategori/berita" 
+              className={`px-6 py-2.5 rounded-full font-semibold transition-all shadow-sm ${categoryId === 'berita' ? 'bg-emerald-600 text-white ring-2 ring-emerald-600 ring-offset-2' : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 border border-slate-200'}`}
+            >
+              Berita
+            </Link>
+            <Link 
+              to="/kategori/agenda" 
+              className={`px-6 py-2.5 rounded-full font-semibold transition-all shadow-sm ${categoryId === 'agenda' ? 'bg-emerald-600 text-white ring-2 ring-emerald-600 ring-offset-2' : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 border border-slate-200'}`}
+            >
+              Agenda
+            </Link>
+          </div>
+        )}
+
+        <div className="flex flex-col md:flex-row gap-4 mb-10 items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+          <div className="relative w-full md:flex-1 max-w-md flex-shrink-0">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <input 
+              type="text"
+              placeholder={`Cari ${config.title}...`}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-emerald-500 text-slate-700 dark:text-slate-200 transition-colors"
+            />
+          </div>
+          
+          {availableCategories.length > 0 && (
+            <div className="relative w-full md:w-64 flex-shrink-0">
+              <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <select 
+                value={activeFilter || ''}
+                onChange={handleFilterChange}
+                className="w-full pl-12 pr-10 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-emerald-500 text-slate-700 dark:text-slate-200 transition-colors appearance-none cursor-pointer"
+              >
+                <option value="">Semua Kategori</option>
+                {availableCategories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
         {isLoading ? (
           <div className="flex justify-center py-20">
-            <div className={`w-12 h-12 border-4 border-${config.themeColor}-200 border-t-${config.themeColor}-500 rounded-full animate-spin`}></div>
+            <div className={`w-12 h-12 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin`}></div>
           </div>
-        ) : items.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {items.map((item: any, index: number) => {
+        ) : displayItems.length > 0 ? (
+          <div className={categoryId === 'agenda' ? "flex flex-col gap-6" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"}>
+            {displayItems.map((item: any, index: number) => {
               const imageCol = config.columns.find(c => c.type === 'image')?.key;
               const titleCol = config.columns.find(c => c.key === 'title' || c.key === 'name')?.key;
               const dateCol = config.columns.find(c => c.type === 'date')?.key;
@@ -70,9 +182,9 @@ export default function DynamicCategoryTemplate() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 h-full flex flex-col"
+                    className={`bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 dark:border-slate-700 h-full flex ${categoryId === 'agenda' ? 'flex-col sm:flex-row' : 'flex-col'}`}
                   >
-                    <div className="relative h-56 overflow-hidden bg-slate-100 dark:bg-slate-700">
+                    <div className={`relative overflow-hidden bg-slate-100 dark:bg-slate-700 shrink-0 ${categoryId === 'agenda' ? 'sm:w-1/3 sm:min-h-full h-56' : 'h-56'}`}>
                       {imageUrl ? (
                         <img 
                           src={imageUrl} 
@@ -92,7 +204,7 @@ export default function DynamicCategoryTemplate() {
                       )}
                     </div>
                     
-                    <div className="p-6 flex flex-col flex-grow">
+                    <div className={`p-6 flex flex-col flex-grow ${categoryId === 'agenda' ? 'justify-center' : ''}`}>
                       <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
                         {dateCol && item[dateCol] && (
                           <div className="flex items-center gap-1.5">
@@ -118,10 +230,43 @@ export default function DynamicCategoryTemplate() {
                         </p>
                       )}
                       
-                      {item.address && (
-                        <div className="flex items-start gap-1.5 text-xs text-slate-500 dark:text-slate-400 mt-auto pt-4 border-t border-slate-100 dark:border-slate-700">
-                          <MapPin className="w-4 h-4 shrink-0 text-rose-500" />
-                          <span className="line-clamp-2">{item.address}</span>
+                      {(item.address || item.phone) && (
+                        <div className="flex flex-col gap-2 mt-auto pt-4 border-t border-slate-100 dark:border-slate-700">
+                          {item.address && (
+                            <div 
+                              className="flex items-start gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-colors cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const isUrl = item.address.startsWith('http://') || item.address.startsWith('https://');
+                                if (isUrl) {
+                                  window.open(item.address, '_blank');
+                                } else {
+                                  window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`, '_blank');
+                                }
+                              }}
+                              title="Buka di Google Maps"
+                            >
+                              <MapPin className="w-4 h-4 shrink-0 text-rose-500" />
+                              <span className="line-clamp-1">Lihat Lokasi</span>
+                            </div>
+                          )}
+                          {item.phone && (
+                            <div 
+                              className="flex items-start gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const cleanPhone = item.phone.replace(/\D/g, '');
+                                const waPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.substring(1) : cleanPhone;
+                                window.open(`https://wa.me/${waPhone}`, '_blank');
+                              }}
+                              title="Hubungi via WhatsApp"
+                            >
+                              <Phone className="w-4 h-4 shrink-0 text-emerald-500" />
+                              <span className="line-clamp-1">Hubungi Kontak</span>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>

@@ -40,14 +40,13 @@ export const adminMenu = [
     icon: Users,
   },
   {
-    title: 'Potensi Desa',
+    title: 'Potensi',
     path: '/admin/content/potensi',
     icon: MapPin,
-  },
-  {
-    title: 'UMKM',
-    path: '/admin/content/umkm',
-    icon: Store,
+    children: [
+      { title: 'Pertanian', path: '/admin/content/potensi', icon: Tractor },
+      { title: 'UMKM', path: '/admin/content/umkm', icon: Store },
+    ],
   },
   {
     title: 'Informasi',

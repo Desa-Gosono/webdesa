@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Navbar } from '@/components/ui/Navbar';
-import { NewsTicker } from '@/components/features/NewsTicker';
+
 import { FloatingContact } from '@/components/features/FloatingContact';
 import { BackToTop } from '@/components/features/BackToTop';
 import { AccessibilityMenu } from '@/components/features/AccessibilityMenu';
@@ -23,7 +23,7 @@ export function PublicLayout() {
         <div className="absolute inset-0 bg-white/70 dark:bg-gray-950/80 backdrop-blur-md" />
       </div>
 
-      <NewsTicker />
+
       <Navbar />
       <main className="flex-grow">
         <Suspense fallback={

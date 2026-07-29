@@ -1,7 +1,7 @@
 export interface FieldConfig {
   name: string;
   label: string;
-  type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'image' | 'video' | 'richtext';
+  type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'image' | 'video' | 'richtext' | 'location';
   required?: boolean;
   options?: { label: string; value: string }[];
   placeholder?: string;
