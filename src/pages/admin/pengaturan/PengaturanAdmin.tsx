@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { PageHeader } from '@/components/admin/ui/PageHeader';
-import { Settings, Globe, Phone, Share2, MapPin, Search, LayoutTemplate, Monitor, Save, Upload, Image as ImageIcon, Trash2 } from 'lucide-react';
+import { Settings, Globe, Phone, Share2, MapPin, Search, LayoutTemplate, Monitor, Save, Upload, Image as ImageIcon, Trash2, Users } from 'lucide-react';
 import { useSettings, InsertSetting } from '@/hooks/useSettings';
 import { uploadImage } from '@/utils/storage';
 import { Button } from '@/components/ui/Button';
@@ -54,15 +54,19 @@ export default function PengaturanAdmin() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const toastId = toast.loading('Sedang mengunggah file...');
+
     try {
       setIsUploading(true);
       const url = await uploadImage(file, 'settings');
       if (url) {
         setFormData(prev => ({ ...prev, [fieldKey]: url }));
-        toast.success(`Berhasil mengunggah file`);
+        toast.success(`Berhasil mengunggah file`, { id: toastId });
+      } else {
+        toast.dismiss(toastId);
       }
     } catch (error: any) {
-      toast.error('Gagal mengunggah file: ' + error.message);
+      toast.error('Gagal mengunggah file: ' + error.message, { id: toastId });
     } finally {
       setIsUploading(false);
       if (e.target) e.target.value = ''; // Reset input
@@ -76,6 +80,7 @@ export default function PengaturanAdmin() {
   const confirmSave = async () => {
     setIsSaving(true);
     setShowConfirm(false);
+    const toastId = toast.loading('Menyimpan pengaturan...');
     
     try {
       const settingsArray: InsertSetting[] = Object.entries(formData).map(([key, value]) => ({
@@ -84,8 +89,10 @@ export default function PengaturanAdmin() {
       }));
       
       await updateSettings.mutateAsync(settingsArray);
+      toast.success('Pengaturan berhasil disimpan', { id: toastId });
     } catch (error) {
       console.error(error);
+      toast.error('Gagal menyimpan pengaturan', { id: toastId });
     } finally {
       setIsSaving(false);
     }
@@ -536,11 +543,13 @@ export default function PengaturanAdmin() {
                     { id: 'berita', title: 'Berita & Agenda' },
                     { id: 'galeri', title: 'Galeri' },
                     { id: 'peta', title: 'Peta WebGIS' },
-                    { id: 'kontak', title: 'Kontak & FAQ' }
+                    { id: 'kontak', title: 'Kontak & FAQ' },
+                    { id: 'pengelolaan_sampah', title: 'Pengelolaan Sampah' },
+                    { id: 'posyandu', title: 'Posyandu' }
                   ].map((page) => (
                     <div key={page.id} className="border border-slate-200 dark:border-slate-700 rounded-xl p-6 bg-slate-50 dark:bg-slate-800/30">
                       <h4 className="font-bold text-lg text-slate-800 dark:text-white mb-4 border-b pb-2 dark:border-slate-700">{page.title}</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 gap-8">
                         
                         {/* Background Image / Video */}
                         <div>
@@ -591,50 +600,7 @@ export default function PengaturanAdmin() {
                           </div>
                         </div>
 
-                        {/* Illustration Image */}
-                        <div>
-                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Illustration Image</label>
-                          <div className="flex flex-col gap-3">
-                            {formData[`ill_${page.id}`] && (
-                              <div className="h-32 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-200">
-                                <img src={formData[`ill_${page.id}`]} alt="Ill" className="w-full h-full object-contain bg-white dark:bg-slate-900" />
-                              </div>
-                            )}
-                            <div className="flex gap-2">
-                              <Button 
-                                type="button" 
-                                variant="outline" 
-                                className="flex-1"
-                                onClick={() => {
-                                  setCurrentUploadKey(`ill_${page.id}`);
-                                  setTimeout(() => pageMediaInputRef.current?.click(), 10);
-                                }}
-                                disabled={isUploading}
-                              >
-                                <Upload className="w-4 h-4 mr-2" /> Upload Illustration
-                              </Button>
-                              {formData[`ill_${page.id}`] && (
-                                <Button 
-                                  type="button" 
-                                  variant="outline" 
-                                  className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600 dark:border-red-900 dark:hover:bg-red-900/20"
-                                  onClick={() => setFormData(prev => ({ ...prev, [`ill_${page.id}`]: '' }))}
-                                  title="Hapus Illustration"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
-                              )}
-                            </div>
-                            <input 
-                              type="text" 
-                              name={`ill_${page.id}`} 
-                              value={formData[`ill_${page.id}`] || ''} 
-                              onChange={handleChange}
-                              placeholder="Atau paste URL ilustrasi"
-                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white"
-                            />
-                          </div>
-                        </div>
+
 
                       </div>
                     </div>
@@ -694,6 +660,8 @@ export default function PengaturanAdmin() {
                 </div>
               </div>
             )}
+
+
 
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Search, Sun, Moon } from 'lucide-react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Search, Sun, Moon, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useSettingsContext } from '@/contexts/SettingsContext';
 import { GlobalSearch } from '@/components/features/GlobalSearch';
@@ -11,6 +12,23 @@ export function Navbar() {
   const { theme, setTheme } = useTheme();
   const { settings } = useSettingsContext();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  React.useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  const navLinks = [
+    { to: "/", label: "Beranda" },
+    { to: "/profil", label: "Profil" },
+    { to: "/pemerintahan", label: "Pemerintahan" },
+    { to: "/pengelolaan-sampah", label: "Sampah" },
+    { to: "/posyandu", label: "Posyandu" },
+    { to: "/kategori/potensi", label: "Potensi" },
+    { to: "/kategori/galeri", label: "Galeri" },
+    { to: "/kategori/berita", label: "Berita" }
+  ];
 
   return (
     <>
@@ -18,7 +36,6 @@ export function Navbar() {
         <div className="container mx-auto px-4 py-1.5 flex justify-between items-center">
           <LiveClockWeather />
           <div className="flex items-center gap-4 text-xs font-medium text-white/80">
-            <Link to="/layanan" className="hover:text-white transition-colors">Layanan Publik</Link>
             <Link to="/kontak" className="hover:text-white transition-colors">Kontak Desa</Link>
           </div>
         </div>
@@ -42,18 +59,11 @@ export function Navbar() {
             </div>
           </Link>
           <nav className="hidden lg:flex gap-6">
-            {[
-              { to: "/", label: "Beranda" },
-              { to: "/profil", label: "Profil" },
-              { to: "/pemerintahan", label: "Pemerintahan" },
-              { to: "/kategori/potensi", label: "Potensi" },
-              { to: "/kategori/galeri", label: "Galeri" },
-              { to: "/kategori/berita", label: "Berita" }
-            ].map((link) => (
-              <NavLink 
-                key={link.to} 
-                to={link.to} 
-                className={({ isActive }) => 
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
                   `text-sm font-medium transition-colors ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400'}`
                 }
               >
@@ -76,11 +86,47 @@ export function Navbar() {
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <div className="md:hidden">
-              {/* Mobile menu toggle goes here */}
+            <div className="lg:hidden ml-2">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+                aria-label="Toggle Menu"
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="lg:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 overflow-hidden"
+            >
+              <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    className={({ isActive }) =>
+                      `px-4 py-3 rounded-xl text-base font-medium transition-colors ${isActive ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400' : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900'}`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                ))}
+                <div className="h-px bg-gray-200 dark:bg-gray-800 my-2" />
+                <Link to="/kontak" className="px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 rounded-xl">
+                  Kontak Desa
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />

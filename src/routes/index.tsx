@@ -16,6 +16,8 @@ const DynamicCategoryTemplate = lazy(() => import('@/pages/public/DynamicCategor
 const PetaPage = lazy(() => import('@/pages/data/PetaPage'));
 const KontakPage = lazy(() => import('@/pages/contact/KontakPage'));
 const FaqPage = lazy(() => import('@/pages/contact/FaqPage'));
+const PengelolaanSampahPage = lazy(() => import('@/pages/program/PengelolaanSampahPage'));
+const PosyanduPage = lazy(() => import('@/pages/program/PosyanduPage'));
 
 // Auth Pages
 const LoginPage = lazy(() => import('@/pages/auth/LoginPage'));
@@ -29,7 +31,8 @@ const GenericContentManager = lazy(() => import('@/pages/admin/dynamic/GenericCo
 const DashboardAdminPage = lazy(() => import('@/pages/admin/dashboard/DashboardAdminPage'));
 const ProfilDesaAdmin = lazy(() => import('@/pages/admin/profil/ProfilDesaAdmin'));
 const PerangkatDesaAdmin = lazy(() => import('@/pages/admin/pemerintahan/PerangkatDesaAdmin'));
-const KontakAdmin = lazy(() => import('@/pages/admin/kontak/KontakAdmin'));
+const DemografiAdmin = lazy(() => import('@/pages/admin/profil/DemografiAdmin'));
+
 const PengaturanAdmin = lazy(() => import('@/pages/admin/pengaturan/PengaturanAdmin'));
 
 export const router = createBrowserRouter([
@@ -50,6 +53,8 @@ export const router = createBrowserRouter([
       { path: 'peta', element: <PetaPage /> },
       { path: 'kontak', element: <KontakPage /> },
       { path: 'faq', element: <FaqPage /> },
+      { path: 'pengelolaan-sampah', element: <PengelolaanSampahPage /> },
+      { path: 'posyandu', element: <PosyanduPage /> },
       { path: '*', element: <NotFoundPage /> }
     ]
   },
@@ -73,12 +78,12 @@ export const router = createBrowserRouter([
           { path: 'profil', element: <ProfilDesaAdmin /> },
           { path: 'profil/sejarah', element: <ProfilDesaAdmin /> },
           { path: 'profil/visi-misi', element: <ProfilDesaAdmin /> },
+          { path: 'profil/demografi', element: <DemografiAdmin /> },
 
           // Pemerintahan
           { path: 'pemerintahan/perangkat', element: <PerangkatDesaAdmin /> },
 
-          // Kontak & Pengaturan
-          { path: 'kontak', element: <KontakAdmin /> },
+          // Pengaturan
           { path: 'pengaturan', element: <PengaturanAdmin /> },
 
           { path: '*', element: <NotFoundPage /> }

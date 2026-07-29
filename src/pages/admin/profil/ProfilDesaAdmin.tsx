@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -34,6 +35,11 @@ export default function ProfilDesaAdmin() {
   const { useFetchProfile, useUpdateProfile } = useProfile();
   const { data: profile, isLoading } = useFetchProfile();
   const updateMutation = useUpdateProfile();
+  const location = useLocation();
+  
+  const isSejarah = location.pathname.includes('/sejarah');
+  const isVisiMisi = location.pathname.includes('/visi-misi');
+  const isGeneral = !isSejarah && !isVisiMisi;
 
   const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const [isUploadingHero, setIsUploadingHero] = useState(false);
@@ -125,10 +131,13 @@ export default function ProfilDesaAdmin() {
   return (
     <div className="space-y-6">
       <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
-        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">Manajemen Profil Desa</h2>
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">
+          {isGeneral ? 'Informasi Umum' : isSejarah ? 'Sejarah Desa' : 'Visi & Misi'}
+        </h2>
         
-        {/* Media Uploads */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Media Uploads - Only show on general info */}
+        {isGeneral && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Logo */}
           <div className="p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-center gap-4 bg-slate-50 dark:bg-slate-900/50">
             <div className="w-32 h-32 rounded-xl bg-white dark:bg-slate-800 shadow-sm overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700">
@@ -183,13 +192,17 @@ export default function ProfilDesaAdmin() {
                 <input type="file" className="hidden" accept="image/jpeg,image/png,image/webp" onChange={(e) => handleImageUpload(e, 'mayor_photo')} disabled={isUploadingMayor} />
               </label>
             </div>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Text Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="md:col-span-2">
+            
+            {isGeneral && (
+              <>
+                <div className="md:col-span-2">
               <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Desa</label>
               <input {...register('village_name')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
               {errors.village_name && <p className="text-rose-500 text-xs mt-1">{errors.village_name.message}</p>}
@@ -210,27 +223,33 @@ export default function ProfilDesaAdmin() {
               <input {...register('province')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
             </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Deskripsi Singkat</label>
-              <textarea {...register('description')} rows={3} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" />
-            </div>
+              </>
+            )}
             
-            <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Sejarah Desa</label>
-              <textarea {...register('history')} rows={5} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" />
-            </div>
+            {isSejarah && (
+              <div className="md:col-span-2">
+                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Sejarah Desa</label>
+                <textarea {...register('history')} rows={15} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" />
+              </div>
+            )}
 
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Visi</label>
-              <textarea {...register('vision')} rows={4} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" />
-            </div>
+            {isVisiMisi && (
+              <>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Visi</label>
+                  <textarea {...register('vision')} rows={4} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" />
+                </div>
 
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Misi</label>
-              <textarea {...register('mission')} rows={4} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" />
-            </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Misi</label>
+                  <textarea {...register('mission')} rows={8} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" />
+                </div>
+              </>
+            )}
 
-            <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">
+            {isGeneral && (
+              <>
+                <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">
               <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Informasi Kontak & Lokasi</h3>
             </div>
 
@@ -287,10 +306,12 @@ export default function ProfilDesaAdmin() {
               <input type="number" step="0.01" {...register('area', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
             </div>
             
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Jumlah Dusun</label>
-              <input type="number" {...register('hamlets', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Jumlah Dusun</label>
+                  <input type="number" {...register('hamlets', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
+              </>
+            )}
 
           </div>
           

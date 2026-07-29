@@ -30,6 +30,7 @@ export default function GenericContentManager() {
   // File uploads state per field name
   const [fileFiles, setFileFiles] = useState<Record<string, File | null>>({});
   const [filePreviews, setFilePreviews] = useState<Record<string, string | null>>({});
+  const [isSubmittingData, setIsSubmittingData] = useState(false);
 
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
   const formValues = watch();
@@ -83,6 +84,8 @@ export default function GenericContentManager() {
   };
 
   const onSubmit = async (data: any) => {
+    const toastId = toast.loading('Sedang menyimpan data, mohon tunggu...');
+    setIsSubmittingData(true);
     try {
       const payload = { ...data };
 
@@ -97,14 +100,22 @@ export default function GenericContentManager() {
         }
       }
 
+      if (config.id === 'galeri' && payload.media_type === 'video') {
+        payload.media_url = payload.video_url;
+      }
+      delete payload.video_url;
+
       if (selectedId) {
         await updateMutation.mutateAsync({ id: selectedId, updates: payload });
       } else {
         await createMutation.mutateAsync(payload);
       }
       setIsModalOpen(false);
+      toast.success('Data berhasil disimpan!', { id: toastId });
     } catch (error: any) {
-      toast.error(error.message || 'Gagal menyimpan data');
+      toast.error(error.message || 'Gagal menyimpan data', { id: toastId });
+    } finally {
+      setIsSubmittingData(false);
     }
   };
 
@@ -291,7 +302,13 @@ export default function GenericContentManager() {
 
                 <div className="pt-6 mt-6 border-t border-slate-100 dark:border-slate-700 flex justify-end gap-3 sticky bottom-0 bg-white dark:bg-slate-800 pb-2">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-slate-600 font-bold hover:bg-slate-100 rounded-xl transition-colors">Batal</button>
-                  <button type="submit" disabled={createMutation.isPending || updateMutation.isPending} className={`px-6 py-2.5 text-white font-bold rounded-xl shadow-lg transition-colors ${bgThemeClass} disabled:opacity-50`}>
+                  <button type="submit" disabled={isSubmittingData} className={`px-6 py-2.5 text-white font-bold rounded-xl shadow-lg transition-colors flex items-center gap-2 ${bgThemeClass} disabled:opacity-50`}>
+                    {isSubmittingData && (
+                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    )}
                     Simpan Data
                   </button>
                 </div>

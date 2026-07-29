@@ -30,8 +30,10 @@ export const adminMenu = [
     path: '/admin/profil',
     icon: Info,
     children: [
+      { title: 'Informasi Umum', path: '/admin/profil', icon: Info },
       { title: 'Sejarah Desa', path: '/admin/profil/sejarah', icon: History },
       { title: 'Visi & Misi', path: '/admin/profil/visi-misi', icon: Target },
+      { title: 'Demografi', path: '/admin/profil/demografi', icon: Users },
     ],
   },
   {
@@ -67,11 +69,7 @@ export const adminMenu = [
     path: '/admin/content/fasilitas',
     icon: Building2,
   },
-  {
-    title: 'Kontak',
-    path: '/admin/kontak',
-    icon: Phone,
-  },
+
   {
     title: 'Pengaturan',
     path: '/admin/pengaturan',

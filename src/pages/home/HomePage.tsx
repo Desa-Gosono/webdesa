@@ -4,17 +4,16 @@ import { MayorWelcome } from '@/features/home/components/MayorWelcome';
 import { VillageStats } from '@/features/home/components/VillageStats';
 import { FeaturedPrograms } from '@/features/home/components/FeaturedPrograms';
 import { LatestNews } from '@/features/home/components/LatestNews';
+import { LatestAgenda } from '@/features/home/components/LatestAgenda';
 import { CallToAction } from '@/features/home/components/CallToAction';
 import { VillageGISMap } from '@/features/home/components/VillageGISMap';
 import { SEO } from '@/components/ui/SEO';
 
-// Reusable anti-gravity wrapper
-const AntiGravityWrapper = ({ children }: { children: React.ReactNode }) => (
+// Reusable section wrapper without card styling
+const SectionWrapper = ({ children }: { children: React.ReactNode }) => (
   <section className="py-8 relative z-10 w-full">
     <div className="container mx-auto px-4 max-w-7xl">
-      <div className="bg-white/40 dark:bg-gray-900/50 backdrop-blur-xl rounded-[2rem] shadow-xl shadow-gray-200/50 dark:shadow-black/20 border border-white/60 dark:border-gray-700/50 p-6 md:p-8 hover:-translate-y-1 transition-transform duration-500">
-        {children}
-      </div>
+      {children}
     </div>
   </section>
 );
@@ -31,9 +30,9 @@ export default function HomePage() {
       <HomeHero />
       
       <div className="flex flex-col gap-8 pb-16 pt-8">
-        <AntiGravityWrapper>
+        <SectionWrapper>
           <MayorWelcome />
-        </AntiGravityWrapper>
+        </SectionWrapper>
         
         <section className="relative z-10 w-full">
           <div className="container mx-auto px-4 max-w-7xl">
@@ -44,14 +43,18 @@ export default function HomePage() {
         {/* VillageGISMap has its own wrapper built-in for custom layout */}
         <VillageGISMap />
         
-        <AntiGravityWrapper>
+        <SectionWrapper>
           {/* We will rename FeaturedPrograms to Potensi & UMKM later */}
           <FeaturedPrograms />
-        </AntiGravityWrapper>
+        </SectionWrapper>
         
-        <AntiGravityWrapper>
+        <SectionWrapper>
           <LatestNews />
-        </AntiGravityWrapper>
+        </SectionWrapper>
+        
+        <SectionWrapper>
+          <LatestAgenda />
+        </SectionWrapper>
       </div>
       
       <CallToAction />

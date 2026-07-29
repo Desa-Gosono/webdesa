@@ -21,8 +21,8 @@ export default function PotensiDetail() {
     return (
       <div className="min-h-screen pt-24 pb-12 flex flex-col justify-center items-center">
         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">Data Potensi tidak ditemukan</h2>
-        <Link to="/potensi" className="text-emerald-500 hover:underline flex items-center gap-2">
-          <ArrowLeft className="w-4 h-4" /> Kembali ke Potensi Desa
+        <Link to="/kategori/potensi" className="text-emerald-500 hover:underline flex items-center gap-2">
+          <ArrowLeft className="w-4 h-4" /> Kembali ke Daftar Potensi
         </Link>
       </div>
     );
@@ -31,7 +31,7 @@ export default function PotensiDetail() {
   return (
     <div className="pt-24 pb-16 bg-slate-50 dark:bg-slate-900 min-h-screen">
       <div className="container mx-auto px-4 max-w-4xl">
-        <Link to="/potensi" className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium hover:underline mb-6">
+        <Link to="/kategori/potensi" className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium hover:underline mb-6">
           <ArrowLeft className="w-4 h-4" /> Kembali ke Daftar Potensi
         </Link>
 

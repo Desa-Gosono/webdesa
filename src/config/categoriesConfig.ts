@@ -18,7 +18,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
     fields: [
       { name: 'title', label: 'Judul Berita', type: 'text', required: true, gridSpan: 2 },
       { name: 'slug', label: 'Slug (URL)', type: 'text', required: true },
-      { 
+      {
         name: 'status', label: 'Status', type: 'select', required: true,
         options: [
           { label: 'Draft', value: 'draft' },
@@ -66,7 +66,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
     ],
     fields: [
       { name: 'title', label: 'Nama Potensi', type: 'text', required: true, gridSpan: 2 },
-      { 
+      {
         name: 'category', label: 'Kategori', type: 'select', required: true,
         options: [
           { label: 'Pertanian', value: 'Pertanian' },
@@ -98,7 +98,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
     fields: [
       { name: 'name', label: 'Nama UMKM', type: 'text', required: true, gridSpan: 2 },
       { name: 'owner', label: 'Nama Pemilik', type: 'text', required: true },
-      { 
+      {
         name: 'category', label: 'Kategori', type: 'select', required: true,
         options: [
           { label: 'Makanan/Minuman', value: 'Makanan/Minuman' },
@@ -125,21 +125,12 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
     themeColor: 'purple',
     columns: [
       { key: 'media_url', label: 'Media', type: 'image' },
-      { key: 'title', label: 'Judul', type: 'text', sortable: true },
-      { key: 'media_type', label: 'Tipe', type: 'badge', sortable: true }
+      { key: 'title', label: 'Judul', type: 'text', sortable: true }
     ],
     fields: [
       { name: 'title', label: 'Judul Media', type: 'text', required: true, gridSpan: 2 },
-      { 
-        name: 'media_type', label: 'Tipe Media', type: 'select', required: true,
-        options: [
-          { label: 'Foto (Image)', value: 'image' },
-          { label: 'Video (YouTube/URL)', value: 'video' }
-        ]
-      },
       { name: 'category', label: 'Kategori/Album', type: 'text' },
-      { name: 'media_url', label: 'Upload Foto Media', type: 'image', gridSpan: 2, dependsOn: { field: 'media_type', value: 'image' } },
-      { name: 'video_url', label: 'URL Video YouTube', type: 'text', gridSpan: 2, dependsOn: { field: 'media_type', value: 'video' }, placeholder: 'https://youtube.com/watch?v=...' },
+      { name: 'media_url', label: 'Upload Foto Media', type: 'image', gridSpan: 2 },
       { name: 'description', label: 'Keterangan', type: 'textarea', gridSpan: 2 }
     ]
   },
@@ -157,7 +148,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
     ],
     fields: [
       { name: 'name', label: 'Nama Fasilitas', type: 'text', required: true, gridSpan: 2 },
-      { 
+      {
         name: 'category', label: 'Kategori', type: 'select', required: true,
         options: [
           { label: 'Pendidikan', value: 'Pendidikan' },

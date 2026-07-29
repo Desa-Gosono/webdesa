@@ -7,10 +7,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 const searchableItems = [
   { title: 'Profil Desa', type: 'halaman', path: '/profil', icon: <Building className="w-4 h-4" /> },
   { title: 'Pemerintahan Desa', type: 'halaman', path: '/pemerintahan', icon: <Briefcase className="w-4 h-4" /> },
-  { title: 'Potensi Pertanian', type: 'potensi', path: '/potensi', icon: <Leaf className="w-4 h-4" /> },
-  { title: 'Potensi UMKM', type: 'potensi', path: '/potensi', icon: <Briefcase className="w-4 h-4" /> },
-  { title: 'Galeri Foto & Video', type: 'halaman', path: '/galeri', icon: <ImageIcon className="w-4 h-4" /> },
-  { title: 'Berita Terbaru', type: 'halaman', path: '/berita', icon: <Newspaper className="w-4 h-4" /> },
+  { title: 'Potensi Pertanian', type: 'potensi', path: '/kategori/potensi', icon: <Leaf className="w-4 h-4" /> },
+  { title: 'Potensi UMKM', type: 'potensi', path: '/kategori/umkm', icon: <Briefcase className="w-4 h-4" /> },
+  { title: 'Galeri Foto & Video', type: 'halaman', path: '/kategori/galeri', icon: <ImageIcon className="w-4 h-4" /> },
+  { title: 'Berita Terbaru', type: 'halaman', path: '/kategori/berita', icon: <Newspaper className="w-4 h-4" /> },
   { title: 'Peta Desa', type: 'halaman', path: '/peta', icon: <Map className="w-4 h-4" /> },
   { title: 'Kontak', type: 'halaman', path: '/kontak', icon: <Phone className="w-4 h-4" /> },
   { title: 'FAQ', type: 'halaman', path: '/faq', icon: <HelpCircle className="w-4 h-4" /> },
@@ -54,6 +54,7 @@ export function GlobalSearch({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         <div className="flex items-center p-4 border-b border-gray-200 dark:border-gray-800">
           <Search className="w-6 h-6 text-gray-400 mr-3 flex-shrink-0" />
           <input
+            ref={inputRef}
             id="global-search-input"
             type="text"
             placeholder="Cari halaman, berita, atau informasi desa..."

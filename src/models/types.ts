@@ -29,6 +29,20 @@ export interface Profile extends BaseModel {
   families?: number;
   area?: number;
   hamlets?: number;
+  rt?: number;
+  demografi_laki?: number;
+  demografi_perempuan?: number;
+  demografi_pend_belum_sekolah?: number;
+  demografi_pend_sd?: number;
+  demografi_pend_smp?: number;
+  demografi_pend_sma?: number;
+  demografi_pend_sarjana?: number;
+  demografi_pek_petani?: number;
+  demografi_pek_wiraswasta?: number;
+  demografi_pek_karyawan?: number;
+  demografi_pek_pns?: number;
+  demografi_pek_pelajar?: number;
+  demografi_pek_lainnya?: number;
   created_at?: string;
   updated_at?: string;
 }

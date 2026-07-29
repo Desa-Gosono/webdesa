@@ -37,7 +37,8 @@ export function HomeHero({ backgroundVideoUrl, backgroundImage }: HomeHeroProps)
             className="h-full w-full object-cover"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/60 to-gray-900/40 mix-blend-multiply" />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 h-full flex items-center">
@@ -60,10 +61,10 @@ export function HomeHero({ backgroundVideoUrl, backgroundImage }: HomeHeroProps)
             {settings.hero_description || 'Menelusuri keindahan alam, kekayaan budaya, dan potensi ekonomi lokal yang terus berkembang di jantung Kabupaten Boyolali.'}
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="rounded-full shadow-xl shadow-primary-600/20" onClick={() => window.location.href = settings.cta_url || '/potensi'}>
+            <Button size="lg" className="rounded-full shadow-xl shadow-primary-600/20" onClick={() => window.location.href = settings.cta_url || '/kategori/potensi'}>
               {settings.cta_text || 'Jelajahi Potensi'} <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="glass" className="rounded-full text-white" onClick={() => window.location.href = '/galeri'}>
+            <Button size="lg" variant="glass" className="rounded-full text-white" onClick={() => window.location.href = '/kategori/galeri'}>
               Galeri Desa
             </Button>
           </div>
