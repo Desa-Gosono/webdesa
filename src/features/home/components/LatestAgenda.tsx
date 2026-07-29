@@ -6,9 +6,9 @@ import { useDynamicCrud } from '@/hooks/useDynamicCrud';
 import { Link } from 'react-router-dom';
 
 export function LatestAgenda() {
-  const { useFetchAll } = useDynamicCrud('agendas');
+  const { useFetchAll } = useDynamicCrud('agenda');
   const { data: allAgendas = [] } = useFetchAll();
-  const recentAgendas = allAgendas.slice(0, 3);
+  const recentAgendas = allAgendas.slice(0, 4);
 
   return (
     <section className="py-12 bg-slate-50 dark:bg-slate-900">
@@ -34,7 +34,7 @@ export function LatestAgenda() {
           </motion.div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {recentAgendas.length > 0 ? recentAgendas.map((n: any, i: number) => (
             <motion.div
               key={n.id}
@@ -45,39 +45,30 @@ export function LatestAgenda() {
               className="group block cursor-pointer"
             >
               <Link to={`/agenda/${n.slug || n.id}`} className="block h-full">
-                <div className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 h-full flex flex-col">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 dark:border-slate-700 h-full flex flex-row items-center sm:max-h-24">
                   
-                  <div className="relative h-48 rounded-t-3xl overflow-hidden bg-slate-100 dark:bg-slate-700 shrink-0">
+                  <div className="relative w-24 sm:w-28 h-24 sm:h-full shrink-0 bg-slate-100 dark:bg-slate-700">
                     {n.image_url ? (
                       <img src={n.image_url} alt={n.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-400"><Calendar className="w-12 h-12 opacity-50" /></div>
+                      <div className="w-full h-full flex items-center justify-center text-slate-400"><Calendar className="w-8 h-8 opacity-50" /></div>
                     )}
-                    <div className="absolute top-4 left-4 bg-emerald-500/90 backdrop-blur px-3 py-1 rounded-full text-xs font-semibold text-white uppercase tracking-wider shadow-sm">
-                      Agenda
-                    </div>
                   </div>
 
-                  <div className="p-6 flex flex-col flex-grow">
-                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-3">
-                      <Calendar className="w-4 h-4 text-emerald-500" /> 
-                      {new Date(n.event_date || n.created_at || '').toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  <div className="p-3 flex flex-col flex-grow justify-center min-w-0">
+                    <div className="flex items-center gap-2 text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mb-1">
+                      <Calendar className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> 
+                      <span className="truncate">{new Date(n.event_date || n.created_at || '').toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                     </div>
                     
-                    <h3 className="text-xl font-bold text-slate-800 dark:text-white group-hover:text-emerald-500 transition-colors line-clamp-2 mb-3">
+                    <h3 className="text-sm sm:text-base font-bold text-slate-800 dark:text-white group-hover:text-emerald-500 transition-colors line-clamp-1 mb-1">
                       {n.title}
                     </h3>
-                    
-                    {n.description && (
-                      <p className="text-slate-600 dark:text-slate-300 text-sm line-clamp-2 mb-4">
-                        {n.description}
-                      </p>
-                    )}
 
                     {n.location && (
-                      <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700 flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
-                        <MapPin className="w-4 h-4 shrink-0 text-rose-400" />
-                        <span className="line-clamp-1">{n.location}</span>
+                      <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">
+                        <MapPin className="w-3.5 h-3.5 shrink-0 text-rose-400" />
+                        <span className="truncate">{n.location}</span>
                       </div>
                     )}
                   </div>

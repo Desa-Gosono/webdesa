@@ -39,9 +39,12 @@ export default function PengelolaanSampahPage() {
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
             <Leaf className="w-8 h-8" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Tentang Program Pengelolaan Sampah Masyarakat</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Halo Warga Desa Gosono!</h2>
+          <p className="text-justify text-gray-600 dark:text-gray-300 leading-relaxed max-w-6xl mx-auto mb-4">
+            Mari bersama-sama kita wujudkan lingkungan yang lebih bersih, sehat, dan asri! Kebersihan lingkungan bermula dari rumah kita sendiri. Melalui pemilahan sampah yang tepat, kita tidak hanya mencegah berbagai penyakit dan pencemaran, namun juga bisa mendatangkan manfaat ekonomi yang nyata bagi kesejahteraan keluarga kita di Desa Gosono.
+          </p>
           <p className="text-justify text-gray-600 dark:text-gray-300 leading-relaxed max-w-6xl mx-auto">
-            Program Pengelolaan Sampah Masyarakat di Desa Gosono hadir sebagai wujud komitmen nyata kita untuk menjaga kelestarian lingkungan dan kesehatan keluarga. Program inovatif dan multidisiplin ini bukan hanya sekadar membuang sampah pada tempatnya, melainkan tentang <strong>memberdayakan masyarakat</strong>. Tujuan utama kami adalah mengubah cara pandang terhadap sampah—dari barang sisa menjadi produk bernilai guna tinggi, menjaga kebersihan, dan meningkatkan kesejahteraan warga.
+            Program Pengelolaan Sampah Masyarakat di Desa Gosono hadir sebagai wujud komitmen nyata kita untuk menjaga kelestarian lingkungan. Tujuan utama kami adalah mengubah cara pandang terhadap sampah—dari barang sisa menjadi produk bernilai guna tinggi.
           </p>
         </motion.section>
 
@@ -49,80 +52,95 @@ export default function PengelolaanSampahPage() {
         <motion.section {...fadeIn} transition={{ delay: 0.2 }}>
           <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-10">Panduan Mudah Memilah Sampah</h2>
           <div className="grid md:grid-cols-3 gap-6">
-            {/* Organik */}
-            <div className="bg-green-50 dark:bg-green-900/10 rounded-2xl p-6 border border-green-200 dark:border-green-800/30 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-green-200 dark:bg-green-800 text-green-700 dark:text-green-300 rounded-xl flex items-center justify-center mb-4">
-                <Leaf className="w-6 h-6" />
+            {/* Tong Hijau */}
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-6 border-2 border-emerald-400 dark:border-emerald-500 hover:shadow-lg transition-all transform hover:-translate-y-1">
+              <div className="w-16 h-16 bg-emerald-500 text-white rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                <Leaf className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-green-900 dark:text-green-100 mb-2">Organik (Dapat Terurai)</h3>
-              <p className="text-sm text-green-700 dark:text-green-300/80 mb-3 font-medium">Contoh: Sisa makanan, dedaunan, sayuran busuk, kulit buah.</p>
-              <p className="text-green-800 dark:text-green-200 text-sm">
-                <strong>Cara Kelola:</strong> Kumpulkan untuk diolah kembali menjadi kompos alami penyubur tanaman.
-              </p>
+              <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">Tong Hijau</h3>
+              <h4 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">Organik</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 font-medium">Isi dengan: Sisa makanan, daun, ranting.</p>
+              <div className="bg-emerald-100 dark:bg-emerald-800/50 p-3 rounded-xl">
+                <p className="text-emerald-800 dark:text-emerald-200 text-sm font-semibold text-center">
+                  ✨ Akan diolah menjadi kompos untuk pertanian!
+                </p>
+              </div>
             </div>
 
-            {/* Anorganik */}
-            <div className="bg-blue-50 dark:bg-blue-900/10 rounded-2xl p-6 border border-blue-200 dark:border-blue-800/30 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-200 dark:bg-blue-800 text-blue-700 dark:text-blue-300 rounded-xl flex items-center justify-center mb-4">
-                <Recycle className="w-6 h-6" />
+            {/* Tong Kuning */}
+            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-6 border-2 border-amber-400 dark:border-amber-500 hover:shadow-lg transition-all transform hover:-translate-y-1">
+              <div className="w-16 h-16 bg-amber-500 text-white rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                <Recycle className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-2">Anorganik (Daur Ulang)</h3>
-              <p className="text-sm text-blue-700 dark:text-blue-300/80 mb-3 font-medium">Contoh: Botol plastik, kresek, kardus, kertas, kaleng.</p>
-              <p className="text-blue-800 dark:text-blue-200 text-sm">
-                <strong>Cara Kelola:</strong> Bersihkan, lipat, dan kumpulkan. Sampah ini memiliki nilai jual dan bisa didaur ulang.
-              </p>
+              <h3 className="text-2xl font-bold text-amber-600 dark:text-amber-400 mb-2">Tong Kuning</h3>
+              <h4 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">Anorganik / Daur Ulang</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 font-medium">Isi dengan: Botol plastik, kardus, kaleng.</p>
+              <div className="bg-amber-100 dark:bg-amber-800/50 p-3 rounded-xl">
+                <p className="text-amber-800 dark:text-amber-200 text-sm font-semibold text-center">
+                  💰 Sampah bernilai ekonomis, kumpulkan dan setorkan!
+                </p>
+              </div>
             </div>
 
-            {/* B3 */}
-            <div className="bg-red-50 dark:bg-red-900/10 rounded-2xl p-6 border border-red-200 dark:border-red-800/30 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-red-200 dark:bg-red-800 text-red-700 dark:text-red-300 rounded-xl flex items-center justify-center mb-4">
-                <AlertTriangle className="w-6 h-6" />
+            {/* Tong Merah */}
+            <div className="bg-rose-50 dark:bg-rose-900/20 rounded-2xl p-6 border-2 border-rose-400 dark:border-rose-500 hover:shadow-lg transition-all transform hover:-translate-y-1">
+              <div className="w-16 h-16 bg-rose-500 text-white rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                <AlertTriangle className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-red-900 dark:text-red-100 mb-2">B3 (Bahan Berbahaya)</h3>
-              <p className="text-sm text-red-700 dark:text-red-300/80 mb-3 font-medium">Contoh: Baterai bekas, lampu neon, kaleng obat nyamuk.</p>
-              <p className="text-red-800 dark:text-red-200 text-sm">
-                <strong>Cara Kelola:</strong> Pisahkan dari sampah lain dan buang ke penampungan khusus karena butuh penanganan aman.
-              </p>
+              <h3 className="text-2xl font-bold text-rose-600 dark:text-rose-400 mb-2">Tong Merah</h3>
+              <h4 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">B3 / Berbahaya</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 font-medium">Isi dengan: Baterai, lampu kaca, bekas obat.</p>
+              <div className="bg-rose-100 dark:bg-rose-800/50 p-3 rounded-xl">
+                <p className="text-rose-800 dark:text-rose-200 text-sm font-semibold text-center">
+                  ⚠️ Penanganan khusus agar tidak mencemari lingkungan.
+                </p>
+              </div>
             </div>
           </div>
         </motion.section>
 
-        {/* QR Code Integration */}
+        {/* Waste Sorting SOP */}
         <motion.section
-          className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700"
+          className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 p-8"
           {...fadeIn} transition={{ delay: 0.3 }}
         >
-          <div className="grid md:grid-cols-2 gap-8 items-center p-8 md:p-12">
-            <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 font-medium text-sm mb-6">
-                <Smartphone className="w-4 h-4" />
-                <span>Inovasi Digital Desa</span>
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Pindai & Pelajari Lebih Lanjut!</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Informasi pengelolaan sampah yang tepat kini ada di genggaman Anda! Desa Gosono menghadirkan sistem <strong>QR Code untuk Panduan Pemilahan Sampah</strong>. Cukup gunakan kamera smartphone Anda untuk mengakses:
-              </p>
-              <ul className="space-y-3 mb-8">
-                {['Basis Data Sampah Digital', 'Poster Edukasi Dwibahasa', 'SOP Pengelolaan Sampah'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 dark:text-gray-200">
-                    <div className="w-2 h-2 rounded-full bg-primary-500"></div>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+          <div className="flex items-center gap-4 mb-8 justify-center">
+            <div className="bg-primary-100 dark:bg-primary-900/50 p-3 rounded-full text-primary-600 dark:text-primary-400">
+              <Recycle className="w-8 h-8" />
             </div>
-            <div className="flex justify-center items-center bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 border border-dashed border-gray-300 dark:border-gray-600">
-              <div className="text-center">
-                <div className="w-48 h-48 bg-white p-2 rounded-xl shadow-sm mx-auto mb-4 flex items-center justify-center border border-gray-200">
-                  {/* Placeholder for QR Code */}
-                  <div className="w-full h-full bg-gray-100 border-2 border-gray-300 border-dashed rounded-lg flex items-center justify-center flex-col gap-2">
-                    <Smartphone className="w-8 h-8 text-gray-400" />
-                    <span className="text-xs text-gray-500 font-medium text-center px-2">Area QR Code akan ditampilkan di sini</span>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-                  Pindai QR Code menggunakan kamera HP Anda
-                </p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">SOP Pemilahan Sampah Praktis</h2>
+          </div>
+          
+          <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-8">
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 text-amber-600 font-bold flex items-center justify-center text-xl">1</div>
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Bilas Sisa Makanan & Minuman</h4>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">Cara mencuci botol plastik atau gelas plastik dari sisa minuman manis sebelum dibuang sangat penting agar tidak menimbulkan bau dan mengundang semut.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 text-amber-600 font-bold flex items-center justify-center text-xl">2</div>
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Remukkan Botol Plastik & Kardus</h4>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">Pipihkan atau remukkan botol air mineral dan lipat kardus bekas untuk menghemat ruang di tempat sampah Anda.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 font-bold flex items-center justify-center text-xl">3</div>
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Sisa Makanan Jadi Kompos</h4>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">Jangan campurkan sisa makanan dengan plastik. Pisahkan di kantong berbeda untuk diolah menjadi pupuk alami.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-rose-100 text-rose-600 font-bold flex items-center justify-center text-xl">4</div>
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Simpan Limbah B3 di Wadah Tertutup</h4>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">Kumpulkan baterai bekas, lampu rusak, atau bekas obat di toples/wadah terpisah sebelum dibuang agar racunnya tidak menyebar.</p>
               </div>
             </div>
           </div>
