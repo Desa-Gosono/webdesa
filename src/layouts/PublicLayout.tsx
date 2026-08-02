@@ -1,5 +1,7 @@
 import React, { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa';
+import logoDesa from '@/assets/logo-desa.png';
+import { Link, Outlet } from 'react-router-dom';
 import { Navbar } from '@/components/ui/Navbar';
 
 import { FloatingContact } from '@/components/features/FloatingContact';
@@ -23,7 +25,6 @@ export function PublicLayout() {
         <div className="absolute inset-0 bg-white/70 dark:bg-gray-950/80 backdrop-blur-md" />
       </div>
 
-
       <Navbar />
       <main className="flex-grow">
         <Suspense fallback={
@@ -36,19 +37,70 @@ export function PublicLayout() {
       </main>
       
       {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-auto">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-              <h3 className="font-display font-semibold text-xl mb-2">{settings.website_name || 'Desa Gosono'}</h3>
-              <p className="text-gray-400 text-sm">{settings.footer_description || 'Portal Informasi Resmi Pemerintahan Desa Gosono.'}</p>
+      <footer className="bg-gray-900 text-white mt-auto pt-16 pb-8">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            
+            {/* Column 1: Info */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-16 bg-white rounded-md p-1 flex items-center justify-center">
+                   <img src={logoDesa} alt="Logo Desa" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xl">{settings.website_name || 'Desa Gosono'}</h3>
+                  <p className="text-gray-400 text-sm">Kab. Boyolali, Jawa Tengah</p>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed pr-8">
+                {settings.footer_description || 'Portal resmi Pemerintah Desa Gosono. Bersama membangun desa yang mandiri, bersih, dan berdaya saing untuk generasi mendatang.'}
+              </p>
+              
+              <div className="flex gap-4">
+                <a href={settings.facebook_url || '#'} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                  <FaFacebookF className="w-4 h-4 text-gray-300" />
+                </a>
+                <a href={settings.instagram_url || '#'} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                  <FaInstagram className="w-4 h-4 text-gray-300" />
+                </a>
+                <a href={settings.youtube_url || '#'} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                  <FaYoutube className="w-4 h-4 text-gray-300" />
+                </a>
+              </div>
             </div>
-            <div className="w-full md:w-auto">
-              <VisitorCounter />
+
+            {/* Column 2: Tautan Cepat */}
+            <div>
+              <h4 className="font-bold text-lg mb-6 text-white">Tautan Cepat</h4>
+              <ul className="space-y-3">
+                <li><Link to="/profil" className="text-gray-400 hover:text-white transition-colors text-sm">Profil Desa</Link></li>
+                <li><Link to="/pemerintahan" className="text-gray-400 hover:text-white transition-colors text-sm">Perangkat Desa</Link></li>
+                <li><Link to="/kategori/potensi" className="text-gray-400 hover:text-white transition-colors text-sm">Potensi & Pariwisata</Link></li>
+                <li><Link to="/kategori/berita" className="text-gray-400 hover:text-white transition-colors text-sm">Berita Desa</Link></li>
+                <li><Link to="/kontak" className="text-gray-400 hover:text-white transition-colors text-sm">Kontak</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 3: Layanan */}
+            <div>
+              <h4 className="font-bold text-lg mb-6 text-white">Layanan</h4>
+              <ul className="space-y-3">
+                <li><Link to="/pengelolaan-sampah" className="text-gray-400 hover:text-white transition-colors text-sm">Bank Sampah</Link></li>
+                <li><Link to="/posyandu" className="text-gray-400 hover:text-white transition-colors text-sm">Posyandu</Link></li>
+                <li><Link to="/kategori/umkm" className="text-gray-400 hover:text-white transition-colors text-sm">UMKM Desa</Link></li>
+                <li><Link to="/kategori/fasilitas" className="text-gray-400 hover:text-white transition-colors text-sm">Fasilitas Umum</Link></li>
+                <li><Link to="/kontak" className="text-gray-400 hover:text-white transition-colors text-sm">Pengaduan Warga</Link></li>
+              </ul>
             </div>
           </div>
-          <div className="mt-8 pt-4 border-t border-gray-800 text-center text-sm text-gray-500">
-            {settings.footer_copyright || '© 2026 Desa Gosono. All rights reserved.'}
+          
+          <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+            <p>
+              {settings.footer_copyright || '© 2026 Pemerintah Desa Gosono. Semua hak cipta dilindungi.'}
+            </p>
+            <p>
+              Gosono Digital Village — KKN Universitas
+            </p>
           </div>
         </div>
       </footer>

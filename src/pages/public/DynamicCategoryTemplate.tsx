@@ -99,10 +99,10 @@ export default function DynamicCategoryTemplate() {
         {(categoryId === 'potensi' || categoryId === 'umkm') && (
           <div className="flex flex-wrap justify-center gap-4 mb-10">
             <Link
-              to="/kategori/potensi?filter=Pertanian"
-              className={`px-6 py-2.5 rounded-full font-semibold transition-all shadow-sm ${categoryId === 'potensi' && activeFilter === 'Pertanian' ? 'bg-emerald-600 text-white ring-2 ring-emerald-600 ring-offset-2' : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 border border-slate-200'}`}
+              to="/kategori/potensi"
+              className={`px-6 py-2.5 rounded-full font-semibold transition-all shadow-sm ${categoryId === 'potensi' && !activeFilter ? 'bg-emerald-600 text-white ring-2 ring-emerald-600 ring-offset-2' : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 border border-slate-200'}`}
             >
-              Pertanian
+              Potensi
             </Link>
             <Link
               to="/kategori/umkm"

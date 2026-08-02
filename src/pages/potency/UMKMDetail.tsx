@@ -68,6 +68,14 @@ export default function UMKMDetail() {
                 </h3>
                 <p className="text-slate-600 dark:text-slate-400">{umkm.owner || 'Tidak tersedia'}</p>
               </div>
+
+              <div className="space-y-4">
+                <h3 className="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                  <Tag className="w-5 h-5 text-indigo-500" /> Nomor Induk Berusaha (NIB)
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400">{umkm.nib || 'Tidak tersedia'}</p>
+              </div>
+              
               
               <div className="space-y-4">
                 <h3 className="font-bold text-slate-800 dark:text-white flex items-center gap-2">

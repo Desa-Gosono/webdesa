@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const searchableItems = [
   { title: 'Profil Desa', type: 'halaman', path: '/profil', icon: <Building className="w-4 h-4" /> },
   { title: 'Pemerintahan Desa', type: 'halaman', path: '/pemerintahan', icon: <Briefcase className="w-4 h-4" /> },
-  { title: 'Potensi Pertanian', type: 'potensi', path: '/kategori/potensi', icon: <Leaf className="w-4 h-4" /> },
+  { title: 'Potensi', type: 'potensi', path: '/kategori/potensi', icon: <Leaf className="w-4 h-4" /> },
   { title: 'Potensi UMKM', type: 'potensi', path: '/kategori/umkm', icon: <Briefcase className="w-4 h-4" /> },
   { title: 'Galeri Foto & Video', type: 'halaman', path: '/kategori/galeri', icon: <ImageIcon className="w-4 h-4" /> },
   { title: 'Berita Terbaru', type: 'halaman', path: '/kategori/berita', icon: <Newspaper className="w-4 h-4" /> },

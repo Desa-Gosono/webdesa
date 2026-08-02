@@ -46,7 +46,7 @@ export const adminMenu = [
     path: '/admin/content/potensi',
     icon: MapPin,
     children: [
-      { title: 'Pertanian', path: '/admin/content/potensi', icon: Tractor },
+      { title: 'Potensi', path: '/admin/content/potensi', icon: MapPin },
       { title: 'UMKM', path: '/admin/content/umkm', icon: Store },
     ],
   },

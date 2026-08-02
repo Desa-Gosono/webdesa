@@ -97,7 +97,8 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
     ],
     fields: [
       { name: 'name', label: 'Nama UMKM', type: 'text', required: true, gridSpan: 2 },
-      { name: 'owner', label: 'Nama Pemilik', type: 'text', required: true },
+      { name: 'nib', label: 'Nomor Induk Berusaha (NIB)', type: 'text' },
+      { name: 'owner', label: 'Nama Pemilik', type: 'text' },
       {
         name: 'category', label: 'Kategori', type: 'select', required: true,
         options: [

@@ -75,6 +75,7 @@ export interface Umkm {
   owner: string | null;
   category: string | null;
   description: string | null;
+  nib: string | null;
   product: string | null;
   phone: string | null;
   address: string | null;
