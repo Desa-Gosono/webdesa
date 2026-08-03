@@ -7,14 +7,20 @@ export function useDynamicCrud(collectionName: string) {
   const queryKey = [collectionName];
 
   // FETCH: Ambil semua data
-  const useFetchAll = () => {
+  const useFetchAll = (limit?: number, select = '*') => {
     return useQuery({
-      queryKey,
+      queryKey: limit ? [collectionName, { limit, select }] : [collectionName, { select }],
       queryFn: async () => {
-        const { data, error } = await supabase
+        let query = supabase
           .from(collectionName)
-          .select('*')
+          .select(select)
           .order('created_at', { ascending: false });
+
+        if (limit) {
+          query = query.limit(limit);
+        }
+
+        const { data, error } = await query;
 
         if (error) {
           toast.error(`Gagal memuat data: ${error.message}`);

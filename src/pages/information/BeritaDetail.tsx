@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowLeft, Clock } from 'lucide-react';
 import { useNews } from '@/hooks/useNews';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function BeritaDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -11,8 +12,29 @@ export default function BeritaDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-24 pb-12 flex justify-center items-center">
-        <div className="w-10 h-10 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin"></div>
+      <div className="min-h-screen pt-24 pb-12 bg-slate-50 dark:bg-slate-900">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden p-8 md:p-12">
+            <Skeleton className="w-full h-[400px] mb-8 -mx-8 -mt-8 md:-mx-12 md:-mt-12 rounded-b-none" />
+            <Skeleton className="w-3/4 h-10 mb-8" />
+            <div className="flex gap-4 mb-8 pb-8 border-b border-slate-100 dark:border-slate-700">
+              <Skeleton className="w-24 h-4" />
+              <Skeleton className="w-32 h-4" />
+              <Skeleton className="w-24 h-4" />
+            </div>
+            <div className="space-y-4">
+              <Skeleton className="w-full h-4" />
+              <Skeleton className="w-full h-4" />
+              <Skeleton className="w-11/12 h-4" />
+              <Skeleton className="w-full h-4" />
+              <Skeleton className="w-4/5 h-4" />
+              <br/>
+              <Skeleton className="w-full h-4" />
+              <Skeleton className="w-full h-4" />
+              <Skeleton className="w-10/12 h-4" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

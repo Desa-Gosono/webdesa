@@ -4,10 +4,11 @@ import { ArrowRight, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useNews } from '@/hooks/useNews';
 import { Link } from 'react-router-dom';
+import { SkeletonCard } from '@/components/ui/Skeleton';
 
 export function LatestNews() {
   const { useFetchNews } = useNews();
-  const { data: allNews = [] } = useFetchNews();
+  const { data: allNews = [], isLoading } = useFetchNews(undefined, 'id, title, slug, thumbnail_url, created_at, published_at, status');
   const publishedNews = allNews.filter(n => n.status === 'published').slice(0, 3);
 
   return (
@@ -35,7 +36,13 @@ export function LatestNews() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {publishedNews.length > 0 ? publishedNews.map((n, i) => (
+          {isLoading ? (
+            <>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </>
+          ) : publishedNews.length > 0 ? publishedNews.map((n, i) => (
             <motion.div
               key={n.id}
               initial={{ opacity: 0, y: 30 }}
@@ -46,7 +53,7 @@ export function LatestNews() {
               <Link to={`/berita/${n.slug}`} className="block">
               <div className="relative h-60 rounded-3xl overflow-hidden mb-6 shadow-lg shadow-gray-200/50 dark:shadow-none bg-slate-100 dark:bg-slate-800">
                 {n.thumbnail_url ? (
-                  <img src={n.thumbnail_url} alt={n.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={n.thumbnail_url} alt={n.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-slate-400">Tidak ada gambar</div>
                 )}

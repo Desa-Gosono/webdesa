@@ -22,17 +22,17 @@ export default function PemerintahanPage() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-md rounded-3xl p-6 shadow-lg border border-white/20 dark:border-slate-700 text-center flex flex-col items-center group hover:shadow-xl hover:-translate-y-2 transition-all duration-300 w-full"
+      className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-md rounded-2xl p-4 md:p-5 shadow-lg border border-white/20 dark:border-slate-700 text-center flex flex-col items-center group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 w-full"
     >
-      <div className="w-32 h-32 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-emerald-50 dark:border-slate-600 transition-transform duration-300 group-hover:scale-105 shadow-md">
+      <div className="w-24 h-24 md:w-28 md:h-28 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4 overflow-hidden border-4 border-emerald-50 dark:border-slate-600 transition-transform duration-300 group-hover:scale-105 shadow-md">
         {person.photo_url ? (
           <img src={person.photo_url} alt={person.name} className="w-full h-full object-cover" />
         ) : (
-          <User className="w-12 h-12 text-slate-300 dark:text-slate-500" />
+          <User className="w-10 h-10 text-slate-300 dark:text-slate-500" />
         )}
       </div>
-      <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">{person.name}</h3>
-      <span className="inline-block px-4 py-1.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 rounded-full text-xs font-bold mb-4 shadow-sm">
+      <h3 className="font-bold text-base md:text-lg text-slate-800 dark:text-white mb-1.5">{person.name}</h3>
+      <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 rounded-full text-xs font-bold mb-3 shadow-sm">
         {person.position}
       </span>
       {person.description && (
@@ -75,7 +75,7 @@ export default function PemerintahanPage() {
               {/* Tier 1: Kepala Desa */}
               {kepalaDesa.length > 0 && (
                 <div className="w-full flex flex-col items-center">
-                  <div className="w-full max-w-sm">
+                  <div className="w-full max-w-[280px] md:max-w-xs">
                     {kepalaDesa.map(person => <OfficialCard key={person.id} person={person} />)}
                   </div>
                   {/* Vertical Line Down */}
@@ -88,7 +88,7 @@ export default function PemerintahanPage() {
               {/* Tier 2: Sekretaris Desa */}
               {sekretaris.length > 0 && (
                 <div className="w-full flex flex-col items-center">
-                  <div className="w-full max-w-sm">
+                  <div className="w-full max-w-[280px] md:max-w-xs">
                     {sekretaris.map(person => <OfficialCard key={person.id} person={person} />)}
                   </div>
                   {/* Vertical Line Down */}
@@ -104,7 +104,7 @@ export default function PemerintahanPage() {
                   {/* Connecting Horizontal Branch for Grid (Only visible on MD and above) */}
                   <div className="hidden md:block absolute top-0 left-1/4 right-1/4 h-1 bg-slate-300 dark:bg-slate-600 rounded-full -mt-[18px]"></div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {others.map(person => (
                       <div key={person.id} className="flex flex-col items-center relative">
                         {/* Connecting Vertical Branch for Grid Item (Only visible on MD and above) */}

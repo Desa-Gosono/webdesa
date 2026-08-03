@@ -10,14 +10,20 @@ export function useGallery() {
   const queryClient = useQueryClient();
   const queryKey = ['gallery'];
 
-  const useFetchGallery = () => {
+  const useFetchGallery = (limit?: number, select = '*') => {
     return useQuery({
-      queryKey,
+      queryKey: limit ? ['gallery', { limit, select }] : ['gallery', { select }],
       queryFn: async () => {
-        const { data, error } = await supabase
+        let query = supabase
           .from('gallery')
-          .select('*')
+          .select(select)
           .order('created_at', { ascending: false });
+
+        if (limit) {
+          query = query.limit(limit);
+        }
+
+        const { data, error } = await query;
 
         if (error) {
           toast.error('Gagal memuat data: ' + error.message);

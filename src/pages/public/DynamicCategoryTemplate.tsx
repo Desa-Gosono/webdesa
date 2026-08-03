@@ -6,6 +6,7 @@ import { PageHero } from '@/components/ui/PageHero';
 import { Calendar, User, MapPin, Phone, Search, Filter } from 'lucide-react';
 import { useSettings } from '@/hooks/useSettings';
 import { motion } from 'framer-motion';
+import { SkeletonCard } from '@/components/ui/Skeleton';
 
 export default function DynamicCategoryTemplate() {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -26,7 +27,7 @@ export default function DynamicCategoryTemplate() {
 
   const config = categoriesConfig[categoryId];
   const { useFetchAll } = useDynamicCrud(config.collectionName);
-  const { data: items = [], isLoading } = useFetchAll();
+  const { data: items = [], isLoading } = useFetchAll(100);
 
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -160,8 +161,13 @@ export default function DynamicCategoryTemplate() {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center py-20">
-            <div className={`w-12 h-12 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin`}></div>
+          <div className={categoryId === 'agenda' ? "flex flex-col gap-6" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"}>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
           </div>
         ) : displayItems.length > 0 ? (
           <div className={categoryId === 'agenda' ? "flex flex-col gap-6" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"}>

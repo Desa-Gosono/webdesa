@@ -307,7 +307,7 @@ export default function ProfilPage() {
                           >
                             <div className="h-40 relative overflow-hidden bg-slate-200 dark:bg-slate-700">
                               {item.image_url ? (
-                                <img src={item.image_url} alt={item.name || ''} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                <img src={item.image_url} alt={item.name || ''} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center">
                                   <Building2 className="w-10 h-10 text-slate-400 dark:text-slate-500" />

@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa';
 import logoDesa from '@/assets/logo-desa.png';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, ScrollRestoration } from 'react-router-dom';
 import { Navbar } from '@/components/ui/Navbar';
 
 import { FloatingContact } from '@/components/features/FloatingContact';
@@ -109,6 +109,7 @@ export function PublicLayout() {
       <FloatingContact />
       <BackToTop />
       <AccessibilityMenu />
+      <ScrollRestoration />
     </div>
   );
 }

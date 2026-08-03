@@ -22,15 +22,21 @@ export function useNews() {
   const queryClient = useQueryClient();
   const queryKey = ['news'];
 
-  // FETCH: Ambil semua berita
-  const useFetchNews = () => {
+  // FETCH: Ambil semua berita (dengan opsi limit dan select spesifik)
+  const useFetchNews = (limit?: number, select = '*') => {
     return useQuery({
-      queryKey,
+      queryKey: limit ? ['news', { limit, select }] : ['news', { select }],
       queryFn: async () => {
-        const { data, error } = await supabase
+        let query = supabase
           .from('news')
-          .select('*')
+          .select(select)
           .order('created_at', { ascending: false });
+
+        if (limit) {
+          query = query.limit(limit);
+        }
+
+        const { data, error } = await query;
 
         if (error) {
           toast.error(`Gagal memuat berita: ${error.message}`);

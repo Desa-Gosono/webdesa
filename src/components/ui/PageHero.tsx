@@ -43,6 +43,8 @@ export function PageHero({
             <img
               src={backgroundImage}
               alt={`${title} Background`}
+              fetchPriority="high"
+              decoding="async"
               className="object-cover w-full h-full absolute inset-0 z-0"
             />
           ) : (
