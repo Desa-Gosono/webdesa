@@ -29,7 +29,7 @@ export function useGallery() {
           toast.error('Gagal memuat data: ' + error.message);
           throw error;
         }
-        return data as Gallery[];
+        return data as unknown as Gallery[];
       },
     });
   };

@@ -54,6 +54,7 @@ export interface Official {
   position: string;
   photo_url: string | null;
   description: string | null;
+  phone?: string | null;
   order_number: number;
   created_at?: string;
   updated_at?: string;
@@ -80,6 +81,7 @@ export interface Umkm {
   product: string | null;
   phone: string | null;
   address: string | null;
+  distribution: string | null;
   image_url: string | null;
   created_at?: string;
   updated_at?: string;

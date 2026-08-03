@@ -7,6 +7,7 @@ import { useDynamicCrud } from '@/hooks/useDynamicCrud';
 import { uploadImage } from '@/utils/storage';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ConfirmDialog } from '@/components/admin/ui/ConfirmDialog';
 
 export default function GenericContentManager() {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -31,6 +32,9 @@ export default function GenericContentManager() {
   const [fileFiles, setFileFiles] = useState<Record<string, File | null>>({});
   const [filePreviews, setFilePreviews] = useState<Record<string, string | null>>({});
   const [isSubmittingData, setIsSubmittingData] = useState(false);
+  
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<{type: 'delete' | 'save', id?: string, data?: any} | null>(null);
 
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
   const formValues = watch();
@@ -69,10 +73,9 @@ export default function GenericContentManager() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Yakin ingin menghapus data ini?')) {
-      await deleteMutation.mutateAsync(id);
-    }
+  const handleDelete = (id: string) => {
+    setConfirmAction({ type: 'delete', id });
+    setShowConfirm(true);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
@@ -83,39 +86,59 @@ export default function GenericContentManager() {
     }
   };
 
-  const onSubmit = async (data: any) => {
-    const toastId = toast.loading('Sedang menyimpan data, mohon tunggu...');
-    setIsSubmittingData(true);
-    try {
-      const payload = { ...data };
+  const onSubmit = (data: any) => {
+    setConfirmAction({ type: 'save', data });
+    setShowConfirm(true);
+  };
 
-      // Handle uploads
-      for (const field of config.fields) {
-        if (field.type === 'image') {
-          if (fileFiles[field.name]) {
-            payload[field.name] = await uploadImage(fileFiles[field.name]!, config.collectionName);
-          } else if (filePreviews[field.name]) {
-            payload[field.name] = filePreviews[field.name];
+  const executeConfirmAction = async () => {
+    if (!confirmAction) return;
+
+    if (confirmAction.type === 'delete' && confirmAction.id) {
+      await deleteMutation.mutateAsync(confirmAction.id);
+      setShowConfirm(false);
+      setConfirmAction(null);
+      return;
+    }
+
+    if (confirmAction.type === 'save' && confirmAction.data) {
+      const data = confirmAction.data;
+      const toastId = toast.loading('Sedang menyimpan data, mohon tunggu...');
+      setIsSubmittingData(true);
+      setShowConfirm(false);
+
+      try {
+        const payload = { ...data };
+
+        // Handle uploads
+        for (const field of config.fields) {
+          if (field.type === 'image') {
+            if (fileFiles[field.name]) {
+              payload[field.name] = await uploadImage(fileFiles[field.name]!, config.collectionName);
+            } else if (filePreviews[field.name]) {
+              payload[field.name] = filePreviews[field.name];
+            }
           }
         }
-      }
 
-      if (config.id === 'galeri' && payload.media_type === 'video') {
-        payload.media_url = payload.video_url;
-      }
-      delete payload.video_url;
+        if (config.id === 'galeri' && payload.media_type === 'video') {
+          payload.media_url = payload.video_url;
+        }
+        delete payload.video_url;
 
-      if (selectedId) {
-        await updateMutation.mutateAsync({ id: selectedId, updates: payload });
-      } else {
-        await createMutation.mutateAsync(payload);
+        if (selectedId) {
+          await updateMutation.mutateAsync({ id: selectedId, updates: payload });
+        } else {
+          await createMutation.mutateAsync(payload);
+        }
+        setIsModalOpen(false);
+        toast.success('Data berhasil disimpan!', { id: toastId });
+      } catch (error: any) {
+        toast.error(error.message || 'Gagal menyimpan data', { id: toastId });
+      } finally {
+        setIsSubmittingData(false);
+        setConfirmAction(null);
       }
-      setIsModalOpen(false);
-      toast.success('Data berhasil disimpan!', { id: toastId });
-    } catch (error: any) {
-      toast.error(error.message || 'Gagal menyimpan data', { id: toastId });
-    } finally {
-      setIsSubmittingData(false);
     }
   };
 
@@ -317,6 +340,18 @@ export default function GenericContentManager() {
           </div>
         )}
       </AnimatePresence>
+
+      <ConfirmDialog
+        isOpen={showConfirm}
+        title={confirmAction?.type === 'delete' ? `Hapus ${config.title}` : `Simpan ${config.title}`}
+        message={confirmAction?.type === 'delete' 
+          ? `Apakah Anda yakin ingin menghapus data ${config.title} ini?` 
+          : `Apakah Anda yakin ingin menyimpan data ${config.title} ini?`}
+        onConfirm={executeConfirmAction}
+        onClose={() => setShowConfirm(false)}
+        confirmText={confirmAction?.type === 'delete' ? "Ya, Hapus" : "Ya, Simpan"}
+        cancelText="Batal"
+      />
     </div>
   );
 }

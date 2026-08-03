@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Store, User, ArrowLeft, Phone, MapPin, Tag, Package } from 'lucide-react';
+import { Store, User, ArrowLeft, Phone, MapPin, Tag, Package, Truck } from 'lucide-react';
 import { useUmkm } from '@/hooks/useUmkm';
 
 export default function UMKMDetail() {
@@ -105,15 +105,28 @@ export default function UMKMDetail() {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Deskripsi Usaha</h3>
-              <div className="prose prose-slate dark:prose-invert max-w-none prose-p:leading-relaxed">
-                {umkm.description ? (
-                  <p>{umkm.description}</p>
-                ) : (
-                  <p className="text-slate-500 italic">Belum ada deskripsi untuk usaha ini.</p>
-                )}
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Deskripsi Usaha</h3>
+                <div className="prose prose-slate dark:prose-invert max-w-none prose-p:leading-relaxed">
+                  {umkm.description ? (
+                    <p>{umkm.description}</p>
+                  ) : (
+                    <p className="text-slate-500 italic">Belum ada deskripsi untuk usaha ini.</p>
+                  )}
+                </div>
               </div>
+
+              {umkm.distribution && (
+                <div>
+                  <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+                    <Truck className="w-6 h-6 text-purple-500" /> Informasi Distribusi
+                  </h3>
+                  <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-2xl border border-purple-100 dark:border-purple-800/50">
+                    <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">{umkm.distribution}</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>

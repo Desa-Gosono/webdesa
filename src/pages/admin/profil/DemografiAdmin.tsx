@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -7,6 +7,7 @@ import { Users, Save } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { Button } from '@/components/ui/Button';
 import toast from 'react-hot-toast';
+import { ConfirmDialog } from '@/components/admin/ui/ConfirmDialog';
 
 const demografiSchema = z.object({
   rt: z.number().nullable(),
@@ -31,6 +32,8 @@ export default function DemografiAdmin() {
   const { useFetchProfile, useUpdateProfile } = useProfile();
   const { data: profile, isLoading } = useFetchProfile();
   const updateMutation = useUpdateProfile();
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [pendingData, setPendingData] = useState<DemografiFormValues | null>(null);
 
   const {
     register,
@@ -62,28 +65,37 @@ export default function DemografiAdmin() {
     }
   }, [profile, reset]);
 
-  const onSubmit = async (data: DemografiFormValues) => {
+  const onSubmit = (data: DemografiFormValues) => {
     if (!profile) return;
+    setPendingData(data);
+    setShowConfirm(true);
+  };
+
+  const handleConfirm = async () => {
+    if (!profile || !pendingData) return;
     try {
       const updates = {
-        rt: data.rt ?? undefined,
-        demografi_laki: data.demografi_laki ?? undefined,
-        demografi_perempuan: data.demografi_perempuan ?? undefined,
-        demografi_pend_belum_sekolah: data.demografi_pend_belum_sekolah ?? undefined,
-        demografi_pend_sd: data.demografi_pend_sd ?? undefined,
-        demografi_pend_smp: data.demografi_pend_smp ?? undefined,
-        demografi_pend_sma: data.demografi_pend_sma ?? undefined,
-        demografi_pend_sarjana: data.demografi_pend_sarjana ?? undefined,
-        demografi_pek_petani: data.demografi_pek_petani ?? undefined,
-        demografi_pek_wiraswasta: data.demografi_pek_wiraswasta ?? undefined,
-        demografi_pek_karyawan: data.demografi_pek_karyawan ?? undefined,
-        demografi_pek_pns: data.demografi_pek_pns ?? undefined,
-        demografi_pek_pelajar: data.demografi_pek_pelajar ?? undefined,
-        demografi_pek_lainnya: data.demografi_pek_lainnya ?? undefined,
+        rt: pendingData.rt ?? undefined,
+        demografi_laki: pendingData.demografi_laki ?? undefined,
+        demografi_perempuan: pendingData.demografi_perempuan ?? undefined,
+        demografi_pend_belum_sekolah: pendingData.demografi_pend_belum_sekolah ?? undefined,
+        demografi_pend_sd: pendingData.demografi_pend_sd ?? undefined,
+        demografi_pend_smp: pendingData.demografi_pend_smp ?? undefined,
+        demografi_pend_sma: pendingData.demografi_pend_sma ?? undefined,
+        demografi_pend_sarjana: pendingData.demografi_pend_sarjana ?? undefined,
+        demografi_pek_petani: pendingData.demografi_pek_petani ?? undefined,
+        demografi_pek_wiraswasta: pendingData.demografi_pek_wiraswasta ?? undefined,
+        demografi_pek_karyawan: pendingData.demografi_pek_karyawan ?? undefined,
+        demografi_pek_pns: pendingData.demografi_pek_pns ?? undefined,
+        demografi_pek_pelajar: pendingData.demografi_pek_pelajar ?? undefined,
+        demografi_pek_lainnya: pendingData.demografi_pek_lainnya ?? undefined,
       };
       await updateMutation.mutateAsync({ id: profile.id, updates });
     } catch (error) {
       // Error is handled by hook
+    } finally {
+      setShowConfirm(false);
+      setPendingData(null);
     }
   };
 
@@ -215,6 +227,15 @@ export default function DemografiAdmin() {
           </div>
         </form>
       </div>
+      <ConfirmDialog
+        isOpen={showConfirm}
+        title="Simpan Data Demografi"
+        message="Apakah Anda yakin ingin menyimpan perubahan pada data demografi desa?"
+        onConfirm={handleConfirm}
+        onClose={() => setShowConfirm(false)}
+        confirmText="Ya, Simpan"
+        cancelText="Batal"
+      />
     </div>
   );
 }

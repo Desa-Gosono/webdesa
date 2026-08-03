@@ -42,7 +42,7 @@ export function useNews() {
           toast.error(`Gagal memuat berita: ${error.message}`);
           throw error;
         }
-        return data as News[];
+        return data as unknown as News[];
       },
     });
   };

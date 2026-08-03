@@ -7,11 +7,13 @@ import { useOfficials, Official, InsertOfficial } from '@/hooks/useOfficials';
 import { uploadImage } from '@/utils/storage';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ConfirmDialog } from '@/components/admin/ui/ConfirmDialog';
 
 const officialSchema = z.object({
   name: z.string().min(3, 'Nama minimal 3 karakter'),
   position: z.string().min(3, 'Jabatan wajib diisi'),
   description: z.string().nullable(),
+  phone: z.string().nullable().optional(),
   order_number: z.number().min(0),
 });
 
@@ -28,6 +30,9 @@ export default function PerangkatDesaAdmin() {
   const [selectedOfficialId, setSelectedOfficialId] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<{type: 'delete' | 'save', id?: string, data?: OfficialFormValues} | null>(null);
 
   const {
     register,
@@ -45,7 +50,7 @@ export default function PerangkatDesaAdmin() {
     setSelectedOfficialId(null);
     setPhotoFile(null);
     setPhotoPreview(null);
-    reset({ name: '', position: '', description: '', order_number: 0 });
+    reset({ name: '', position: '', description: '', phone: '', order_number: 0 });
     setIsModalOpen(true);
   };
 
@@ -57,15 +62,15 @@ export default function PerangkatDesaAdmin() {
       name: official.name,
       position: official.position,
       description: official.description,
+      phone: official.phone || '',
       order_number: official.order_number,
     });
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Yakin ingin menghapus data ini?')) {
-      await deleteMutation.mutateAsync(id);
-    }
+  const handleDelete = (id: string) => {
+    setConfirmAction({ type: 'delete', id });
+    setShowConfirm(true);
   };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,30 +81,46 @@ export default function PerangkatDesaAdmin() {
     }
   };
 
-  const onSubmit = async (data: OfficialFormValues) => {
+  const onSubmit = (data: OfficialFormValues) => {
+    setConfirmAction({ type: 'save', data });
+    setShowConfirm(true);
+  };
+
+  const executeConfirmAction = async () => {
+    if (!confirmAction) return;
+
     try {
-      let photo_url = photoPreview; // keep existing if no new file
+      if (confirmAction.type === 'delete' && confirmAction.id) {
+        await deleteMutation.mutateAsync(confirmAction.id);
+      } else if (confirmAction.type === 'save' && confirmAction.data) {
+        const data = confirmAction.data;
+        let photo_url = photoPreview; // keep existing if no new file
 
-      if (photoFile) {
-        photo_url = await uploadImage(photoFile, 'officials');
+        if (photoFile) {
+          photo_url = await uploadImage(photoFile, 'officials');
+        }
+
+        const payload: InsertOfficial = {
+          name: data.name,
+          position: data.position,
+          description: data.description || null,
+          phone: data.phone || null,
+          order_number: data.order_number,
+          photo_url: photo_url || null,
+        };
+
+        if (selectedOfficialId) {
+          await updateMutation.mutateAsync({ id: selectedOfficialId, updates: payload });
+        } else {
+          await createMutation.mutateAsync(payload);
+        }
+        setIsModalOpen(false);
       }
-
-      const payload: InsertOfficial = {
-        name: data.name,
-        position: data.position,
-        description: data.description || null,
-        order_number: data.order_number,
-        photo_url: photo_url || null,
-      };
-
-      if (selectedOfficialId) {
-        await updateMutation.mutateAsync({ id: selectedOfficialId, updates: payload });
-      } else {
-        await createMutation.mutateAsync(payload);
-      }
-      setIsModalOpen(false);
     } catch (error: any) {
       toast.error(error.message || 'Gagal menyimpan data');
+    } finally {
+      setShowConfirm(false);
+      setConfirmAction(null);
     }
   };
 
@@ -150,6 +171,11 @@ export default function PerangkatDesaAdmin() {
                 <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full text-xs font-bold mt-2">
                   {official.position}
                 </span>
+                {official.phone && (
+                  <div className="mt-3 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                    📞 {official.phone}
+                  </div>
+                )}
                 {official.description && <p className="text-sm text-slate-500 mt-3 line-clamp-3">{official.description}</p>}
                 <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 w-full text-xs text-slate-400 font-medium">
                   Urutan: {official.order_number}
@@ -208,6 +234,11 @@ export default function PerangkatDesaAdmin() {
                 </div>
                 
                 <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">No. HP / WhatsApp (Opsional)</label>
+                  <input {...register('phone')} className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-emerald-500 text-slate-700 dark:text-slate-200" placeholder="Contoh: 081234567890" />
+                </div>
+
+                <div>
                   <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">No. Urut (Untuk Urutan Tampil)</label>
                   <input type="number" {...register('order_number', { valueAsNumber: true })} className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-emerald-500 text-slate-700 dark:text-slate-200" />
                 </div>
@@ -228,6 +259,18 @@ export default function PerangkatDesaAdmin() {
           </div>
         )}
       </AnimatePresence>
+
+      <ConfirmDialog
+        isOpen={showConfirm}
+        title={confirmAction?.type === 'delete' ? "Hapus Perangkat" : "Simpan Perangkat"}
+        message={confirmAction?.type === 'delete' 
+          ? "Apakah Anda yakin ingin menghapus data perangkat desa ini?" 
+          : "Apakah Anda yakin ingin menyimpan data perangkat desa ini?"}
+        onConfirm={executeConfirmAction}
+        onClose={() => setShowConfirm(false)}
+        confirmText={confirmAction?.type === 'delete' ? "Ya, Hapus" : "Ya, Simpan"}
+        cancelText="Batal"
+      />
     </div>
   );
 }

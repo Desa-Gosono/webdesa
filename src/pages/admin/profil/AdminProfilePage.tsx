@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { User, Lock, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { ConfirmDialog } from '@/components/admin/ui/ConfirmDialog';
 
 export default function AdminProfilePage() {
   const { user } = useAuthStore();
@@ -14,6 +15,9 @@ export default function AdminProfilePage() {
     confirmPassword: ''
   });
 
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<'profile' | 'password' | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -23,12 +27,8 @@ export default function AdminProfilePage() {
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      toast.success('Profil berhasil diperbarui');
-      setIsSubmitting(false);
-    }, 1000);
+    setConfirmAction('profile');
+    setShowConfirm(true);
   };
 
   const handleChangePassword = (e: React.FormEvent) => {
@@ -42,18 +42,35 @@ export default function AdminProfilePage() {
       return;
     }
     
+    setConfirmAction('password');
+    setShowConfirm(true);
+  };
+
+  const handleConfirm = () => {
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      toast.success('Password berhasil diubah');
-      setFormData({
-        ...formData,
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      });
-      setIsSubmitting(false);
-    }, 1000);
+    setShowConfirm(false);
+    
+    if (confirmAction === 'profile') {
+      // Simulate API call
+      setTimeout(() => {
+        toast.success('Profil berhasil diperbarui');
+        setIsSubmitting(false);
+        setConfirmAction(null);
+      }, 1000);
+    } else if (confirmAction === 'password') {
+      // Simulate API call
+      setTimeout(() => {
+        toast.success('Password berhasil diubah');
+        setFormData(prev => ({
+          ...prev,
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        }));
+        setIsSubmitting(false);
+        setConfirmAction(null);
+      }, 1000);
+    }
   };
 
   return (
@@ -179,6 +196,21 @@ export default function AdminProfilePage() {
           </div>
         </div>
       </div>
+      
+      <ConfirmDialog
+        isOpen={showConfirm}
+        title={confirmAction === 'profile' ? "Simpan Profil" : "Ubah Password"}
+        message={confirmAction === 'profile' 
+          ? "Apakah Anda yakin ingin menyimpan perubahan profil admin ini?" 
+          : "Apakah Anda yakin ingin mengubah password admin ini?"}
+        onConfirm={handleConfirm}
+        onClose={() => {
+          setShowConfirm(false);
+          setConfirmAction(null);
+        }}
+        confirmText="Ya, Simpan"
+        cancelText="Batal"
+      />
     </div>
   );
 }

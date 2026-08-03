@@ -83,7 +83,7 @@ export default function ProfilPage() {
 
 
         {/* Submenu / Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
+        <div className="flex overflow-x-auto hide-scrollbar md:flex-wrap md:justify-center gap-3 mb-10 pb-2 -mx-4 px-4 md:mx-0 md:px-0">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -91,8 +91,8 @@ export default function ProfilPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all shadow-sm border ${isActive
-                  ? 'bg-emerald-600 text-white border-emerald-600 ring-2 ring-emerald-600 ring-offset-2'
+                className={`flex-shrink-0 flex items-center gap-2 px-5 md:px-6 py-2.5 md:py-3 rounded-full font-semibold transition-all shadow-sm border text-sm md:text-base ${isActive
+                  ? 'bg-emerald-600 text-white border-emerald-600 ring-2 ring-emerald-600 ring-offset-1 md:ring-offset-2'
                   : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 border-slate-200'
                   }`}
               >
@@ -110,7 +110,14 @@ export default function ProfilPage() {
                 <h2 className="font-display text-2xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
                   <BookOpen className="text-emerald-500" /> Sejarah Desa
                 </h2>
-                <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 prose-p:leading-relaxed text-justify">
+                <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 prose-p:leading-relaxed text-justify clearfix">
+                  {settings.history_image && (
+                    <img
+                      src={settings.history_image}
+                      alt="Sejarah Desa"
+                      className="float-right w-full sm:w-1/3 min-w-[250px] rounded-2xl ml-0 sm:ml-6 mb-4 mt-2 shadow-md border border-slate-100 dark:border-slate-700 object-cover"
+                    />
+                  )}
                   {profile?.history ? (
                     <div dangerouslySetInnerHTML={{ __html: profile.history.replace(/\n/g, '<br/>') }} />
                   ) : (
@@ -131,7 +138,7 @@ export default function ProfilPage() {
                     Visi
                   </h3>
                   {profile?.vision ? (
-                    <div className="p-6 bg-slate-50 dark:bg-slate-900/50 rounded-2xl italic font-medium text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-500 text-lg">
+                    <div className="px-6 py-3 mt-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl italic font-medium text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-500 text-lg text-center">
                       "{profile.vision}"
                     </div>
                   ) : (
