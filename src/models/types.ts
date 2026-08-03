@@ -22,6 +22,7 @@ export interface Profile extends BaseModel {
   website: string | null;
   logo_url: string | null;
   hero_image_url: string | null;
+  youtube_video_url?: string | null;
   mayor_name?: string | null;
   mayor_photo?: string | null;
   mayor_greeting?: string | null;

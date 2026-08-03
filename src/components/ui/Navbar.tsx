@@ -27,7 +27,8 @@ export function Navbar() {
     { to: "/posyandu", label: "Posyandu" },
     { to: "/kategori/potensi", label: "Potensi" },
     { to: "/kategori/galeri", label: "Galeri" },
-    { to: "/kategori/berita", label: "Berita" }
+    { to: "/kategori/berita", label: "Berita" },
+    { to: "/layanan", label: "Layanan" }
   ];
 
   return (
@@ -36,6 +37,7 @@ export function Navbar() {
         <div className="container mx-auto px-4 py-1.5 flex justify-between items-center">
           <LiveClockWeather />
           <div className="flex items-center gap-4 text-xs font-medium text-white/80">
+            <Link to="/layanan" className="hover:text-white transition-colors">Layanan Publik</Link>
             <Link to="/kontak" className="hover:text-white transition-colors">Kontak Desa</Link>
           </div>
         </div>
@@ -120,6 +122,9 @@ export function Navbar() {
                   </NavLink>
                 ))}
                 <div className="h-px bg-gray-200 dark:bg-gray-800 my-2" />
+                <Link to="/layanan" className="px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 rounded-xl">
+                  Layanan Publik
+                </Link>
                 <Link to="/kontak" className="px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 rounded-xl">
                   Kontak Desa
                 </Link>

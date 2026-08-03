@@ -10,6 +10,7 @@ interface PageHeroProps {
   illustrationUrl?: string;
   backgroundImage?: string;
   backgroundVideoUrl?: string;
+  children?: React.ReactNode;
 }
 
 export function PageHero({
@@ -18,7 +19,8 @@ export function PageHero({
   icon: Icon,
   illustrationUrl,
   backgroundImage,
-  backgroundVideoUrl
+  backgroundVideoUrl,
+  children
 }: PageHeroProps) {
   return (
     <>
@@ -75,6 +77,11 @@ export function PageHero({
                 <p className="mt-4 text-sm sm:text-base leading-relaxed text-white/90 max-w-xl text-center drop-shadow-md">
                   {description}
                 </p>
+              )}
+              {children && (
+                <div className="mt-6">
+                  {children}
+                </div>
               )}
             </motion.div>
           </div>

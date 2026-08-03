@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageHero } from '@/components/ui/PageHero';
-import { Building2, Map, BookOpen, Target, MapPin, Users } from 'lucide-react';
+import { Building2, Map, BookOpen, Target, MapPin, Users, Play, X } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { useFacilities } from '@/hooks/useFacilities';
 import { Link } from 'react-router-dom';
@@ -18,6 +18,28 @@ export default function ProfilPage() {
   const { data: facilities = [], isLoading: isLoadingFacilities } = useFetchFacilities();
 
   const [activeTab, setActiveTab] = useState('sejarah');
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+
+  React.useEffect(() => {
+    if (profile?.youtube_video_url) {
+      setIsVideoOpen(true);
+    }
+  }, [profile?.youtube_video_url]);
+
+  const getEmbedUrl = (url: string) => {
+    try {
+      const parsedUrl = new URL(url);
+      let videoId = '';
+      if (parsedUrl.hostname.includes('youtube.com')) {
+        videoId = parsedUrl.searchParams.get('v') || '';
+      } else if (parsedUrl.hostname.includes('youtu.be')) {
+        videoId = parsedUrl.pathname.slice(1);
+      }
+      return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
+    } catch {
+      return url;
+    }
+  };
 
   if (isLoading) {
     return (
@@ -45,6 +67,17 @@ export default function ProfilPage() {
         backgroundVideoUrl={settings.bg_profil?.endsWith('.mp4') ? settings.bg_profil : undefined}
         illustrationUrl={settings.ill_profil}
       />
+
+      {/* Floating Video Button */}
+      {profile?.youtube_video_url && (
+        <button
+          onClick={() => setIsVideoOpen(true)}
+          className="absolute top-28 right-4 md:right-8 z-40 px-4 py-2 bg-red-600/90 hover:bg-red-600 text-white backdrop-blur-md rounded-full text-xs font-bold flex items-center gap-1.5 transition-all shadow-lg shadow-red-600/30 border border-red-500/50 hover:scale-105"
+        >
+          <Play className="w-3.5 h-3.5 fill-current" /> Video Profil
+        </button>
+      )}
+
       <div className="container mx-auto px-4 py-12 relative z-10 flex-grow">
 
 
@@ -134,7 +167,7 @@ export default function ProfilPage() {
             {activeTab === 'demografi' && (
               <motion.div key="demografi" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="w-full space-y-6">
                 <VillageStats variant="card" />
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
 
@@ -317,6 +350,39 @@ export default function ProfilPage() {
           </AnimatePresence>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isVideoOpen && profile?.youtube_video_url && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsVideoOpen(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video z-10 border border-slate-800"
+            >
+              <button
+                onClick={() => setIsVideoOpen(false)}
+                className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-red-600 text-white rounded-full transition-colors backdrop-blur-md"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <iframe
+                src={getEmbedUrl(profile.youtube_video_url)}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

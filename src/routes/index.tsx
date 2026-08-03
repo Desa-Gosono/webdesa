@@ -18,6 +18,7 @@ const KontakPage = lazy(() => import('@/pages/contact/KontakPage'));
 const FaqPage = lazy(() => import('@/pages/contact/FaqPage'));
 const PengelolaanSampahPage = lazy(() => import('@/pages/program/PengelolaanSampahPage'));
 const PosyanduPage = lazy(() => import('@/pages/program/PosyanduPage'));
+const LayananPage = lazy(() => import('@/pages/program/LayananPage'));
 
 // Auth Pages
 const LoginPage = lazy(() => import('@/pages/auth/LoginPage'));
@@ -32,6 +33,7 @@ const DashboardAdminPage = lazy(() => import('@/pages/admin/dashboard/DashboardA
 const ProfilDesaAdmin = lazy(() => import('@/pages/admin/profil/ProfilDesaAdmin'));
 const PerangkatDesaAdmin = lazy(() => import('@/pages/admin/pemerintahan/PerangkatDesaAdmin'));
 const DemografiAdmin = lazy(() => import('@/pages/admin/profil/DemografiAdmin'));
+const AdminProfilePage = lazy(() => import('@/pages/admin/profil/AdminProfilePage'));
 
 const PengaturanAdmin = lazy(() => import('@/pages/admin/pengaturan/PengaturanAdmin'));
 
@@ -55,6 +57,7 @@ export const router = createBrowserRouter([
       { path: 'faq', element: <FaqPage /> },
       { path: 'pengelolaan-sampah', element: <PengelolaanSampahPage /> },
       { path: 'posyandu', element: <PosyanduPage /> },
+      { path: 'layanan', element: <LayananPage /> },
       { path: '*', element: <NotFoundPage /> }
     ]
   },
@@ -85,6 +88,7 @@ export const router = createBrowserRouter([
 
           // Pengaturan
           { path: 'pengaturan', element: <PengaturanAdmin /> },
+          { path: 'akun', element: <AdminProfilePage /> },
 
           { path: '*', element: <NotFoundPage /> }
         ]

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Save, Image as ImageIcon, Link as LinkIcon, MapPin, Phone, Mail, Globe } from 'lucide-react';
+import { Save, Image as ImageIcon, Link as LinkIcon, MapPin, Phone, Mail, Globe, Video } from 'lucide-react';
 import { useProfile, UpdateProfile } from '@/hooks/useProfile';
 import { uploadImage } from '@/utils/storage';
 import toast from 'react-hot-toast';
@@ -13,20 +13,20 @@ const profileSchema = z.object({
   district: z.string().min(3, 'Kecamatan wajib diisi'),
   regency: z.string().min(3, 'Kabupaten wajib diisi'),
   province: z.string().min(3, 'Provinsi wajib diisi'),
-  description: z.string().nullable(),
-  history: z.string().nullable(),
-  vision: z.string().nullable(),
-  mission: z.string().nullable(),
-  address: z.string().nullable(),
-  phone: z.string().nullable(),
-  email: z.string().email('Email tidak valid').or(z.literal('')).nullable(),
-  website: z.string().url('URL tidak valid').or(z.literal('')).nullable(),
-  mayor_name: z.string().nullable(),
-  mayor_greeting: z.string().nullable(),
-  population: z.number().nullable(),
-  families: z.number().nullable(),
-  area: z.number().nullable(),
-  hamlets: z.number().nullable(),
+  history: z.string().nullable().optional(),
+  vision: z.string().nullable().optional(),
+  mission: z.string().nullable().optional(),
+  address: z.string().nullable().optional(),
+  phone: z.string().nullable().optional(),
+  email: z.string().email('Email tidak valid').or(z.literal('')).nullable().optional(),
+  website: z.string().url('URL tidak valid').or(z.literal('')).nullable().optional(),
+  youtube_video_url: z.string().url('URL YouTube tidak valid').or(z.literal('')).nullable().optional(),
+  mayor_name: z.string().nullable().optional(),
+  mayor_greeting: z.string().nullable().optional(),
+  population: z.number().nullable().optional(),
+  families: z.number().nullable().optional(),
+  area: z.number().nullable().optional(),
+  hamlets: z.number().nullable().optional(),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -57,24 +57,24 @@ export default function ProfilDesaAdmin() {
   useEffect(() => {
     if (profile) {
       reset({
-        village_name: profile.village_name,
-        district: profile.district,
-        regency: profile.regency,
-        province: profile.province,
-        description: profile.description,
-        history: profile.history,
-        vision: profile.vision,
-        mission: profile.mission,
-        address: profile.address,
-        phone: profile.phone,
-        email: profile.email,
-        website: profile.website,
-        mayor_name: profile.mayor_name,
-        mayor_greeting: profile.mayor_greeting,
-        population: profile.population,
-        families: profile.families,
-        area: profile.area,
-        hamlets: profile.hamlets,
+        village_name: profile.village_name || '',
+        district: profile.district || '',
+        regency: profile.regency || '',
+        province: profile.province || '',
+        history: profile.history || null,
+        vision: profile.vision || null,
+        mission: profile.mission || null,
+        address: profile.address || null,
+        phone: profile.phone || null,
+        email: profile.email || null,
+        website: profile.website || null,
+        youtube_video_url: profile.youtube_video_url || null,
+        mayor_name: profile.mayor_name || null,
+        mayor_greeting: profile.mayor_greeting || null,
+        population: profile.population || null,
+        families: profile.families || null,
+        area: profile.area || null,
+        hamlets: profile.hamlets || null,
       });
     }
   }, [profile, reset]);
@@ -82,12 +82,13 @@ export default function ProfilDesaAdmin() {
   const onSubmit = async (data: ProfileFormValues) => {
     if (!profile) return;
     try {
+      const { description, ...restData } = data as any;
       const updates = {
-        ...data,
-        population: data.population ?? undefined,
-        families: data.families ?? undefined,
-        area: data.area ?? undefined,
-        hamlets: data.hamlets ?? undefined,
+        ...restData,
+        population: restData.population ?? undefined,
+        families: restData.families ?? undefined,
+        area: restData.area ?? undefined,
+        hamlets: restData.hamlets ?? undefined,
       };
       await updateMutation.mutateAsync({ id: profile.id, updates });
     } catch (error) {
@@ -198,6 +199,16 @@ export default function ProfilDesaAdmin() {
 
         {/* Text Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {Object.keys(errors).length > 0 && (
+            <div className="p-4 bg-rose-50 text-rose-600 rounded-xl text-sm mb-4 border border-rose-200">
+              <p className="font-bold mb-1">Tidak dapat menyimpan karena ada isian yang tidak valid:</p>
+              <ul className="list-disc pl-5">
+                {Object.entries(errors).map(([key, err]) => (
+                  <li key={key}>{key}: {err?.message?.toString() || 'Data tidak valid'}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             {isGeneral && (
@@ -271,6 +282,11 @@ export default function ProfilDesaAdmin() {
             <div className="md:col-span-2">
               <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Globe className="w-4 h-4"/> Website Terkait (Opsional)</label>
               <input {...register('website')} type="url" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Video className="w-4 h-4"/> Link Video YouTube (Opsional)</label>
+              <input {...register('youtube_video_url')} type="url" placeholder="Contoh: https://www.youtube.com/watch?v=..." className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
             </div>
 
             <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">

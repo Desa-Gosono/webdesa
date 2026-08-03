@@ -17,9 +17,9 @@ export function PublicLayout() {
     <div className="flex flex-col min-h-screen relative transition-colors duration-300">
       {/* Global Anti-Gravity Background */}
       <div className="fixed inset-0 z-[-1]">
-        <img 
-          src="https://images.unsplash.com/photo-1592651036329-87a3233827ec?auto=format&fit=crop&w=2000&q=80" 
-          alt="Village Background" 
+        <img
+          src="https://images.unsplash.com/photo-1592651036329-87a3233827ec?auto=format&fit=crop&w=2000&q=80"
+          alt="Village Background"
           className="w-full h-full object-cover opacity-40 dark:opacity-20"
         />
         <div className="absolute inset-0 bg-white/70 dark:bg-gray-950/80 backdrop-blur-md" />
@@ -35,17 +35,17 @@ export function PublicLayout() {
           <Outlet />
         </Suspense>
       </main>
-      
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white mt-auto pt-16 pb-8">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            
+
             {/* Column 1: Info */}
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-16 bg-white rounded-md p-1 flex items-center justify-center">
-                   <img src={logoDesa} alt="Logo Desa" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                  <img src={logoDesa} alt="Logo Desa" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
                 </div>
                 <div>
                   <h3 className="font-bold text-xl">{settings.website_name || 'Desa Gosono'}</h3>
@@ -55,7 +55,7 @@ export function PublicLayout() {
               <p className="text-gray-400 text-sm leading-relaxed pr-8">
                 {settings.footer_description || 'Portal resmi Pemerintah Desa Gosono. Bersama membangun desa yang mandiri, bersih, dan berdaya saing untuk generasi mendatang.'}
               </p>
-              
+
               <div className="flex gap-4">
                 <a href={settings.facebook_url || '#'} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
                   <FaFacebookF className="w-4 h-4 text-gray-300" />
@@ -93,13 +93,13 @@ export function PublicLayout() {
               </ul>
             </div>
           </div>
-          
+
           <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
             <p>
               {settings.footer_copyright || '© 2026 Pemerintah Desa Gosono. Semua hak cipta dilindungi.'}
             </p>
             <p>
-              Gosono Digital Village — KKN Universitas
+              Gosono Digital Village — KKN Teknik Komputer
             </p>
           </div>
         </div>

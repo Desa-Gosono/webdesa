@@ -545,7 +545,8 @@ export default function PengaturanAdmin() {
                     { id: 'peta', title: 'Peta WebGIS' },
                     { id: 'kontak', title: 'Kontak & FAQ' },
                     { id: 'pengelolaan_sampah', title: 'Pengelolaan Sampah' },
-                    { id: 'posyandu', title: 'Posyandu' }
+                    { id: 'posyandu', title: 'Posyandu' },
+                    { id: 'layanan', title: 'Layanan Masyarakat' }
                   ].map((page) => (
                     <div key={page.id} className="border border-slate-200 dark:border-slate-700 rounded-xl p-6 bg-slate-50 dark:bg-slate-800/30">
                       <h4 className="font-bold text-lg text-slate-800 dark:text-white mb-4 border-b pb-2 dark:border-slate-700">{page.title}</h4>

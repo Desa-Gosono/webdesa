@@ -45,9 +45,9 @@ export const Topbar: React.FC<TopbarProps> = ({ setSidebarOpen }) => {
             <p className="text-sm font-semibold text-gray-700 dark:text-slate-200">Admin</p>
             <p className="text-xs text-gray-500 dark:text-slate-400">{user?.email || 'Superadmin'}</p>
           </div>
-          <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+          <Link to="/admin/akun" className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-800/50 transition-colors" title="Profil Admin">
             <User className="w-5 h-5" />
-          </div>
+          </Link>
           <button 
             onClick={handleLogout}
             className="p-2 rounded-md text-gray-500 hover:bg-red-50 hover:text-red-600 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-400 transition-colors ml-2" 
