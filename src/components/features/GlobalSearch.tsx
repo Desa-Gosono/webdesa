@@ -11,9 +11,7 @@ const searchableItems = [
   { title: 'Potensi UMKM', type: 'potensi', path: '/kategori/umkm', icon: <Briefcase className="w-4 h-4" /> },
   { title: 'Galeri Foto & Video', type: 'halaman', path: '/kategori/galeri', icon: <ImageIcon className="w-4 h-4" /> },
   { title: 'Berita Terbaru', type: 'halaman', path: '/kategori/berita', icon: <Newspaper className="w-4 h-4" /> },
-  { title: 'Peta Desa', type: 'halaman', path: '/peta', icon: <Map className="w-4 h-4" /> },
   { title: 'Kontak', type: 'halaman', path: '/kontak', icon: <Phone className="w-4 h-4" /> },
-  { title: 'FAQ', type: 'halaman', path: '/faq', icon: <HelpCircle className="w-4 h-4" /> },
 ];
 
 export function GlobalSearch({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {

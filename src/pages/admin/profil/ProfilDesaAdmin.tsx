@@ -29,6 +29,10 @@ const profileSchema = z.object({
   families: z.number().nullable().optional(),
   area: z.number().nullable().optional(),
   hamlets: z.number().nullable().optional(),
+  batas_utara: z.string().nullable().optional(),
+  batas_timur: z.string().nullable().optional(),
+  batas_selatan: z.string().nullable().optional(),
+  batas_barat: z.string().nullable().optional(),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -37,7 +41,7 @@ export default function ProfilDesaAdmin() {
   const { useFetchProfile, useUpdateProfile } = useProfile();
   const { data: profile, isLoading: isProfileLoading } = useFetchProfile();
   const updateMutation = useUpdateProfile();
-  
+
   const { useFetchSettings, useUpdateSettings } = useSettings();
   const { data: settingsList, isLoading: isSettingsLoading } = useFetchSettings();
   const updateSettingsMutation = useUpdateSettings();
@@ -45,7 +49,7 @@ export default function ProfilDesaAdmin() {
   const historyImageSetting = settingsList?.find(s => s.key === 'history_image')?.value || null;
 
   const location = useLocation();
-  
+
   const isSejarah = location.pathname.includes('/sejarah');
   const isVisiMisi = location.pathname.includes('/visi-misi');
   const isGeneral = !isSejarah && !isVisiMisi;
@@ -54,9 +58,9 @@ export default function ProfilDesaAdmin() {
   const [isUploadingHero, setIsUploadingHero] = useState(false);
   const [isUploadingMayor, setIsUploadingMayor] = useState(false);
   const [isUploadingHistory, setIsUploadingHistory] = useState(false);
-  
+
   const [showConfirm, setShowConfirm] = useState(false);
-  const [confirmAction, setConfirmAction] = useState<{type: 'save' | 'delete_image', field?: string, data?: ProfileFormValues} | null>(null);
+  const [confirmAction, setConfirmAction] = useState<{ type: 'save' | 'delete_image', field?: string, data?: ProfileFormValues } | null>(null);
 
   const {
     register,
@@ -88,6 +92,10 @@ export default function ProfilDesaAdmin() {
         families: profile.families || null,
         area: profile.area || null,
         hamlets: profile.hamlets || null,
+        batas_utara: profile.batas_utara || null,
+        batas_timur: profile.batas_timur || null,
+        batas_selatan: profile.batas_selatan || null,
+        batas_barat: profile.batas_barat || null,
       });
     }
   }, [profile, reset]);
@@ -100,7 +108,7 @@ export default function ProfilDesaAdmin() {
 
   const handleConfirm = async () => {
     if (!confirmAction || !profile) return;
-    
+
     if (confirmAction.type === 'save' && confirmAction.data) {
       try {
         const updates = {
@@ -109,6 +117,10 @@ export default function ProfilDesaAdmin() {
           families: confirmAction.data.families ?? undefined,
           area: confirmAction.data.area ?? undefined,
           hamlets: confirmAction.data.hamlets ?? undefined,
+          batas_utara: confirmAction.data.batas_utara ?? undefined,
+          batas_timur: confirmAction.data.batas_timur ?? undefined,
+          batas_selatan: confirmAction.data.batas_selatan ?? undefined,
+          batas_barat: confirmAction.data.batas_barat ?? undefined,
         };
         await updateMutation.mutateAsync({ id: profile.id, updates });
       } catch (error) {
@@ -121,33 +133,33 @@ export default function ProfilDesaAdmin() {
         await updateMutation.mutateAsync({ id: profile.id, updates: { [confirmAction.field]: null } });
       }
     }
-    
+
     setShowConfirm(false);
     setConfirmAction(null);
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'logo_url' | 'hero_image_url' | 'mayor_photo' | 'history_image') => {
     if (!e.target.files || e.target.files.length === 0 || !profile) return;
-    
+
     const file = e.target.files[0];
-    const setUploading = field === 'logo_url' ? setIsUploadingLogo : 
-                         field === 'hero_image_url' ? setIsUploadingHero : 
-                         field === 'history_image' ? setIsUploadingHistory :
-                         setIsUploadingMayor;
-    
+    const setUploading = field === 'logo_url' ? setIsUploadingLogo :
+      field === 'hero_image_url' ? setIsUploadingHero :
+        field === 'history_image' ? setIsUploadingHistory :
+          setIsUploadingMayor;
+
     setUploading(true);
     try {
       const url = await uploadImage(file, 'profile');
-      
+
       if (field === 'history_image') {
         await updateSettingsMutation.mutateAsync([{ key: 'history_image', value: url }]);
       } else {
-        await updateMutation.mutateAsync({ 
-          id: profile.id, 
-          updates: { [field]: url } 
+        await updateMutation.mutateAsync({
+          id: profile.id,
+          updates: { [field]: url }
         });
       }
-      
+
       toast.success(`${field === 'logo_url' ? 'Logo' : field === 'hero_image_url' ? 'Hero Image' : field === 'history_image' ? 'Gambar Sejarah' : 'Foto Kepala Desa'} berhasil diupload!`);
     } catch (error: any) {
       toast.error(error.message);
@@ -174,71 +186,71 @@ export default function ProfilDesaAdmin() {
         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">
           {isGeneral ? 'Informasi Umum' : isSejarah ? 'Sejarah Desa' : 'Visi & Misi'}
         </h2>
-        
+
         {/* Media Uploads - Only show on general info */}
         {isGeneral && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Logo */}
-          <div className="p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-center gap-4 bg-slate-50 dark:bg-slate-900/50">
-            <div className="w-32 h-32 rounded-xl bg-white dark:bg-slate-800 shadow-sm overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700">
-              {profile.logo_url ? (
-                <img src={profile.logo_url} alt="Logo" className="w-full h-full object-contain p-2" />
-              ) : (
-                <ImageIcon className="w-8 h-8 text-slate-400" />
-              )}
+            {/* Logo */}
+            <div className="p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-center gap-4 bg-slate-50 dark:bg-slate-900/50">
+              <div className="w-32 h-32 rounded-xl bg-white dark:bg-slate-800 shadow-sm overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                {profile.logo_url ? (
+                  <img src={profile.logo_url} alt="Logo" className="w-full h-full object-contain p-2" />
+                ) : (
+                  <ImageIcon className="w-8 h-8 text-slate-400" />
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Logo Desa</p>
+                <p className="text-xs text-slate-500 mb-3">Format: JPG, PNG, WEBP. Maks 5MB.</p>
+                <label className="cursor-pointer bg-sky-100 hover:bg-sky-200 text-sky-600 dark:bg-sky-900/40 dark:text-sky-400 px-4 py-2 rounded-xl text-sm font-bold transition-colors inline-block">
+                  {isUploadingLogo ? 'Mengunggah...' : 'Pilih Logo'}
+                  <input type="file" className="hidden" accept="image/jpeg,image/png,image/webp" onChange={(e) => handleImageUpload(e, 'logo_url')} disabled={isUploadingLogo} />
+                </label>
+                {profile.logo_url && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setConfirmAction({ type: 'delete_image', field: 'logo_url' });
+                      setShowConfirm(true);
+                    }}
+                    className="ml-3 text-sm font-bold text-rose-500 hover:text-rose-600 px-4 py-2"
+                  >
+                    Hapus
+                  </button>
+                )}
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Logo Desa</p>
-              <p className="text-xs text-slate-500 mb-3">Format: JPG, PNG, WEBP. Maks 5MB.</p>
-              <label className="cursor-pointer bg-sky-100 hover:bg-sky-200 text-sky-600 dark:bg-sky-900/40 dark:text-sky-400 px-4 py-2 rounded-xl text-sm font-bold transition-colors inline-block">
-                {isUploadingLogo ? 'Mengunggah...' : 'Pilih Logo'}
-                <input type="file" className="hidden" accept="image/jpeg,image/png,image/webp" onChange={(e) => handleImageUpload(e, 'logo_url')} disabled={isUploadingLogo} />
-              </label>
-              {profile.logo_url && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setConfirmAction({ type: 'delete_image', field: 'logo_url' });
-                    setShowConfirm(true);
-                  }}
-                  className="ml-3 text-sm font-bold text-rose-500 hover:text-rose-600 px-4 py-2"
-                >
-                  Hapus
-                </button>
-              )}
-            </div>
-          </div>
 
 
-          {/* Mayor Photo */}
-          <div className="p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-center gap-4 bg-slate-50 dark:bg-slate-900/50">
-            <div className="w-32 h-32 rounded-xl bg-white dark:bg-slate-800 shadow-sm overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700">
-              {profile.mayor_photo ? (
-                <img src={profile.mayor_photo} alt="Kepala Desa" className="w-full h-full object-cover" />
-              ) : (
-                <ImageIcon className="w-8 h-8 text-slate-400" />
-              )}
-            </div>
-            <div>
-              <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Foto Kepala Desa</p>
-              <p className="text-xs text-slate-500 mb-3">Format: JPG, PNG, WEBP. Maks 5MB.</p>
-              <label className="cursor-pointer bg-sky-100 hover:bg-sky-200 text-sky-600 dark:bg-sky-900/40 dark:text-sky-400 px-4 py-2 rounded-xl text-sm font-bold transition-colors inline-block">
-                {isUploadingMayor ? 'Mengunggah...' : 'Pilih Foto Kades'}
-                <input type="file" className="hidden" accept="image/jpeg,image/png,image/webp" onChange={(e) => handleImageUpload(e, 'mayor_photo')} disabled={isUploadingMayor} />
-              </label>
-              {profile.mayor_photo && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setConfirmAction({ type: 'delete_image', field: 'mayor_photo' });
-                    setShowConfirm(true);
-                  }}
-                  className="ml-3 text-sm font-bold text-rose-500 hover:text-rose-600 px-4 py-2"
-                >
-                  Hapus
-                </button>
-              )}
-            </div>
+            {/* Mayor Photo */}
+            <div className="p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-center gap-4 bg-slate-50 dark:bg-slate-900/50">
+              <div className="w-32 h-32 rounded-xl bg-white dark:bg-slate-800 shadow-sm overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                {profile.mayor_photo ? (
+                  <img src={profile.mayor_photo} alt="Kepala Desa" className="w-full h-full object-cover" />
+                ) : (
+                  <ImageIcon className="w-8 h-8 text-slate-400" />
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Foto Kepala Desa</p>
+                <p className="text-xs text-slate-500 mb-3">Format: JPG, PNG, WEBP. Maks 5MB.</p>
+                <label className="cursor-pointer bg-sky-100 hover:bg-sky-200 text-sky-600 dark:bg-sky-900/40 dark:text-sky-400 px-4 py-2 rounded-xl text-sm font-bold transition-colors inline-block">
+                  {isUploadingMayor ? 'Mengunggah...' : 'Pilih Foto Kades'}
+                  <input type="file" className="hidden" accept="image/jpeg,image/png,image/webp" onChange={(e) => handleImageUpload(e, 'mayor_photo')} disabled={isUploadingMayor} />
+                </label>
+                {profile.mayor_photo && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setConfirmAction({ type: 'delete_image', field: 'mayor_photo' });
+                      setShowConfirm(true);
+                    }}
+                    className="ml-3 text-sm font-bold text-rose-500 hover:text-rose-600 px-4 py-2"
+                  >
+                    Hapus
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -256,33 +268,33 @@ export default function ProfilDesaAdmin() {
             </div>
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             {isGeneral && (
               <>
                 <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Desa</label>
-              <input {...register('village_name')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-              {errors.village_name && <p className="text-rose-500 text-xs mt-1">{errors.village_name.message}</p>}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Kecamatan</label>
-              <input {...register('district')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Desa</label>
+                  <input {...register('village_name')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                  {errors.village_name && <p className="text-rose-500 text-xs mt-1">{errors.village_name.message}</p>}
+                </div>
 
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Kabupaten / Kota</label>
-              <input {...register('regency')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Kecamatan</label>
+                  <input {...register('district')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Provinsi</label>
-              <input {...register('province')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Kabupaten / Kota</label>
+                  <input {...register('regency')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Provinsi</label>
+                  <input {...register('province')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
 
               </>
             )}
-            
+
             {isSejarah && (
               <div className="md:col-span-2 space-y-6">
                 <div>
@@ -341,67 +353,91 @@ export default function ProfilDesaAdmin() {
             {isGeneral && (
               <>
                 <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">
-              <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Informasi Kontak & Lokasi</h3>
-            </div>
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Informasi Kontak & Lokasi</h3>
+                </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><MapPin className="w-4 h-4"/> Alamat Lengkap</label>
-              <input {...register('address')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><MapPin className="w-4 h-4" /> Alamat Lengkap</label>
+                  <input {...register('address')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
 
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Phone className="w-4 h-4"/> Telepon / HP</label>
-              <input {...register('phone')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Mail className="w-4 h-4"/> Email</label>
-              <input {...register('email')} type="email" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Phone className="w-4 h-4" /> Telepon / HP</label>
+                  <input {...register('phone')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Globe className="w-4 h-4"/> Website Terkait (Opsional)</label>
-              <input {...register('website')} type="url" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Mail className="w-4 h-4" /> Email</label>
+                  <input {...register('email')} type="email" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Video className="w-4 h-4"/> Link Video YouTube (Opsional)</label>
-              <input {...register('youtube_video_url')} type="url" placeholder="Contoh: https://www.youtube.com/watch?v=..." className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Globe className="w-4 h-4" /> Website Terkait (Opsional)</label>
+                  <input {...register('website')} type="url" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
 
-            <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">
-              <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Sambutan Kepala Desa</h3>
-            </div>
-            
-            <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Kepala Desa</label>
-              <input {...register('mayor_name')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" placeholder="Nama Lengkap dan Gelar" />
-            </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2"><Video className="w-4 h-4" /> Link Video YouTube (Opsional)</label>
+                  <input {...register('youtube_video_url')} type="url" placeholder="Contoh: https://www.youtube.com/watch?v=..." className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Teks Sambutan</label>
-              <textarea {...register('mayor_greeting')} rows={4} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" placeholder="Tuliskan kata sambutan Kepala Desa di sini..." />
-            </div>
+                <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Batas Administratif Wilayah</h3>
+                </div>
 
-            <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">
-              <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Statistik Desa</h3>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Jumlah Penduduk</label>
-              <input type="number" {...register('population', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Jumlah Kepala Keluarga</label>
-              <input type="number" {...register('families', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Luas Wilayah (Hektar)</label>
-              <input type="number" step="0.01" {...register('area', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
-            </div>
-            
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Batas Sebelah Utara</label>
+                  <input {...register('batas_utara')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" placeholder="Contoh: Desa A, Kecamatan B" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Batas Sebelah Timur</label>
+                  <input {...register('batas_timur')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" placeholder="Contoh: Laut Jawa" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Batas Sebelah Selatan</label>
+                  <input {...register('batas_selatan')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" placeholder="Contoh: Hutan Lindung" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Batas Sebelah Barat</label>
+                  <input {...register('batas_barat')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" placeholder="Contoh: Sungai Kapuas" />
+                </div>
+
+                <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Sambutan Kepala Desa</h3>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Kepala Desa</label>
+                  <input {...register('mayor_name')} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" placeholder="Nama Lengkap dan Gelar" />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Teks Sambutan</label>
+                  <textarea {...register('mayor_greeting')} rows={4} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow resize-none" placeholder="Tuliskan kata sambutan Kepala Desa di sini..." />
+                </div>
+
+                <div className="md:col-span-2 pt-4 border-t border-slate-100 dark:border-slate-700">
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Statistik Desa</h3>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Jumlah Penduduk</label>
+                  <input type="number" {...register('population', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Jumlah Kepala Keluarga</label>
+                  <input type="number" {...register('families', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Luas Wilayah (Hektar)</label>
+                  <input type="number" step="0.01" {...register('area', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
+                </div>
+
                 <div>
                   <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Jumlah Dusun</label>
                   <input type="number" {...register('hamlets', { valueAsNumber: true })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700 dark:text-slate-200 transition-shadow" />
@@ -410,10 +446,10 @@ export default function ProfilDesaAdmin() {
             )}
 
           </div>
-          
+
           <div className="pt-6 flex justify-end">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={updateMutation.isPending}
               className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold shadow-lg shadow-emerald-500/30 flex items-center gap-2 transition-all disabled:opacity-50"
             >
@@ -430,8 +466,8 @@ export default function ProfilDesaAdmin() {
       <ConfirmDialog
         isOpen={showConfirm}
         title={confirmAction?.type === 'save' ? "Simpan Perubahan" : "Hapus Gambar"}
-        message={confirmAction?.type === 'save' 
-          ? "Apakah Anda yakin ingin menyimpan perubahan pada profil desa?" 
+        message={confirmAction?.type === 'save'
+          ? "Apakah Anda yakin ingin menyimpan perubahan pada profil desa?"
           : "Apakah Anda yakin ingin menghapus gambar ini?"}
         onConfirm={handleConfirm}
         onClose={() => setShowConfirm(false)}

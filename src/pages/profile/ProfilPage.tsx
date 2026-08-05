@@ -115,7 +115,7 @@ export default function ProfilPage() {
                     <img
                       src={settings.history_image}
                       alt="Sejarah Desa"
-                      className="float-right w-full sm:w-1/3 min-w-[250px] rounded-2xl ml-0 sm:ml-6 mb-4 mt-2 shadow-md border border-slate-100 dark:border-slate-700 object-cover"
+                      className="float-right w-full sm:w-2/5 min-w-[300px] rounded-2xl ml-0 sm:ml-6 mb-4 mt-2 shadow-md border border-slate-100 dark:border-slate-700 object-cover"
                     />
                   )}
                   {profile?.history ? (
@@ -166,8 +166,53 @@ export default function ProfilPage() {
             )}
 
             {activeTab === 'batas-wilayah' && (
-              <motion.div key="batas-wilayah" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="w-full -mt-12">
-                <VillageGISMap />
+              <motion.div key="batas-wilayah" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="w-full space-y-6">
+                <div className="px-2 md:px-4">
+                  <h3 className="text-xl font-bold mb-6 text-slate-800 dark:text-white flex items-center gap-2">
+                    <MapPin className="text-emerald-500" /> Batas Administratif
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Utara */}
+                    <div className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-all duration-300 group">
+                      <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">U</div>
+                      <div>
+                        <p className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-bold uppercase tracking-widest mb-0.5">Utara</p>
+                        <p className="font-semibold text-slate-800 dark:text-slate-200 text-sm line-clamp-2">{profile?.batas_utara || '-'}</p>
+                      </div>
+                    </div>
+                    
+                    {/* Timur */}
+                    <div className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-all duration-300 group">
+                      <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">T</div>
+                      <div>
+                        <p className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-bold uppercase tracking-widest mb-0.5">Timur</p>
+                        <p className="font-semibold text-slate-800 dark:text-slate-200 text-sm line-clamp-2">{profile?.batas_timur || '-'}</p>
+                      </div>
+                    </div>
+                    
+                    {/* Selatan */}
+                    <div className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-all duration-300 group">
+                      <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">S</div>
+                      <div>
+                        <p className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-bold uppercase tracking-widest mb-0.5">Selatan</p>
+                        <p className="font-semibold text-slate-800 dark:text-slate-200 text-sm line-clamp-2">{profile?.batas_selatan || '-'}</p>
+                      </div>
+                    </div>
+                    
+                    {/* Barat */}
+                    <div className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-all duration-300 group">
+                      <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">B</div>
+                      <div>
+                        <p className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-bold uppercase tracking-widest mb-0.5">Barat</p>
+                        <p className="font-semibold text-slate-800 dark:text-slate-200 text-sm line-clamp-2">{profile?.batas_barat || '-'}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="w-full">
+                  <VillageGISMap />
+                </div>
               </motion.div>
             )}
 

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight } from 'lucide-react';
 import { useSettingsContext } from '@/contexts/SettingsContext';
+import { useNavigate } from 'react-router-dom';
 
 interface HomeHeroProps {
   backgroundVideoUrl?: string;
@@ -11,6 +12,7 @@ interface HomeHeroProps {
 
 export function HomeHero({ backgroundVideoUrl, backgroundImage }: HomeHeroProps) {
   const { settings } = useSettingsContext();
+  const navigate = useNavigate();
   
   // Find bg_beranda as primary source, fallback to legacy hero_image, or default mixkit video
   const defaultBg = "https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-beautiful-green-landscape-4251-large.mp4";
@@ -38,7 +40,7 @@ export function HomeHero({ backgroundVideoUrl, backgroundImage }: HomeHeroProps)
           />
         )}
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 h-full flex items-center">
@@ -61,11 +63,11 @@ export function HomeHero({ backgroundVideoUrl, backgroundImage }: HomeHeroProps)
             {settings.hero_description || 'Menelusuri keindahan alam, kekayaan budaya, dan potensi ekonomi lokal yang terus berkembang di jantung Kabupaten Boyolali.'}
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="rounded-full shadow-xl shadow-primary-600/20" onClick={() => window.location.href = settings.cta_url || '/kategori/potensi'}>
-              {settings.cta_text || 'Jelajahi Potensi'} <ArrowRight className="ml-2 h-5 w-5" />
+            <Button size="lg" className="rounded-full shadow-xl shadow-primary-600/20" onClick={() => navigate(settings.cta_url || '/profil')}>
+              {settings.cta_text || 'Jelajahi Desa'} <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="glass" className="rounded-full text-white" onClick={() => window.location.href = '/kategori/galeri'}>
-              Galeri Desa
+            <Button size="lg" variant="glass" className="rounded-full text-white" onClick={() => navigate('/kategori/potensi')}>
+              Potensi Desa
             </Button>
           </div>
         </motion.div>

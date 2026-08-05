@@ -1,9 +1,9 @@
 export const desaData = {
   identitas: {
     nama: "Desa Gosono",
-    email: "info@gosono.desa.id",
-    telepon: "+62 812 3456 7890",
-    alamat: "Jl. Utama Desa Gosono No. 1",
+    email: "infososialgosono@gmail.com",
+    telepon: "+62..",
+    alamat: "Pucungan, Gosono.",
   },
   sejarah: `Desa Gosono telah berdiri sejak masa lampau dan terus berkembang menjadi desa yang berfokus pada kesejahteraan masyarakat dan inovasi. Pada awalnya, desa ini dibentuk oleh para perintis yang mengedepankan nilai gotong royong. Seiring berjalannya waktu, Desa Gosono telah mengalami berbagai transformasi, mulai dari pembangunan infrastruktur dasar hingga digitalisasi pelayanan desa. [Data lebih lengkap dapat diperbarui]`,
   geografi: {

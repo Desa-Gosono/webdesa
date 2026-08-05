@@ -33,6 +33,7 @@ type ServiceItem = {
   requirements: string[];
   formName?: string;
   formSub?: string;
+  formLink?: string;
 };
 
 type ServiceCategory = {
@@ -48,134 +49,99 @@ export default function LayananPage() {
   
   const categories: ServiceCategory[] = [
     {
-      id: 'admin-duk',
-      title: 'Layanan Administrasi Kependudukan',
-      icon: Users,
+      id: 'surat-keterangan',
+      title: 'Surat Keterangan',
+      icon: FileSignature,
       items: [
         {
-          id: 'akta-kelahiran',
-          title: 'Akta Kelahiran',
-          icon: Baby,
-          color: 'text-rose-500 bg-rose-50',
-          requirements: [
-            'Surat Keterangan Lahir dari Bidan/Rumah Sakit',
-            'Buku Nikah / Akta Perkawinan orang tua',
-            'Kartu Keluarga (KK) orang tua',
-            'KTP orang tua',
-            'KTP 2 orang saksi'
-          ],
-          formName: 'Formulir Akta Kelahiran',
-          formSub: 'F-2.01 Akta Kelahiran.docx'
-        },
-        {
-          id: 'akta-kematian',
-          title: 'Akta Kematian',
-          icon: FileMinus,
-          color: 'text-slate-500 bg-slate-100',
-          requirements: [
-            'Surat Keterangan Kematian dari RS/Dokter/Desa',
-            'KTP asli yang meninggal',
-            'Kartu Keluarga (KK) asli yang meninggal',
-            'KTP pelapor dan 2 orang saksi'
-          ],
-          formName: 'Formulir Akta Kematian',
-          formSub: 'F-2.29 Akta Kematian.docx'
-        },
-        {
-          id: 'pindah-keluar',
-          title: 'Surat Pindah Keluar',
-          icon: Truck,
-          color: 'text-orange-500 bg-orange-50',
-          requirements: [
-            'Kartu Keluarga (KK) asli',
-            'KTP asli pemohon',
-            'Alamat lengkap tujuan pindah',
-            'Pas foto 3x4 (2 lembar)'
-          ],
-          formName: 'Formulir Pindah WNI',
-          formSub: 'F-1.03 Formulir Pindah.docx'
-        },
-        {
-          id: 'pindah-datang',
-          title: 'Surat Pindah Datang',
+          id: 'sk-domisili-tinggal',
+          title: 'Keterangan Domisili Tempat Tinggal',
           icon: Home,
-          color: 'text-emerald-500 bg-emerald-50',
-          requirements: [
-            'Surat Keterangan Pindah WNI (SKPWNI) dari daerah asal',
-            'KTP asli',
-            'Kartu Keluarga (KK) yang dituju (jika menumpang)'
-          ]
-        },
-        {
-          id: 'ktp',
-          title: 'Kartu Tanda Penduduk (KTP)',
-          icon: CreditCard,
           color: 'text-blue-500 bg-blue-50',
           requirements: [
-            'Telah berusia 17 tahun / sudah menikah',
+            'Fotokopi KTP',
             'Fotokopi Kartu Keluarga (KK)',
             'Surat Pengantar dari RT/RW'
           ],
-          formName: 'Formulir Permohonan KTP',
-          formSub: 'F-1.21 Permohonan KTP.docx'
+          formName: 'Template Surat',
+          formSub: 'surat keterangan domisili tempat tinggal.docx',
+          formLink: 'https://docs.google.com/document/d/1gIZds03Sj2Yziom8Pk9iX2cgAPnufdaC/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
         },
         {
-          id: 'kk',
-          title: 'Kartu Keluarga (KK)',
-          icon: Users,
-          color: 'text-purple-500 bg-purple-50',
-          requirements: [
-            'Buku Nikah / Akta Perkawinan',
-            'KTP Suami dan Istri',
-            'Surat Keterangan Pindah (bagi penduduk pendatang)'
-          ],
-          formName: 'Formulir Permohonan KK',
-          formSub: 'F-1.15 Permohonan KK.docx'
-        },
-        {
-          id: 'dokumen-lain',
-          title: 'Dokumen Pendukung Lainnya',
-          icon: FolderOpen,
+          id: 'sk-domisili-usaha',
+          title: 'Keterangan Domisili Usaha',
+          icon: Briefcase,
           color: 'text-amber-500 bg-amber-50',
           requirements: [
-            'Persyaratan menyesuaikan dengan jenis dokumen yang diajukan',
-            'Membawa KTP asli pemohon',
-            'Membawa KK asli'
-          ]
+            'Fotokopi KTP Pemohon',
+            'Fotokopi Kartu Keluarga (KK)',
+            'Surat Pengantar dari RT/RW',
+            'Keterangan Jenis Usaha'
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat keterangan domisili usaha.docx',
+          formLink: 'https://docs.google.com/document/d/1zRNaF-wGAod50FyL8Rx8OwRwVuHeiJDd/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
+        },
+        {
+          id: 'sk-tidak-mampu',
+          title: 'Keterangan Tidak Mampu',
+          icon: FileMinus,
+          color: 'text-rose-500 bg-rose-50',
+          requirements: [
+            'Fotokopi KTP',
+            'Fotokopi Kartu Keluarga (KK)',
+            'Surat Pengantar dari RT/RW',
+            'Surat Pernyataan Tidak Mampu'
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat keterangan tidak mampu.docx',
+          formLink: 'https://docs.google.com/document/d/16rrYkjpMn0ISkplXMO6EBXk3_F_a0N_I/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
+        },
+        {
+          id: 'sk-usaha',
+          title: 'Keterangan Usaha',
+          icon: Briefcase,
+          color: 'text-emerald-500 bg-emerald-50',
+          requirements: [
+            'Fotokopi KTP',
+            'Fotokopi Kartu Keluarga (KK)',
+            'Surat Pengantar dari RT/RW'
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat keterangan usaha.docx',
+          formLink: 'https://docs.google.com/document/d/1IA-i9DpOMv3YFVDlMAaU1FhOTOxmuRBf/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
         }
       ]
     },
     {
-      id: 'surat-umum',
-      title: 'Surat Pengantar Umum',
+      id: 'surat-pemberitahuan',
+      title: 'Surat Pemberitahuan',
+      icon: Mail,
+      items: [
+        {
+          id: 'sp-individu',
+          title: 'Pemberitahuan (Keperluan Individu)',
+          icon: Users,
+          color: 'text-purple-500 bg-purple-50',
+          requirements: [
+            'Fotokopi KTP',
+            'Surat Pengantar dari RT/RW',
+            'Detail keperluan pemberitahuan'
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat pemberitahuan (keperluan individu).docx',
+          formLink: 'https://docs.google.com/document/d/1BFm2OAO9rukgDQ_Sf_LXRKFaNGQSdlqy/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
+        }
+      ]
+    },
+    {
+      id: 'surat-pengantar',
+      title: 'Surat Pengantar',
       icon: BookOpen,
       items: [
         {
-          id: 'pengantar-umum',
-          title: 'Surat Pengantar Umum',
-          icon: Mail,
-          color: 'text-sky-500 bg-sky-50',
-          requirements: [
-            'Surat Pengantar dari RT/RW',
-            'Fotokopi KTP',
-            'Fotokopi Kartu Keluarga (KK)'
-          ]
-        },
-        {
-          id: 'sktm',
-          title: 'Surat Keterangan Tidak Mampu (SKTM)',
-          icon: FileSignature,
-          color: 'text-teal-500 bg-teal-50',
-          requirements: [
-            'Surat Pengantar dari RT/RW',
-            'Fotokopi KTP',
-            'Fotokopi Kartu Keluarga (KK)',
-            'Surat Pernyataan Tidak Mampu yang diketahui RT/RW'
-          ]
-        },
-        {
-          id: 'skck',
-          title: 'Surat Keterangan Catatan Kepolisian (SKCK)',
+          id: 'sp-skck',
+          title: 'Pengantar Catatan Kepolisian (SKCK)',
           icon: Car,
           color: 'text-indigo-500 bg-indigo-50',
           requirements: [
@@ -183,22 +149,87 @@ export default function LayananPage() {
             'Fotokopi KTP',
             'Fotokopi Kartu Keluarga (KK)',
             'Fotokopi Akta Kelahiran'
-          ]
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat pengantar catatan kepolisian.docx',
+          formLink: 'https://docs.google.com/document/d/1mPhG7fngazcpACenJ9d6lFQQxJoC2_NO/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
         },
         {
-          id: 'tanpa-data',
-          title: 'Surat Tidak Punya Data Kependudukan',
-          icon: Search,
-          color: 'text-primary-700 bg-primary-50',
+          id: 'sp-izin-keramaian',
+          title: 'Pengantar Ijin Keramaian',
+          icon: Users,
+          color: 'text-orange-500 bg-orange-50',
           requirements: [
-            'Membawa KTP asli (jika ada) atau identitas lain yang dimiliki',
-            'Membawa Kartu Keluarga (KK)',
-            'Menyertakan keterangan dari RT/RW setempat',
-            'Mengisi formulir permohonan di kantor desa',
-            'Datang langsung ke kantor desa pada jam pelayanan'
+            'Surat Pengantar dari RT/RW',
+            'Fotokopi KTP Penanggung Jawab',
+            'Fotokopi Kartu Keluarga (KK)'
           ],
-          formName: 'Formulir Surat Tidak Punya Data Kependudukan',
-          formSub: 'F-2.01 Akta Kelahiran 2023.docx'
+          formName: 'Template Surat',
+          formSub: 'surat pengantar ijin keramaian.docx',
+          formLink: 'https://docs.google.com/document/d/1N4r5L_PJzYvOvTmzJMxNOlp5-_qZ7bGu/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
+        },
+        {
+          id: 'sp-umum',
+          title: 'Pengantar Umum',
+          icon: Mail,
+          color: 'text-sky-500 bg-sky-50',
+          requirements: [
+            'Surat Pengantar dari RT/RW',
+            'Fotokopi KTP',
+            'Fotokopi Kartu Keluarga (KK)'
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat pengantar umum.docx',
+          formLink: 'https://docs.google.com/document/d/1W_kNroeQEzHfwOehyxozWN-nyF_4swGP/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
+        }
+      ]
+    },
+    {
+      id: 'surat-pernyataan',
+      title: 'Surat Pernyataan',
+      icon: FolderOpen,
+      items: [
+        {
+          id: 's-pernyataan-ahli-waris',
+          title: 'Pernyataan Ahli Waris',
+          icon: Users,
+          color: 'text-teal-500 bg-teal-50',
+          requirements: [
+            'Surat Keterangan Kematian',
+            'Fotokopi KTP dan KK Ahli Waris',
+            'Surat Pengantar dari RT/RW',
+            'Meterai'
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat pernyataan ahli waris.docx',
+          formLink: 'https://docs.google.com/document/d/1jrwqUSZP83KwvXVB4fpOTE2q8wGPsH-e/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
+        },
+        {
+          id: 's-pernyataan-domisili',
+          title: 'Pernyataan Domisili Tempat Tinggal',
+          icon: Home,
+          color: 'text-blue-500 bg-blue-50',
+          requirements: [
+            'Fotokopi KTP',
+            'Fotokopi Kartu Keluarga (KK)',
+            'Surat Pengantar dari RT/RW'
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat pernyataan domisili tempat tinggal.docx',
+          formLink: 'https://docs.google.com/document/d/1JR8l4d0vUPA5WI08MSJDD3aWKN2Erifd/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
+        },
+        {
+          id: 's-pernyataan-umum',
+          title: 'Pernyataan Umum',
+          icon: FileMinus,
+          color: 'text-slate-500 bg-slate-100',
+          requirements: [
+            'Fotokopi KTP',
+            'Surat Pengantar dari RT/RW'
+          ],
+          formName: 'Template Surat',
+          formSub: 'surat pernyataan umum.docx',
+          formLink: 'https://docs.google.com/document/d/1pU84yNb0dB-wK87-4WbVpVe4ufFs3jwB/edit?usp=drive_link&ouid=111677914652829227106&rtpof=true&sd=true'
         }
       ]
     }
@@ -352,9 +383,15 @@ export default function LayananPage() {
                                 )}
                               </div>
                             </div>
-                            <button className="w-full sm:w-auto shrink-0 px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
-                              <Download className="w-4 h-4" /> Unduh
-                            </button>
+                            {selectedService.formLink ? (
+                              <a href={selectedService.formLink} target="_blank" rel="noreferrer" className="w-full sm:w-auto shrink-0 px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                                <Download className="w-4 h-4" /> Unduh
+                              </a>
+                            ) : (
+                              <button className="w-full sm:w-auto shrink-0 px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                                <Download className="w-4 h-4" /> Unduh
+                              </button>
+                            )}
                           </div>
                         </section>
                       )}

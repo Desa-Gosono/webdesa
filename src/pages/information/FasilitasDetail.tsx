@@ -105,7 +105,7 @@ export default function FasilitasDetail() {
             
             {facility.description && (
               <div className="prose prose-slate dark:prose-invert max-w-none mb-10">
-                <p className="whitespace-pre-line text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+                <p className="whitespace-pre-line text-lg leading-relaxed text-slate-600 dark:text-slate-300 text-justify">
                   {facility.description}
                 </p>
               </div>

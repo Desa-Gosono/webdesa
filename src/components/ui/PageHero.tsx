@@ -56,7 +56,7 @@ export function PageHero({
           )}
 
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/65 to-black/85 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/75 to-black/90 z-10" />
         </div>
 
         <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8">

@@ -110,13 +110,13 @@ export default function PengelolaanSampahPage() {
             </div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">SOP Pemilahan Sampah Praktis</h2>
           </div>
-          
+
           <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-8">
             <div className="flex gap-4">
               <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 text-amber-600 font-bold flex items-center justify-center text-xl">1</div>
               <div>
                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Bilas Sisa Makanan & Minuman</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">Cara mencuci botol plastik atau gelas plastik dari sisa minuman manis sebelum dibuang sangat penting agar tidak menimbulkan bau dan mengundang semut.</p>
+                <p className="text-justify text-gray-600 dark:text-gray-300 text-sm">Cara mencuci botol plastik atau gelas plastik dari sisa minuman manis sebelum dibuang sangat penting agar tidak menimbulkan bau dan mengundang semut.</p>
               </div>
             </div>
 
@@ -124,7 +124,7 @@ export default function PengelolaanSampahPage() {
               <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 text-amber-600 font-bold flex items-center justify-center text-xl">2</div>
               <div>
                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Remukkan Botol Plastik & Kardus</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">Pipihkan atau remukkan botol air mineral dan lipat kardus bekas untuk menghemat ruang di tempat sampah Anda.</p>
+                <p className="text-justify text-gray-600 dark:text-gray-300 text-sm">Pipihkan atau remukkan botol air mineral dan lipat kardus bekas untuk menghemat ruang di tempat sampah Anda.</p>
               </div>
             </div>
 
@@ -132,7 +132,7 @@ export default function PengelolaanSampahPage() {
               <div className="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 font-bold flex items-center justify-center text-xl">3</div>
               <div>
                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Sisa Makanan Jadi Kompos</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">Jangan campurkan sisa makanan dengan plastik. Pisahkan di kantong berbeda untuk diolah menjadi pupuk alami.</p>
+                <p className="text-justify text-gray-600 dark:text-gray-300 text-sm">Jangan campurkan sisa makanan dengan plastik. Pisahkan di kantong berbeda untuk diolah menjadi pupuk alami.</p>
               </div>
             </div>
 
@@ -140,7 +140,7 @@ export default function PengelolaanSampahPage() {
               <div className="flex-shrink-0 w-10 h-10 rounded-full bg-rose-100 text-rose-600 font-bold flex items-center justify-center text-xl">4</div>
               <div>
                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Simpan Limbah B3 di Wadah Tertutup</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">Kumpulkan baterai bekas, lampu rusak, atau bekas obat di toples/wadah terpisah sebelum dibuang agar racunnya tidak menyebar.</p>
+                <p className="text-justify text-gray-600 dark:text-gray-300 text-sm">Kumpulkan baterai bekas, lampu rusak, atau bekas obat di toples/wadah terpisah sebelum dibuang agar racunnya tidak menyebar.</p>
               </div>
             </div>
           </div>
@@ -154,7 +154,7 @@ export default function PengelolaanSampahPage() {
           <div className="absolute top-0 right-0 p-8 opacity-10">
             <TrendingUp className="w-48 h-48" />
           </div>
-          <div className="relative z-10 max-w-2xl">
+          <div className="text-justify relative z-10 max-w-3xl">
             <h2 className="text-3xl font-bold mb-4">Daur Ulang Bernilai Jual: Ubah Sampah Jadi Berkah</h2>
             <p className="text-primary-100 mb-6 text-lg leading-relaxed">
               Tahukah Anda bahwa sampah yang dipilah dengan benar bukan lagi kotoran, melainkan <strong>aset</strong>? Sampah anorganik memiliki nilai jual ekonomi yang nyata.

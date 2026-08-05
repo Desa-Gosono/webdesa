@@ -44,6 +44,10 @@ export interface Profile extends BaseModel {
   demografi_pek_pns?: number;
   demografi_pek_pelajar?: number;
   demografi_pek_lainnya?: number;
+  batas_utara?: string | null;
+  batas_timur?: string | null;
+  batas_selatan?: string | null;
+  batas_barat?: string | null;
   created_at?: string;
   updated_at?: string;
 }

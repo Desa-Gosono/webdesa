@@ -3,7 +3,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { categoriesConfig } from '@/config/categoriesConfig';
 import { useDynamicCrud } from '@/hooks/useDynamicCrud';
 import { PageHero } from '@/components/ui/PageHero';
-import { Calendar, User, MapPin, Phone, Search, Filter } from 'lucide-react';
+import { Calendar, User, MapPin, Phone, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSettings } from '@/hooks/useSettings';
 import { motion } from 'framer-motion';
 import { SkeletonCard } from '@/components/ui/Skeleton';
@@ -31,6 +31,8 @@ export default function DynamicCategoryTemplate() {
 
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const ITEMS_PER_PAGE = categoryId === 'agenda' ? 10 : 6;
 
   React.useEffect(() => {
     // Parse URL params for filter
@@ -41,6 +43,7 @@ export default function DynamicCategoryTemplate() {
     } else {
       setActiveFilter(null);
     }
+    setCurrentPage(1);
   }, [window.location.search]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -53,6 +56,12 @@ export default function DynamicCategoryTemplate() {
     }
     window.history.pushState({}, '', url.toString());
     setActiveFilter(val || null);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
   };
 
   const availableCategories = React.useMemo(() => {
@@ -85,6 +94,9 @@ export default function DynamicCategoryTemplate() {
     }
     return result;
   }, [items, activeFilter, searchQuery, config]);
+
+  const totalPages = Math.ceil(displayItems.length / ITEMS_PER_PAGE);
+  const paginatedItems = displayItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -138,7 +150,7 @@ export default function DynamicCategoryTemplate() {
               type="text"
               placeholder={`Cari ${config.title}...`}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               className="w-full pl-12 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-emerald-500 text-slate-700 dark:text-slate-200 transition-colors"
             />
           </div>
@@ -170,9 +182,10 @@ export default function DynamicCategoryTemplate() {
             <SkeletonCard />
           </div>
         ) : displayItems.length > 0 ? (
-          <div className={categoryId === 'agenda' ? "flex flex-col gap-6" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"}>
-            {displayItems.map((item: any, index: number) => {
-              const imageCol = config.columns.find(c => c.type === 'image')?.key;
+          <>
+            <div className={categoryId === 'agenda' ? "flex flex-col gap-6" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"}>
+              {paginatedItems.map((item: any, index: number) => {
+                const imageCol = config.columns.find(c => c.type === 'image')?.key;
               const titleCol = config.columns.find(c => c.key === 'title' || c.key === 'name')?.key;
               const dateCol = config.columns.find(c => c.type === 'date')?.key;
 
@@ -280,7 +293,45 @@ export default function DynamicCategoryTemplate() {
                 </Link>
               );
             })}
-          </div>
+            </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-12">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 flex items-center justify-center rounded-xl font-medium transition-colors ${
+                        currentPage === page
+                          ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/20'
+                          : 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
             <config.icon className={`w-16 h-16 mx-auto mb-4 text-slate-300 dark:text-slate-600`} />

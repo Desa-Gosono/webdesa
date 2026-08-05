@@ -38,7 +38,7 @@ export function MayorWelcome() {
             <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-6 leading-tight">
               Bersama Membangun <br/> Desa yang Berkembang
             </h2>
-            <div className="space-y-4 text-gray-600 dark:text-gray-300 text-lg whitespace-pre-wrap">
+            <div className="space-y-4 text-gray-600 dark:text-gray-300 text-lg whitespace-pre-wrap text-justify">
               {profile?.mayor_greeting || defaultGreeting}
             </div>
             <div className="mt-8 flex items-center gap-4">

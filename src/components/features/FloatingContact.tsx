@@ -1,14 +1,14 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
-import { useJsonData } from '@/hooks/useJsonData';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 
 export function FloatingContact() {
-  const { data: desaData } = useJsonData<any>('profile.json');
+  const { settings } = useSettingsContext();
 
   const handleWhatsApp = () => {
-    const phoneNumber = desaData?.telepon || '081234567890';
-    const message = encodeURIComponent(`Halo Admin Desa ${desaData?.nama || 'Gosono'}, saya ingin bertanya seputar...`);
-    const formattedNumber = phoneNumber.replace(/^0/, '62');
+    const phoneNumber = settings?.contact_whatsapp || '081234567890';
+    const message = encodeURIComponent(`Halo Admin Desa ${settings?.site_title || 'Gosono'}, saya ingin bertanya seputar...`);
+    const formattedNumber = phoneNumber.replace(/[^0-9]/g, '').replace(/^0/, '62');
     window.open(`https://wa.me/${formattedNumber}?text=${message}`, '_blank');
   };
 

@@ -13,9 +13,7 @@ const BeritaDetail = lazy(() => import('@/pages/information/BeritaDetail'));
 const AgendaDetail = lazy(() => import('@/pages/information/AgendaDetail'));
 const FasilitasDetail = lazy(() => import('@/pages/information/FasilitasDetail'));
 const DynamicCategoryTemplate = lazy(() => import('@/pages/public/DynamicCategoryTemplate'));
-const PetaPage = lazy(() => import('@/pages/data/PetaPage'));
 const KontakPage = lazy(() => import('@/pages/contact/KontakPage'));
-const FaqPage = lazy(() => import('@/pages/contact/FaqPage'));
 const PengelolaanSampahPage = lazy(() => import('@/pages/program/PengelolaanSampahPage'));
 const PosyanduPage = lazy(() => import('@/pages/program/PosyanduPage'));
 const LayananPage = lazy(() => import('@/pages/program/LayananPage'));
@@ -52,9 +50,7 @@ export const router = createBrowserRouter([
       { path: 'berita/:slug', element: <BeritaDetail /> },
       { path: 'agenda/:id', element: <AgendaDetail /> },
       { path: 'fasilitas/:id', element: <FasilitasDetail /> },
-      { path: 'peta', element: <PetaPage /> },
       { path: 'kontak', element: <KontakPage /> },
-      { path: 'faq', element: <FaqPage /> },
       { path: 'pengelolaan-sampah', element: <PengelolaanSampahPage /> },
       { path: 'posyandu', element: <PosyanduPage /> },
       { path: 'layanan', element: <LayananPage /> },

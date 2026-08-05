@@ -39,12 +39,12 @@ export function PublicLayout() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white mt-auto pt-12 md:pt-16 pb-8">
         <div className="container mx-auto px-6 max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-12 mb-12">
 
-            {/* Column 1: Info */}
-            <div className="space-y-6">
+            {/* Column 1: About */}
+            <div className="space-y-6 lg:col-span-2 lg:pr-16">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-16 bg-white rounded-md p-1 flex items-center justify-center">
+                <div className="w-12 h-12 bg-white rounded-md p-1 flex items-center justify-center shrink-0">
                   <img src={logoDesa} alt="Logo Desa" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
                 </div>
                 <div>
@@ -52,7 +52,7 @@ export function PublicLayout() {
                   <p className="text-gray-400 text-sm">Kab. Boyolali, Jawa Tengah</p>
                 </div>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed pr-8">
+              <p className="text-justify text-gray-400 text-sm leading-relaxed pr-8">
                 {settings.footer_description || 'Portal resmi Pemerintah Desa Gosono. Bersama membangun desa yang mandiri, bersih, dan berdaya saing untuk generasi mendatang.'}
               </p>
 
@@ -74,7 +74,7 @@ export function PublicLayout() {
                 )}
                 {settings.social_tiktok && (
                   <a href={settings.social_tiktok} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
-                    <svg className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
+                    <svg className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z" /></svg>
                   </a>
                 )}
               </div>
