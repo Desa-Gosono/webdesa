@@ -244,7 +244,7 @@ export default function DynamicCategoryTemplate() {
                       </h3>
 
                       {item.description && (
-                        <p className={`text-slate-600 dark:text-slate-300 text-sm mb-2 ${categoryId === 'agenda' ? 'line-clamp-1' : 'line-clamp-3 mb-4'}`}>
+                        <p className={`text-slate-600 dark:text-slate-300 text-sm mb-2 text-justify ${categoryId === 'agenda' ? 'line-clamp-1' : 'line-clamp-3 mb-4'}`}>
                           {item.description}
                         </p>
                       )}

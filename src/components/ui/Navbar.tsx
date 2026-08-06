@@ -51,7 +51,7 @@ export function Navbar() {
               alt="Logo Desa"
               className="h-10 md:h-12 w-auto drop-shadow-sm"
             />
-            <div className="hidden sm:flex flex-col">
+            <div className="flex flex-col">
               <span className="font-display font-bold text-base text-gray-900 dark:text-white leading-tight">
                 {settings.website_name || 'Desa Gosono'}
               </span>

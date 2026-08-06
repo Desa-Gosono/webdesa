@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 export function FeaturedPrograms() {
   const { useFetchPotentials } = usePotentials();
   const { useFetchUmkm } = useUmkm();
-  
+
   const { data: potentials = [] } = useFetchPotentials();
   const { data: umkms = [] } = useFetchUmkm();
 
@@ -39,7 +39,7 @@ export function FeaturedPrograms() {
   return (
     <section className="py-24 bg-gray-50 dark:bg-gray-900/50">
       <div className="container mx-auto px-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -82,7 +82,7 @@ export function FeaturedPrograms() {
                   </div>
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-500 transition-colors">{p.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">{p.desc}</p>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 text-justify">{p.desc}</p>
                   </div>
                 </Link>
               </SwiperSlide>

@@ -110,7 +110,7 @@ export default function UMKMDetail() {
                 <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Deskripsi Usaha</h3>
                 <div className="prose prose-slate dark:prose-invert max-w-none prose-p:leading-relaxed">
                   {umkm.description ? (
-                    <p>{umkm.description}</p>
+                    <p className="text-justify whitespace-pre-wrap">{umkm.description}</p>
                   ) : (
                     <p className="text-slate-500 italic">Belum ada deskripsi untuk usaha ini.</p>
                   )}
@@ -123,7 +123,7 @@ export default function UMKMDetail() {
                     <Truck className="w-6 h-6 text-purple-500" /> Informasi Distribusi
                   </h3>
                   <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-2xl border border-purple-100 dark:border-purple-800/50">
-                    <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">{umkm.distribution}</p>
+                    <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap text-justify">{umkm.distribution}</p>
                   </div>
                 </div>
               )}

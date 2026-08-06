@@ -65,6 +65,22 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
   }, []);
 
+  useEffect(() => {
+    if (settings.website_name) {
+      document.title = settings.website_name;
+    }
+    
+    if (settings.website_favicon) {
+      let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = settings.website_favicon;
+    }
+  }, [settings.website_name, settings.website_favicon]);
+
   return (
     <SettingsContext.Provider value={{ settings, isLoading }}>
       {children}

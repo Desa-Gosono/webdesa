@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight, Menu } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoDesa from '@/assets/logo-desa.png';
+import { useSettingsContext } from '@/contexts/SettingsContext';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
+  const { settings } = useSettingsContext();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
   const toggleMenu = (title: string) => {
@@ -33,14 +35,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
       <div className="flex h-20 items-center px-4 bg-slate-950 border-b border-slate-800/50 relative flex-shrink-0">
         <div className="flex items-center gap-3">
           <img
-            src={logoDesa}
+            src={settings.website_logo || logoDesa}
             alt="Logo Admin Desa"
             className="h-12 w-auto drop-shadow-md"
           />
 
           <div className="flex flex-col leading-tight">
             <span className="text-white font-bold text-lg">
-              Admin Desa
+              {settings.website_name || 'Admin Desa'}
             </span>
             <span className="text-slate-400 text-xs">
               Dashboard

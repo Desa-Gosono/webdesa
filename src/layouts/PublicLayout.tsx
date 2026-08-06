@@ -45,7 +45,7 @@ export function PublicLayout() {
             <div className="space-y-6 lg:col-span-2 lg:pr-16">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-white rounded-md p-1 flex items-center justify-center shrink-0">
-                  <img src={logoDesa} alt="Logo Desa" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                  <img src={settings.website_logo || logoDesa} alt="Logo Desa" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
                 </div>
                 <div>
                   <h3 className="font-bold text-xl">{settings.website_name || 'Desa Gosono'}</h3>
