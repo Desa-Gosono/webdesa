@@ -61,7 +61,7 @@ export default function PotensiDetail() {
               {potensi.title}
             </h1>
             
-            <div className="prose prose-slate dark:prose-invert max-w-none prose-p:leading-relaxed prose-lg">
+            <div className="prose prose-slate dark:prose-invert max-w-none prose-p:leading-relaxed prose-lg text-justify">
               {potensi.description ? (
                 <div dangerouslySetInnerHTML={{ __html: potensi.description.replace(/\n/g, '<br/>') }} />
               ) : (

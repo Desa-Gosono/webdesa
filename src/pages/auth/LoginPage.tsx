@@ -79,10 +79,9 @@ export default function LoginPage() {
               <input
                 {...register('email')}
                 type="email"
-                className={`block w-full pl-10 pr-3 py-2.5 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-colors ${
-                  errors.email ? 'border-red-500' : 'border-gray-200 dark:border-slate-700'
-                }`}
-                placeholder="admingosono@gmail.com"
+                className={`block w-full pl-10 pr-3 py-2.5 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-200 dark:border-slate-700'
+                  }`}
+                placeholder="admin@gmail.com"
               />
             </div>
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -102,9 +101,8 @@ export default function LoginPage() {
               <input
                 {...register('password')}
                 type="password"
-                className={`block w-full pl-10 pr-3 py-2.5 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-colors ${
-                  errors.password ? 'border-red-500' : 'border-gray-200 dark:border-slate-700'
-                }`}
+                className={`block w-full pl-10 pr-3 py-2.5 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-200 dark:border-slate-700'
+                  }`}
                 placeholder="••••••••"
               />
             </div>
