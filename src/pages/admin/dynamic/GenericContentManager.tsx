@@ -126,6 +126,11 @@ export default function GenericContentManager() {
         }
         delete payload.video_url;
 
+        // Auto-set published_at for berita if status is published
+        if (config.id === 'berita' && payload.status === 'published' && !payload.published_at) {
+          payload.published_at = new Date().toISOString();
+        }
+
         if (selectedId) {
           await updateMutation.mutateAsync({ id: selectedId, updates: payload });
         } else {

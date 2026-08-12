@@ -99,7 +99,7 @@ export default function BeritaDetail() {
               </div>
             </div>
 
-            <div className="prose prose-slate dark:prose-invert max-w-none prose-emerald prose-p:leading-relaxed prose-headings:font-bold prose-img:rounded-2xl">
+            <div className="prose prose-slate dark:prose-invert max-w-none prose-emerald prose-p:leading-relaxed prose-headings:font-bold prose-img:rounded-2xl text-justify">
               {/* If content is rich text HTML, use dangerouslySetInnerHTML, else just paragraph splitting */}
               <div dangerouslySetInnerHTML={{ __html: news.content.replace(/\n/g, '<br/>') }} />
             </div>
