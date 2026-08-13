@@ -69,7 +69,11 @@ export const adminMenu = [
     path: '/admin/content/fasilitas',
     icon: Building2,
   },
-
+  {
+    title: 'Kesehatan Desa',
+    path: '/admin/content/kesehatan',
+    icon: Users,
+  },
   {
     title: 'Pengaturan',
     path: '/admin/pengaturan',

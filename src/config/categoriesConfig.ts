@@ -189,5 +189,21 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
       { name: 'photo_url', label: 'Foto', type: 'image', gridSpan: 2 },
       { name: 'description', label: 'Tugas Pokok & Fungsi', type: 'textarea', gridSpan: 2 }
     ]
+  },
+  kesehatan: {
+    id: 'kesehatan',
+    title: 'Kesehatan Desa',
+    description: 'Kelola data statistik kesehatan desa seperti jumlah balita, lansia, dll.',
+    icon: Users,
+    collectionName: 'health_stats',
+    themeColor: 'emerald',
+    columns: [
+      { key: 'name', label: 'Nama Statistik', type: 'text', sortable: true },
+      { key: 'value', label: 'Nilai / Jumlah', type: 'text' }
+    ],
+    fields: [
+      { name: 'name', label: 'Nama Statistik', type: 'text', required: true, gridSpan: 2, placeholder: 'Contoh: Balita' },
+      { name: 'value', label: 'Nilai / Jumlah', type: 'text', required: true, gridSpan: 2, placeholder: 'Contoh: 104' }
+    ]
   }
 };
