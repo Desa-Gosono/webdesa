@@ -67,6 +67,9 @@ export function LatestNews() {
               <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
                 {n.title}
               </h3>
+              <div className="mt-3 text-sm font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1 group-hover:underline">
+                baca selengkapnya <ArrowRight className="w-3.5 h-3.5" />
+              </div>
               </Link>
             </motion.div>
           )) : (

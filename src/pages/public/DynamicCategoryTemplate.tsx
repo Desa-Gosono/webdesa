@@ -3,9 +3,9 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { categoriesConfig } from '@/config/categoriesConfig';
 import { useDynamicCrud } from '@/hooks/useDynamicCrud';
 import { PageHero } from '@/components/ui/PageHero';
-import { Calendar, User, MapPin, Phone, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, User, MapPin, Phone, Search, Filter, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useSettings } from '@/hooks/useSettings';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 
 export default function DynamicCategoryTemplate() {
@@ -32,6 +32,7 @@ export default function DynamicCategoryTemplate() {
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [selectedAgenda, setSelectedAgenda] = React.useState<any | null>(null);
   const ITEMS_PER_PAGE = categoryId === 'agenda' ? 10 : 6;
 
   React.useEffect(() => {
@@ -97,6 +98,11 @@ export default function DynamicCategoryTemplate() {
 
   const totalPages = Math.ceil(displayItems.length / ITEMS_PER_PAGE);
   const paginatedItems = displayItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -194,102 +200,120 @@ export default function DynamicCategoryTemplate() {
 
               const detailPath = `/${categoryId}/${item.slug || item.id}`;
 
-              return (
-                <Link to={detailPath} key={item.id} className="group block">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className={`bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 dark:border-slate-700 h-full flex ${categoryId === 'agenda' ? 'flex-col sm:flex-row items-center sm:max-h-36' : 'flex-col'}`}
-                  >
-                    <div className={`relative overflow-hidden bg-slate-100 dark:bg-slate-700 shrink-0 ${categoryId === 'agenda' ? 'w-full sm:w-48 h-32 sm:h-full sm:min-h-[9rem]' : 'h-56'}`}>
-                      {imageUrl ? (
-                        <img
-                          src={imageUrl}
-                          alt={title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <config.icon className="w-16 h-16 text-slate-300 dark:text-slate-600" />
+              const cardContent = (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={`bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 dark:border-slate-700 h-full flex ${categoryId === 'agenda' ? 'flex-col sm:flex-row items-center sm:max-h-36' : 'flex-col'}`}
+                >
+                  <div className={`relative overflow-hidden bg-slate-100 dark:bg-slate-700 shrink-0 ${categoryId === 'agenda' ? 'w-full sm:w-48 h-32 sm:h-full sm:min-h-[9rem]' : 'h-56'}`}>
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <config.icon className="w-16 h-16 text-slate-300 dark:text-slate-600" />
+                      </div>
+                    )}
+
+                    {item.category && (
+                      <div className={`absolute top-4 left-4 px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-full text-xs font-bold shadow-sm ${themeClass}`}>
+                        {item.category}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={`flex flex-col flex-grow ${categoryId === 'agenda' ? 'p-3 sm:p-4 justify-center w-full' : 'p-6'}`}>
+                    <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-1.5">
+                      {dateCol && item[dateCol] && (
+                        <div className="flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5" />
+                          {new Date(item[dateCol]).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </div>
                       )}
-
-                      {item.category && (
-                        <div className={`absolute top-4 left-4 px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-full text-xs font-bold shadow-sm ${themeClass}`}>
-                          {item.category}
+                      {item.author && (
+                        <div className="flex items-center gap-1.5">
+                          <User className="w-3.5 h-3.5" />
+                          {item.author}
                         </div>
                       )}
                     </div>
 
-                    <div className={`flex flex-col flex-grow ${categoryId === 'agenda' ? 'p-3 sm:p-4 justify-center w-full' : 'p-6'}`}>
-                      <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-1.5">
-                        {dateCol && item[dateCol] && (
-                          <div className="flex items-center gap-1.5">
-                            <Calendar className="w-3.5 h-3.5" />
-                            {new Date(item[dateCol]).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    <h3 className={`font-bold text-slate-800 dark:text-white mb-1.5 group-hover:text-sky-500 transition-colors line-clamp-2 ${categoryId === 'agenda' ? 'text-base leading-tight' : 'text-xl mb-3'}`}>
+                      {title}
+                    </h3>
+
+                    {item.description && (
+                      <p className={`text-slate-600 dark:text-slate-300 text-sm mb-2 text-justify ${categoryId === 'agenda' ? 'line-clamp-1' : 'line-clamp-3 mb-4'}`}>
+                        {item.description}
+                      </p>
+                    )}
+
+                    {categoryId === 'berita' && (
+                      <div className="mt-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 group-hover:underline">
+                        baca selengkapnya &gt;
+                      </div>
+                    )}
+
+                    {(item.address || item.location || item.phone || item.contact) && (
+                      <div className="flex flex-col gap-2 mt-auto pt-4 border-t border-slate-100 dark:border-slate-700" onClick={(e) => e.stopPropagation()}>
+                        {(item.address || item.location) && (
+                          <div
+                            className="flex items-start gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-colors cursor-pointer"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const loc = item.address || item.location;
+                              const isUrl = loc.startsWith('http://') || loc.startsWith('https://');
+                              if (isUrl) {
+                                window.open(loc, '_blank');
+                              } else {
+                                window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`, '_blank');
+                              }
+                            }}
+                            title="Buka di Google Maps"
+                          >
+                            <MapPin className="w-4 h-4 shrink-0 text-rose-500" />
+                            <span className="line-clamp-1">Lihat Lokasi</span>
                           </div>
                         )}
-                        {item.author && (
-                          <div className="flex items-center gap-1.5">
-                            <User className="w-3.5 h-3.5" />
-                            {item.author}
+                        {(item.phone || item.contact) && (
+                          <div
+                            className="flex items-start gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors cursor-pointer"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const ph = item.phone || item.contact;
+                              const cleanPhone = ph.replace(/\D/g, '');
+                              const waPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.substring(1) : cleanPhone;
+                              window.open(`https://wa.me/${waPhone}`, '_blank');
+                            }}
+                            title="Hubungi via WhatsApp"
+                          >
+                            <Phone className="w-4 h-4 shrink-0 text-emerald-500" />
+                            <span className="line-clamp-1">Hubungi Kontak</span>
                           </div>
                         )}
                       </div>
+                    )}
+                  </div>
+                </motion.div>
+              );
 
-                      <h3 className={`font-bold text-slate-800 dark:text-white mb-1.5 group-hover:text-sky-500 transition-colors line-clamp-2 ${categoryId === 'agenda' ? 'text-base leading-tight' : 'text-xl mb-3'}`}>
-                        {title}
-                      </h3>
+              if (categoryId === 'agenda') {
+                return (
+                  <div key={item.id} onClick={() => setSelectedAgenda(item)} className="group block cursor-pointer">
+                    {cardContent}
+                  </div>
+                );
+              }
 
-                      {item.description && (
-                        <p className={`text-slate-600 dark:text-slate-300 text-sm mb-2 text-justify ${categoryId === 'agenda' ? 'line-clamp-1' : 'line-clamp-3 mb-4'}`}>
-                          {item.description}
-                        </p>
-                      )}
-
-                      {(item.address || item.phone) && (
-                        <div className="flex flex-col gap-2 mt-auto pt-4 border-t border-slate-100 dark:border-slate-700">
-                          {item.address && (
-                            <div
-                              className="flex items-start gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-colors cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                const isUrl = item.address.startsWith('http://') || item.address.startsWith('https://');
-                                if (isUrl) {
-                                  window.open(item.address, '_blank');
-                                } else {
-                                  window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`, '_blank');
-                                }
-                              }}
-                              title="Buka di Google Maps"
-                            >
-                              <MapPin className="w-4 h-4 shrink-0 text-rose-500" />
-                              <span className="line-clamp-1">Lihat Lokasi</span>
-                            </div>
-                          )}
-                          {item.phone && (
-                            <div
-                              className="flex items-start gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                const cleanPhone = item.phone.replace(/\D/g, '');
-                                const waPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.substring(1) : cleanPhone;
-                                window.open(`https://wa.me/${waPhone}`, '_blank');
-                              }}
-                              title="Hubungi via WhatsApp"
-                            >
-                              <Phone className="w-4 h-4 shrink-0 text-emerald-500" />
-                              <span className="line-clamp-1">Hubungi Kontak</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
+              return (
+                <Link to={detailPath} key={item.id} className="group block">
+                  {cardContent}
                 </Link>
               );
             })}
@@ -299,7 +323,7 @@ export default function DynamicCategoryTemplate() {
             {totalPages > 1 && (
               <div className="flex justify-center items-center gap-2 mt-12">
                 <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
                   disabled={currentPage === 1}
                   className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
@@ -310,7 +334,7 @@ export default function DynamicCategoryTemplate() {
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                     <button
                       key={page}
-                      onClick={() => setCurrentPage(page)}
+                      onClick={() => handlePageChange(page)}
                       className={`w-10 h-10 flex items-center justify-center rounded-xl font-medium transition-colors ${
                         currentPage === page
                           ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/20'
@@ -323,7 +347,7 @@ export default function DynamicCategoryTemplate() {
                 </div>
 
                 <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
                   disabled={currentPage === totalPages}
                   className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
@@ -340,6 +364,103 @@ export default function DynamicCategoryTemplate() {
           </div>
         )}
       </div>
+
+      <AnimatePresence>
+        {selectedAgenda && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setSelectedAgenda(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 max-w-2xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
+            >
+              <button 
+                onClick={() => setSelectedAgenda(null)}
+                className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-full text-slate-600 dark:text-slate-300 transition-colors z-10"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4">
+                {config.columns.find(c => c.type === 'date') && selectedAgenda[config.columns.find(c => c.type === 'date')!.key] && (
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-700/50 rounded-lg font-medium">
+                    <Calendar className="w-4 h-4 text-emerald-500" />
+                    {new Date(selectedAgenda[config.columns.find(c => c.type === 'date')!.key]).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </div>
+                )}
+              </div>
+
+              <h2 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-6 leading-tight pr-8">
+                {selectedAgenda[config.columns.find(c => c.key === 'title' || c.key === 'name')?.key || 'title']}
+              </h2>
+
+              {config.columns.find(c => c.type === 'image') && selectedAgenda[config.columns.find(c => c.type === 'image')!.key] && (
+                <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-6 bg-slate-100 dark:bg-slate-700">
+                  <img 
+                    src={selectedAgenda[config.columns.find(c => c.type === 'image')!.key]} 
+                    alt="Cover" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              {selectedAgenda.description && (
+                <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 text-justify mb-8 whitespace-pre-wrap">
+                  {selectedAgenda.description}
+                </div>
+              )}
+
+              {(selectedAgenda.address || selectedAgenda.location || selectedAgenda.phone || selectedAgenda.contact) && (
+                <div className="flex flex-col gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700">
+                  <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Informasi Kontak & Lokasi</h4>
+                  {(selectedAgenda.address || selectedAgenda.location) && (
+                    <div
+                      className="flex items-start gap-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const loc = selectedAgenda.address || selectedAgenda.location;
+                        const isUrl = loc.startsWith('http://') || loc.startsWith('https://');
+                        if (isUrl) {
+                          window.open(loc, '_blank');
+                        } else {
+                          window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`, '_blank');
+                        }
+                      }}
+                      title="Buka di Google Maps"
+                    >
+                      <MapPin className="w-5 h-5 shrink-0 text-rose-500" />
+                      <span className="mt-0.5">{selectedAgenda.address || selectedAgenda.location}</span>
+                    </div>
+                  )}
+                  {(selectedAgenda.phone || selectedAgenda.contact) && (
+                    <div
+                      className="flex items-start gap-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const ph = selectedAgenda.phone || selectedAgenda.contact;
+                        const cleanPhone = ph.replace(/\D/g, '');
+                        const waPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.substring(1) : cleanPhone;
+                        window.open(`https://wa.me/${waPhone}`, '_blank');
+                      }}
+                      title="Hubungi via WhatsApp"
+                    >
+                      <Phone className="w-5 h-5 shrink-0 text-emerald-500" />
+                      <span className="mt-0.5">{selectedAgenda.phone || selectedAgenda.contact}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

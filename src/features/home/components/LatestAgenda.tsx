@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Calendar, MapPin } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Calendar, MapPin, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useDynamicCrud } from '@/hooks/useDynamicCrud';
 import { Link } from 'react-router-dom';
@@ -9,9 +9,10 @@ export function LatestAgenda() {
   const { useFetchAll } = useDynamicCrud('agenda');
   const { data: allAgendas = [] } = useFetchAll();
   const recentAgendas = allAgendas.slice(0, 4);
+  const [selectedAgenda, setSelectedAgenda] = React.useState<any | null>(null);
 
   return (
-    <section className="py-12 bg-slate-50 dark:bg-slate-900">
+    <section className="py-12 bg-slate-50 dark:bg-slate-900 relative">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-12">
           <motion.div 
@@ -44,7 +45,7 @@ export function LatestAgenda() {
               transition={{ delay: i * 0.1 }}
               className="group block cursor-pointer"
             >
-              <Link to={`/agenda/${n.slug || n.id}`} className="block h-full">
+              <div onClick={() => setSelectedAgenda(n)} className="block h-full">
                 <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 dark:border-slate-700 h-full flex flex-row items-center sm:max-h-24">
                   
                   <div className="relative w-24 sm:w-28 h-24 sm:h-full shrink-0 bg-slate-100 dark:bg-slate-700">
@@ -74,7 +75,7 @@ export function LatestAgenda() {
                   </div>
 
                 </div>
-              </Link>
+              </div>
             </motion.div>
           )) : (
             <div className="col-span-full py-12 text-center text-slate-500">
@@ -89,6 +90,101 @@ export function LatestAgenda() {
           </Link>
         </div>
       </div>
+
+      <AnimatePresence>
+        {selectedAgenda && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setSelectedAgenda(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 max-w-2xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
+            >
+              <button 
+                onClick={() => setSelectedAgenda(null)}
+                className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-full text-slate-600 dark:text-slate-300 transition-colors z-10"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4">
+                {(selectedAgenda.event_date || selectedAgenda.created_at) && (
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-700/50 rounded-lg font-medium">
+                    <Calendar className="w-4 h-4 text-emerald-500" />
+                    {new Date(selectedAgenda.event_date || selectedAgenda.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </div>
+                )}
+              </div>
+
+              <h2 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-6 leading-tight pr-8">
+                {selectedAgenda.title}
+              </h2>
+
+              {selectedAgenda.image_url && (
+                <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-6 bg-slate-100 dark:bg-slate-700">
+                  <img 
+                    src={selectedAgenda.image_url} 
+                    alt="Cover" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              {selectedAgenda.description && (
+                <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 text-justify mb-8 whitespace-pre-wrap">
+                  {selectedAgenda.description}
+                </div>
+              )}
+
+              {(selectedAgenda.location || selectedAgenda.contact) && (
+                <div className="flex flex-col gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700">
+                  <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Informasi Kontak & Lokasi</h4>
+                  {selectedAgenda.location && (
+                    <div
+                      className="flex items-start gap-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const isUrl = selectedAgenda.location.startsWith('http://') || selectedAgenda.location.startsWith('https://');
+                        if (isUrl) {
+                          window.open(selectedAgenda.location, '_blank');
+                        } else {
+                          window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedAgenda.location)}`, '_blank');
+                        }
+                      }}
+                      title="Buka di Google Maps"
+                    >
+                      <MapPin className="w-5 h-5 shrink-0 text-rose-500" />
+                      <span className="mt-0.5">{selectedAgenda.location}</span>
+                    </div>
+                  )}
+                  {selectedAgenda.contact && (
+                    <div
+                      className="flex items-start gap-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const cleanPhone = selectedAgenda.contact.replace(/\D/g, '');
+                        const waPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.substring(1) : cleanPhone;
+                        window.open(`https://wa.me/${waPhone}`, '_blank');
+                      }}
+                      title="Hubungi via WhatsApp"
+                    >
+                      <Phone className="w-5 h-5 shrink-0 text-emerald-500" />
+                      <span className="mt-0.5">{selectedAgenda.contact}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

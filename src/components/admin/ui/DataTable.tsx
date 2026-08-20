@@ -145,28 +145,40 @@ export function DataTable<TData, TValue>({
           </span>
           <button
             className="p-1 rounded-md text-gray-500 hover:bg-gray-100 dark:text-slate-400 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            onClick={() => table.setPageIndex(0)}
+            onClick={() => {
+              table.setPageIndex(0);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             disabled={!table.getCanPreviousPage()}
           >
             <ChevronsLeft className="w-5 h-5" />
           </button>
           <button
             className="p-1 rounded-md text-gray-500 hover:bg-gray-100 dark:text-slate-400 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            onClick={() => table.previousPage()}
+            onClick={() => {
+              table.previousPage();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             disabled={!table.getCanPreviousPage()}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             className="p-1 rounded-md text-gray-500 hover:bg-gray-100 dark:text-slate-400 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            onClick={() => table.nextPage()}
+            onClick={() => {
+              table.nextPage();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             disabled={!table.getCanNextPage()}
           >
             <ChevronRight className="w-5 h-5" />
           </button>
           <button
             className="p-1 rounded-md text-gray-500 hover:bg-gray-100 dark:text-slate-400 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            onClick={() => {
+              table.setPageIndex(table.getPageCount() - 1);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             disabled={!table.getCanNextPage()}
           >
             <ChevronsRight className="w-5 h-5" />
