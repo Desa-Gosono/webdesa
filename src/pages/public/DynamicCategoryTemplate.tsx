@@ -32,7 +32,7 @@ export default function DynamicCategoryTemplate() {
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [selectedAgenda, setSelectedAgenda] = React.useState<any | null>(null);
+  const [selectedItem, setSelectedItem] = React.useState<any | null>(null);
   const ITEMS_PER_PAGE = categoryId === 'agenda' ? 10 : 6;
 
   React.useEffect(() => {
@@ -303,9 +303,9 @@ export default function DynamicCategoryTemplate() {
                 </motion.div>
               );
 
-              if (categoryId === 'agenda') {
+              if (categoryId === 'agenda' || categoryId === 'galeri') {
                 return (
-                  <div key={item.id} onClick={() => setSelectedAgenda(item)} className="group block cursor-pointer">
+                  <div key={item.id} onClick={() => setSelectedItem(item)} className="group block cursor-pointer">
                     {cardContent}
                   </div>
                 );
@@ -366,96 +366,138 @@ export default function DynamicCategoryTemplate() {
       </div>
 
       <AnimatePresence>
-        {selectedAgenda && (
+        {selectedItem && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
-            onClick={() => setSelectedAgenda(null)}
+            onClick={() => setSelectedItem(null)}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 max-w-2xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
+              className={`bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 max-w-4xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto ${categoryId === 'galeri' ? 'flex flex-col md:flex-row gap-6' : ''}`}
             >
               <button 
-                onClick={() => setSelectedAgenda(null)}
+                onClick={() => setSelectedItem(null)}
                 className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-full text-slate-600 dark:text-slate-300 transition-colors z-10"
               >
                 <X className="w-5 h-5" />
               </button>
               
-              <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4">
-                {config.columns.find(c => c.type === 'date') && selectedAgenda[config.columns.find(c => c.type === 'date')!.key] && (
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-700/50 rounded-lg font-medium">
-                    <Calendar className="w-4 h-4 text-emerald-500" />
-                    {new Date(selectedAgenda[config.columns.find(c => c.type === 'date')!.key]).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+              {categoryId === 'galeri' ? (
+                <>
+                  <div className="w-full md:w-2/3 h-64 md:h-[60vh] rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-700 shrink-0">
+                    {config.columns.find(c => c.type === 'image') && selectedItem[config.columns.find(c => c.type === 'image')!.key] && (
+                      <img 
+                        src={selectedItem[config.columns.find(c => c.type === 'image')!.key]} 
+                        alt={selectedItem[config.columns.find(c => c.key === 'title' || c.key === 'name')?.key || 'title']} 
+                        className="w-full h-full object-contain"
+                      />
+                    )}
                   </div>
-                )}
-              </div>
+                  <div className="flex flex-col w-full md:w-1/3">
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-4 leading-tight pr-8">
+                      {selectedItem[config.columns.find(c => c.key === 'title' || c.key === 'name')?.key || 'title']}
+                    </h2>
+                    
+                    <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4">
+                      {config.columns.find(c => c.type === 'date') && selectedItem[config.columns.find(c => c.type === 'date')!.key] && (
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-700/50 rounded-lg font-medium">
+                          <Calendar className="w-4 h-4 text-emerald-500" />
+                          {new Date(selectedItem[config.columns.find(c => c.type === 'date')!.key]).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </div>
+                      )}
+                      {selectedItem.author && (
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-700/50 rounded-lg font-medium">
+                          <User className="w-4 h-4 text-sky-500" />
+                          {selectedItem.author}
+                        </div>
+                      )}
+                    </div>
 
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-6 leading-tight pr-8">
-                {selectedAgenda[config.columns.find(c => c.key === 'title' || c.key === 'name')?.key || 'title']}
-              </h2>
+                    {selectedItem.description && (
+                      <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 text-justify mb-8 whitespace-pre-wrap">
+                        {selectedItem.description}
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4">
+                    {config.columns.find(c => c.type === 'date') && selectedItem[config.columns.find(c => c.type === 'date')!.key] && (
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-700/50 rounded-lg font-medium">
+                        <Calendar className="w-4 h-4 text-emerald-500" />
+                        {new Date(selectedItem[config.columns.find(c => c.type === 'date')!.key]).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                      </div>
+                    )}
+                  </div>
 
-              {config.columns.find(c => c.type === 'image') && selectedAgenda[config.columns.find(c => c.type === 'image')!.key] && (
-                <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-6 bg-slate-100 dark:bg-slate-700">
-                  <img 
-                    src={selectedAgenda[config.columns.find(c => c.type === 'image')!.key]} 
-                    alt="Cover" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-6 leading-tight pr-8">
+                    {selectedItem[config.columns.find(c => c.key === 'title' || c.key === 'name')?.key || 'title']}
+                  </h2>
 
-              {selectedAgenda.description && (
-                <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 text-justify mb-8 whitespace-pre-wrap">
-                  {selectedAgenda.description}
-                </div>
-              )}
-
-              {(selectedAgenda.address || selectedAgenda.location || selectedAgenda.phone || selectedAgenda.contact) && (
-                <div className="flex flex-col gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700">
-                  <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Informasi Kontak & Lokasi</h4>
-                  {(selectedAgenda.address || selectedAgenda.location) && (
-                    <div
-                      className="flex items-start gap-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-colors cursor-pointer"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const loc = selectedAgenda.address || selectedAgenda.location;
-                        const isUrl = loc.startsWith('http://') || loc.startsWith('https://');
-                        if (isUrl) {
-                          window.open(loc, '_blank');
-                        } else {
-                          window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`, '_blank');
-                        }
-                      }}
-                      title="Buka di Google Maps"
-                    >
-                      <MapPin className="w-5 h-5 shrink-0 text-rose-500" />
-                      <span className="mt-0.5">{selectedAgenda.address || selectedAgenda.location}</span>
+                  {config.columns.find(c => c.type === 'image') && selectedItem[config.columns.find(c => c.type === 'image')!.key] && (
+                    <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-6 bg-slate-100 dark:bg-slate-700">
+                      <img 
+                        src={selectedItem[config.columns.find(c => c.type === 'image')!.key]} 
+                        alt="Cover" 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   )}
-                  {(selectedAgenda.phone || selectedAgenda.contact) && (
-                    <div
-                      className="flex items-start gap-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors cursor-pointer"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const ph = selectedAgenda.phone || selectedAgenda.contact;
-                        const cleanPhone = ph.replace(/\D/g, '');
-                        const waPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.substring(1) : cleanPhone;
-                        window.open(`https://wa.me/${waPhone}`, '_blank');
-                      }}
-                      title="Hubungi via WhatsApp"
-                    >
-                      <Phone className="w-5 h-5 shrink-0 text-emerald-500" />
-                      <span className="mt-0.5">{selectedAgenda.phone || selectedAgenda.contact}</span>
+
+                  {selectedItem.description && (
+                    <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 text-justify mb-8 whitespace-pre-wrap">
+                      {selectedItem.description}
                     </div>
                   )}
-                </div>
+
+                  {(selectedItem.address || selectedItem.location || selectedItem.phone || selectedItem.contact) && (
+                    <div className="flex flex-col gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700">
+                      <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Informasi Kontak & Lokasi</h4>
+                      {(selectedItem.address || selectedItem.location) && (
+                        <div
+                          className="flex items-start gap-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-colors cursor-pointer"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const loc = selectedItem.address || selectedItem.location;
+                            const isUrl = loc.startsWith('http://') || loc.startsWith('https://');
+                            if (isUrl) {
+                              window.open(loc, '_blank');
+                            } else {
+                              window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`, '_blank');
+                            }
+                          }}
+                          title="Buka di Google Maps"
+                        >
+                          <MapPin className="w-5 h-5 shrink-0 text-rose-500" />
+                          <span className="mt-0.5">{selectedItem.address || selectedItem.location}</span>
+                        </div>
+                      )}
+                      {(selectedItem.phone || selectedItem.contact) && (
+                        <div
+                          className="flex items-start gap-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors cursor-pointer"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const ph = selectedItem.phone || selectedItem.contact;
+                            const cleanPhone = ph.replace(/\D/g, '');
+                            const waPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.substring(1) : cleanPhone;
+                            window.open(`https://wa.me/${waPhone}`, '_blank');
+                          }}
+                          title="Hubungi via WhatsApp"
+                        >
+                          <Phone className="w-5 h-5 shrink-0 text-emerald-500" />
+                          <span className="mt-0.5">{selectedItem.phone || selectedItem.contact}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </>
               )}
             </motion.div>
           </motion.div>
